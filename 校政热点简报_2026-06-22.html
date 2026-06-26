@@ -698,6 +698,7 @@
 <script>
 // 内嵌简报日期清单 —— 生成时从 briefings_manifest.json 写入，避免 file:// 下 fetch 被拦截
 var EMBEDDED_DATES = ["2026-06-18","2026-06-22"];
+var BRIEFING_DATE = "2026-06-22";
 
 // ===== 紧凑月历 =====
 (function() {
@@ -706,6 +707,7 @@ var EMBEDDED_DATES = ["2026-06-18","2026-06-22"];
 
   function getTodayStr() { return new Date().toISOString().slice(0,10); }
   function getCurrentBriefingDate() {
+    if (typeof BRIEFING_DATE !== 'undefined') return BRIEFING_DATE;
     const m = window.location.pathname.match(/校政热点简报_(\d{4}-\d{2}-\d{2})\.html/);
     return m ? m[1] : getTodayStr();
   }

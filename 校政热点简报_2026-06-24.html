@@ -688,6 +688,7 @@
 
 <script>
 var EMBEDDED_DATES = ["2026-06-18","2026-06-22","2026-06-23","2026-06-24"];
+var BRIEFING_DATE = "2026-06-24";
 
 // ===== 紧凑月历 =====
 (function() {
@@ -696,6 +697,7 @@ var EMBEDDED_DATES = ["2026-06-18","2026-06-22","2026-06-23","2026-06-24"];
 
   function getTodayStr() { return new Date().toISOString().slice(0,10); }
   function getCurrentBriefingDate() {
+    if (typeof BRIEFING_DATE !== 'undefined') return BRIEFING_DATE;
     var m = window.location.pathname.match(/校政热点简报_(\d{4}-\d{2}-\d{2})\.html/);
     return m ? m[1] : getTodayStr();
   }
