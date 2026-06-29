@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>校政热点简报</title>
+<style>
+  :root {
+    --dp-green-dark: #004844;
+    --dp-green-mid: #065700;
+    --dp-green-bright: #0DB900;
+    --dp-green-light: #e8f5ee;
+    --dp-green-bg: #f0f7f3;
+    --risk-red: #c0392b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+    background: linear-gradient(160deg, #f0f7f3 0%, #e8f5ee 30%, #f5fff5 60%, #f9faf7 100%);
+    min-height: 100vh;
+    padding: 24px 12px;
+    color: #1a2a1a;
+  }
+
+  .poster {
+    max-width: 820px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 8px 40px rgba(0,72,68,0.10);
+    overflow: hidden;
+  }
+
+  .header {
+    background: linear-gradient(135deg, #003530 0%, #004844 40%, #065700 100%);
+    color: #fff;
+    padding: 40px 36px 32px;
+    position: relative;
+    overflow: hidden;
+    min-height: 200px;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url('depu_logo_white.png') no-repeat center center;
+    background-size: 280px auto;
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .header .header-content { position: relative; z-index: 1; }
+  .header-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.16);
+    backdrop-filter: blur(4px);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .header .subtitle { font-size: 14px; opacity: 0.85; }
+  .header .date-bar {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+  }
+  .header .date-bar .pill {
+    background: rgba(255,255,255,0.14);
+    padding: 4px 14px;
+    border-radius: 16px;
+  }
+
+  .calendar-section {
+    background: linear-gradient(180deg, #fff 0%, #f8faf8 100%);
+    border-bottom: 1px solid #e0ece3;
+    padding: 10px 16px 12px;
+  }
+  .calendar-section .weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 10px;
+    color: #8a9a8a;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .calendar-section .weekdays span:first-child,
+  .calendar-section .weekdays span:last-child { color: #c0392b; }
+  .calendar-section .days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+  }
+  .calendar-section .day-cell {
+    aspect-ratio: 1.3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    font-size: 12px;
+    color: #3a4a3a;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+    border: 1px solid transparent;
+    font-weight: 500;
+    height: 26px;
+  }
+  .calendar-section .day-cell:hover { background: #e8f5ee; border-color: #b0d0b8; }
+  .calendar-section .day-cell.empty { cursor: default; background: transparent; border-color: transparent; height: 26px; }
+  .calendar-section .day-cell.empty:hover { background: transparent; border-color: transparent; }
+  .calendar-section .day-cell.today {
+    background: linear-gradient(135deg, #004844, #065700);
+    color: #fff;
+    font-weight: 700;
+    border-color: #004844;
+  }
+  .calendar-section .day-cell.today:hover { opacity: 0.9; }
+  .calendar-section .day-cell.has-briefing::after {
+    content: "";
+    position: absolute;
+    bottom: 2px;
+    width: 3px; height: 3px;
+    background: #0DB900;
+    border-radius: 50%;
+  }
+  .calendar-section .day-cell.today.has-briefing::after { background: #fff; }
+  .calendar-section .day-cell.active-briefing {
+    background: #e0f0e4;
+    font-weight: 700;
+    color: #004844;
+    border-color: #065700;
+  }
+  .calendar-section .day-cell.future { color: #c0cec0; cursor: default; }
+  .calendar-section .day-cell.future:hover { background: transparent; border-color: transparent; }
+
+  .summary-risk-module {
+    margin: 0;
+    background: linear-gradient(135deg, #f0f9f3 0%, #e8f5ee 100%);
+    border-left: 5px solid #065700;
+    overflow: hidden;
+  }
+  .summary-risk-module .summary-part {
+    padding: 14px 24px 10px;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: #1d3d1d;
+  }
+  .summary-risk-module .summary-part strong { color: #004844; }
+  .summary-risk-module .divider {
+    height: 1px;
+    margin: 0 24px;
+    background: linear-gradient(90deg, transparent, #92bfa0, transparent);
+  }
+  .summary-risk-module .risk-part { padding: 12px 24px 14px; }
+  .summary-risk-module .risk-part .risk-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #c0392b;
+    margin-bottom: 8px;
+  }
+  .summary-risk-module .risk-part ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px 16px;
+  }
+  .summary-risk-module .risk-part li {
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #7b2d2d;
+    padding-left: 18px;
+    position: relative;
+  }
+  .summary-risk-module .risk-part li::before {
+    content: "⚠";
+    position: absolute;
+    left: 0;
+    font-size: 11px;
+  }
+
+  .news-section { padding: 8px 24px 8px; }
+  .section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #004844;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title .icon { font-size: 20px; }
+
+  .news-card {
+    border: 1px solid #d9e6dc;
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 14px;
+    transition: box-shadow 0.2s, transform 0.2s;
+    background: #fff;
+  }
+  .news-card:hover {
+    box-shadow: 0 4px 20px rgba(0,72,68,0.12);
+    transform: translateY(-1px);
+  }
+  .news-card .card-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+  .news-card .num {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, #004844, #065700);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .news-card h3 { font-size: 15.5px; font-weight: 600; line-height: 1.5; color: #1a2a1a; }
+  .news-card .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 18px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: #6a8a6a;
+  }
+  .news-card .meta span { display: inline-flex; align-items: center; gap: 4px; }
+
+  .meta-doc-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    color: #8a6a00;
+    text-decoration: none;
+    font-size: 12px;
+    padding: 2px 0;
+    border-bottom: 1px dashed #c4b04a;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .meta-doc-link:hover { color: #604a00; border-bottom-color: #8a6a00; }
+
+  .news-card .summary { font-size: 13.5px; line-height: 1.75; color: #3a4a3a; margin-bottom: 10px; }
+  .news-card .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 2px; }
+  .source-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #e8f5ee;
+    color: #004844;
+    text-decoration: none;
+    padding: 7px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s;
+    border: 1.5px solid #a0d0b0;
+  }
+  .source-btn:hover {
+    background: #d0eada;
+    border-color: #065700;
+    color: #003530;
+    transform: translateX(2px);
+  }
+  .source-btn .arrow { display: inline-block; transition: transform 0.2s; }
+  .source-btn:hover .arrow { transform: translateX(3px); }
+
+  .policy-compare {
+    margin-top: 10px;
+    background: #fffbf0;
+    border: 1px dashed #d4a843;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #6a4a1a;
+  }
+  .policy-compare .compare-label {
+    font-weight: 700;
+    color: #8a5a00;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .depu-alert {
+    margin-top: 12px;
+    background: linear-gradient(135deg, #f0f7f3, #e6f2ea);
+    border: 1px dashed #065700;
+    border-radius: 10px;
+    padding: 12px 16px;
+  }
+  .depu-alert .alert-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #004844;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .depu-alert ul { list-style: none; padding: 0; }
+  .depu-alert li {
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #2a4a2a;
+    padding-left: 16px;
+    position: relative;
+    margin-bottom: 3px;
+  }
+  .depu-alert li::before { content: "▸"; position: absolute; left: 2px; color: #065700; font-size: 10px; }
+  .depu-alert li strong { color: #004844; }
+
+  .notes-section {
+    margin: 0 24px 24px;
+    background: #f8faf8;
+    border: 2px dashed #b3d0bb;
+    border-radius: 14px;
+    padding: 18px 22px;
+  }
+  .notes-section .notes-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #3a5a3a;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .notes-section .notes-title .hint { font-size: 11px; font-weight: 400; color: #8aa88a; }
+  .notes-area {
+    width: 100%;
+    min-height: 120px;
+    border: none;
+    background: transparent;
+    font-size: 13.5px;
+    line-height: 1.8;
+    color: #2a3a2a;
+    resize: vertical;
+    font-family: inherit;
+    outline: none;
+  }
+  .notes-area::placeholder { color: #b0ccb0; }
+  .notes-area:focus { background: #fff; border-radius: 8px; padding: 8px 10px; }
+
+  .footer {
+    background: linear-gradient(135deg, #003530, #004844);
+    color: rgba(255,255,255,0.75);
+    text-align: center;
+    padding: 16px 24px;
+    font-size: 11.5px;
+    line-height: 1.8;
+  }
+  .footer a { color: #0DB900; text-decoration: none; }
+
+  .toast {
+    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+    background: #004844; color: #fff; padding: 10px 24px; border-radius: 10px;
+    font-size: 13px; z-index: 9999; opacity: 0; transition: opacity 0.3s; pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+
+  .save-hint {
+    position: fixed; bottom: 20px; right: 20px; background: #004844; color: #fff;
+    padding: 8px 16px; border-radius: 8px; font-size: 12px;
+    opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999;
+  }
+  .save-hint.show { opacity: 1; }
+
+  @media (max-width: 600px) {
+    .header { padding: 28px 18px 22px; min-height: 160px; }
+    .header::before { background-size: 200px auto; }
+    .header h1 { font-size: 21px; }
+    .calendar-section { padding: 8px 12px 10px; }
+    .calendar-section .day-cell { font-size: 11px; height: 22px; }
+    .summary-risk-module .summary-part,
+    .summary-risk-module .risk-part { padding-left: 14px; padding-right: 14px; }
+    .summary-risk-module .divider { margin-left: 14px; margin-right: 14px; }
+    .news-card { padding: 14px 16px; }
+    .summary-risk-module .risk-part ul { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<div class="poster">
+
+  <div class="header">
+    <div class="header-content">
+      <span class="header-tag">DAILY BRIEFING</span>
+      <h1>📰 校政热点简报</h1>
+      <div class="subtitle">聚焦民办学校 · 国际学校 · 教育政策动态</div>
+      <div class="date-bar" id="headerDateBar">
+        <span class="pill">📅 2026年6月29日 星期一</span>
+        <span class="pill">来源：教育部 / College Board / QS / UCAS / 《财经》杂志</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="calendar-section" id="calendarSection">
+    <div class="weekdays">
+      <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+    </div>
+    <div class="days-grid" id="daysGrid"></div>
+  </div>
+
+  <div class="summary-risk-module">
+    <div class="summary-part">
+      <strong>📌 今日要点：</strong>教育部2026年中外合作办学审批迎来历史性扩容——174所高校获批新增86家机构和133个项目，20余所"985"首次密集入场，合作版图从英美扩展至中东欧、中亚、"一带一路"沿线，学科重心从商科转向脑机接口、数据科学、AI等前沿理工科。College Board于6月25日起滚动发布2026年AP考试成绩分布，AP微积分BC以46%的5分率领跑，中文首度跌破50%（48%），AP心理学报考人数持续上涨成为最热文科科目。6月18日QS发布2027世界大学排名，中国内地85所高校上榜位列全球第三，北大13名、清华14名再创新高，香港高校集体跃升。UCAS 2027Fall申请通道已正式开放，新增文件直传功能并于6月30日在Clearing阶段先行启用，牛津剑桥10月15日截止。国际学校行业深度洗牌态势延续——上海德威浦东浦西合并、南京威雅关停并入常州校区，英国超100所私校在增值税新政下关闭。
+    </div>
+    <div class="divider"></div>
+    <div class="risk-part">
+      <div class="risk-title">🚨 民办国际学校风险提示</div>
+      <ul>
+        <li><strong>中外合作办学提质：</strong>86家新机构+133个新项目带来的供给井喷，可能分流部分原本选择出国读本科的国际学校毕业生，德普需关注"4+0"模式的竞争效应</li>
+        <li><strong>AP选课风向标：</strong>心理学15%的5分率+报考人数增长使其成为"易出分"文科黑马，但中文5分率跌破50%提示传统优势科目不再"躺赢"</li>
+        <li><strong>UCAS新规节奏：</strong>6月30日文件上传功能首发上线，9月1日正式递交后不可修改。德普A2学生须暑期完成全部材料扫描归档，避免秋季手忙脚乱</li>
+        <li><strong>行业洗牌警示：</strong>上海德威合并、南京威雅关停说明即便是品牌名校也无法免疫，德普应将合规办学（巴南教委发〔2024〕72号）、教学质量作为核心竞争力护城河</li>
+        <li><strong>QS排名红利：</strong>香港高校集体跃升+港八大非本地生名额提至50%，德普学生可将香港作为"高性价比英美替代"纳入多国联申方案</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="news-section">
+    <div class="section-title"><span class="icon">🔥</span> 政策与热点新闻</div>
+
+    <!-- ========== 新闻1 ========== -->
+    <div class="news-card">
+      <div class="card-header">
+        <div class="num">1</div>
+        <h3>教育部2026年中外合作办学审批创历史新高——174所高校获批86机构+133项目，20余所"985"首次密集入场，学科布局向脑机接口/数据科学/AI跃迁</h3>
+      </div>
+      <div class="meta">
+        <span>📅 2026-05-25（审批） · 2026-06-27（深度解读）</span>
+        <span>🏷️ 国家政策 · 出国留学 · 教育部涉外监管</span>
+      </div>
+      <div class="summary">
+        2026年高考前夕，教育部教育涉外监管信息网公布新一轮中外合作办学审批名单：新批准设立86个合作办学机构、133个合作办学项目，其中本科项目100个、硕士项目28个、博士项目5个，单次审批量创近年新高。本轮扩容最显著的特征是多所"985"高校首次密集入场——哈尔滨工业大学牵手法国里昂商学院共建"里昂数据科学学院"，北京理工大学与意大利都灵理工大学设立"北理都灵理工学院"，四川大学与新西兰奥克兰大学成立"奥克兰学院"，天津大学与香港理工大学在深圳共建"深圳未来技术学院"。在133个获批项目中，有15个由"985"高校参与，涉及浙江大学、中国人民大学、重庆大学、同济大学、电子科技大学等。从学科重心看，过往中外合作多集中于商科，而此轮"985"高校新增合作项目中超过半数聚焦人工智能、数据科学、智能制造及高端工程，脑机接口等真正前沿方向首次以中外合作形式落地。区域布局上，从东部沿海向中西部加速延伸——山东以27个获批量领跑全国，湖北21个紧随其后，赣州、湛江等非传统高教中心城市首次跻身名单。合作版图也从传统的"英美主导"扩展到匈牙利、哈萨克斯坦、乌兹别克斯坦等中东欧和中亚国家。教育部国际合作与交流司司长杨丹在6月9日国际教育政策通报会上表示，正修订《中外合作办学条例实施办法》，下一阶段重心在质量而非规模，社会认可度低、缺乏实际需求的项目将有序退出。截至2026年5月31日，全国本科及以上中外合作办学机构和项目已突破1700个，合作方覆盖全球45个国家和地区。
+      </div>
+      <div class="source-links">
+        <a class="source-btn" href="https://news.qq.com/rain/a/20260627A06S3X00" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 腾讯新闻·《财经》杂志</a>
+        <a class="source-btn" href="https://www.sohu.com/a/1028531312_121651744" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 搜狐新闻</a>
+      </div>
+      <div class="policy-compare">
+        <div class="compare-label">📋 与以往政策区别</div>
+        本轮中外合作办学审批与历史相比有<b>四个深层变化</b>：①<b>"985"首次成建制进场</b>——过去中外合作以省属高校和地方院校为主，"985"仅零星参与；此次20余所"985"同时获批，哈尔滨工业大学、北京理工大学、四川大学等均设立实体办学机构，办学规格跃升一个量级；②<b>学科重心从商科转向硬核理工</b>——2000年代的中外合作以经管、商科为主，此轮超半数项目聚焦人工智能、数据科学、脑机接口等前沿工科，与国家产业升级战略精准对接；③<b>合作伙伴从"英美优先"到"全球多元"</b>——匈牙利、哈萨克斯坦、乌兹别克斯坦首次亮相，法国、意大利非英语国家参与度攀升，"一带一路"教育合作成为新增长极；④<b>区域布局从东部独大到中西部下沉</b>——山东、湖北、四川等中西部省份集中获批，赣州、湛江等非省会城市首次进入名单，标志着优质国际教育资源正加速向内陆腹地延伸。
+      </div>
+      <div class="depu-alert">
+        <div class="alert-label">🏫 与德普关联提示</div>
+        <ul>
+          <li><strong>"4+0"竞争效应：</strong>86家新机构+133个新项目意味着更多"不出国的留学"选项，部分原本瞄准海外本科的国际学校毕业生可能转而选择性价比更高的"4+0"模式（四年全在国内拿中外双学位），德普升学指导需评估这一趋势对A-Level/IB毕业生去向结构的影响。</li>
+          <li><strong>重庆直接受益：</strong>重庆大学作为参与本轮中外合作的"985"高校之一（具体项目见名单），未来可能开放更多面向本地国际课程学生的衔接通道，德普可主动建立与重庆大学中外合作办学项目的招生信息联动机制。</li>
+          <li><strong>国际化路径多元化：</strong>中外合作办学井喷为学生提供了"直接出国vs国内国际教育"的多元选择，德普升学指导中心应将中外合作办学纳入升学方案矩阵，特别是对家庭经济预算有限或对海外安全存在顾虑的学生家庭。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ========== 新闻2 ========== -->
+    <div class="news-card">
+      <div class="card-header">
+        <div class="num">2</div>
+        <h3>College Board发布2026年AP考试成绩分布——微积分BC以46%5分率领跑，中文首度跌破50%至48%，心理学成最热文科黑马</h3>
+      </div>
+      <div class="meta">
+        <span>📅 2026-06-25起滚动公布</span>
+        <span>🏷️ 国际课程 · College Board · AP</span>
+        <span>📄 <a class="meta-doc-link" href="https://apstudents.collegeboard.org/about-ap-scores/score-distributions" target="_blank" rel="noopener noreferrer">CB官方分数分布页 ↗</a></span>
+      </div>
+      <div class="summary">
+        College Board AP项目高级副主席Trevor Packer于6月25日起通过社交媒体和官方看板滚动发布2026年AP考试各科成绩分布，截至6月29日已有20+科目数据公开。亮点数据如下：<b>AP微积分BC</b> 5分率46%（4分22%、3+82%），继续稳居所有科目之首；<b>AP中文</b> 5分率48%（4分19%、3+85%），首次跌破50%大关，相比于2025年有显著下滑；<b>AP日语</b> 5分率暴涨7个百分点至47%（3+72%），成为涨幅最明显科目；<b>AP美国政府与政治</b> 5分率23%（3+76%），在社科类中表现突出；<b>AP微观经济</b>、<b>AP宏观经济</b>均为19%（3+分别为68%和66%），保持稳定；<b>AP心理学</b> 5分率15%（4分35%、3+74%），报考人数继续增长，已成为最热门AP文科科目之一；<b>AP化学</b> 5分率15%（3+76%）、<b>AP环境科学</b> 13%（3+69%）；<b>AP Research</b> 5分率17%（提升4个百分点）；<b>AP非裔美国人研究</b>（新设科目首次公布）5分率20%（3+77%）。AP正式成绩将于2026年7月6日（周一）分批次滚动发布，美东地区最早可查。已缴纳考试费的学生如需取消成绩须在6月15日前提交申请（逾期成绩永久删除），隐藏成绩同样须在6月15日前书面申请。
+      </div>
+      <div class="source-links">
+        <a class="source-btn" href="https://apstudents.collegeboard.org/about-ap-scores/score-distributions" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> College Board官网</a>
+        <a class="source-btn" href="https://www.x-newedu.com/n/202606/63449.html" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 犀牛国际教育</a>
+      </div>
+      <div class="policy-compare">
+        <div class="compare-label">📋 与以往数据对比</div>
+        2026年AP 5分率呈现<b>四个趋势性变化</b>：①<b>中文首次"失守"50%</b>——AP中文长期以50%+的5分率称霸语言类，2026年降至48%，对以中文为母语的考生而言红利收窄，裸考刷分的性价比下降；②<b>日语异军突起</b>——47%的5分率暴涨7个百分点，与中文的差距从两位数缩小至1个百分点，日语可能成为新的高分"洼地"；③<b>心理学扩容但含金量稳定</b>——尽管报考人数继续增长（已成为最热门AP文科科目之一），5分率仍维持在15%，说明阅卷尺度保持稳定，不因报考量膨胀而"放水"；④<b>微积分BC的46%神话延续</b>——与2025年基本持平，作为中国学生选考最多的理科科目，其"高5分率+高认可度"的双高属性对理工科申请者的选课策略仍有强指导意义。
+      </div>
+      <div class="depu-alert">
+        <div class="alert-label">🏫 与德普关联提示</div>
+        <ul>
+          <li><strong>AP选课策略参考：</strong>德普作为College Board认证学校，AP方向学生在选课时可参考此数据优化组合——微积分BC（46%）、日语（47%）属于高5分率科目，适合作为"保5冲A"选项；中文5分率下滑（48%）提示母语优势收窄，不建议仅靠中文刷分。</li>
+          <li><strong>成绩公布窗口：</strong>7月6日AP成绩正式发布，德普AP方向学生需提前登录My AP账号确认登录凭证有效，切勿新建重复账号（CB明确警告重复账号会导致分数延迟）。</li>
+          <li><strong>成绩管理提醒：</strong>取消/隐藏成绩的6月15日截止日已过，未提交申请的学生成绩将被正常评分并在7月6日发布。对成绩不满意的学生仅能在"永久删除"选项下操作——需慎重。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ========== 新闻3 ========== -->
+    <div class="news-card">
+      <div class="card-header">
+        <div class="num">3</div>
+        <h3>2027 QS世界大学排名发布：中国内地85所高校上榜位列全球第三，北大升至13位、清华跃至14位，香港5校跻身TOP50</h3>
+      </div>
+      <div class="meta">
+        <span>📅 2026-06-18</span>
+        <span>🏷️ 出国留学 · QS世界大学排名</span>
+      </div>
+      <div class="summary">
+        国际高等教育研究机构QS（Quacquarelli Symonds）于6月18日正式发布2027年世界大学排名，评估了来自106个国家和地区的1500多所高校。麻省理工学院连续第15年蝉联榜首，伦敦帝国理工学院与斯坦福大学并列第二，牛津大学第四、哈佛大学第五。中国内地方面：<b>北京大学升至全球第13名</b>（上升1位），<b>清华大学跃升至第14名</b>（上升3位），复旦大学第26名创历史最高（上升4位），上海交通大学首度跻身全球前40（第36名，上升11位），浙江大学第47名。中国内地共85所高校上榜位列全球第三（仅次于美国184所、英国93所），72%的已上榜高校排名上升，13所首次上榜，6所跻身全球前100名。中国香港方面表现极为亮眼：<b>香港大学稳居全球第11名</b>，<b>香港中文大学跃升14位至第18名</b>首次进入TOP20，香港科技大学第33名（升11位），香港理工大学第54名（升11位），香港城市大学第57名（升8位）——香港5所进入全球前100的高校全部排名上升。QS指标体系中"学术声誉"占30%、"论文引用数"占20%、"雇主声誉"占15%，是衡量高校综合影响力的重要基准。此排名对国际学校学生的大学申请选校策略具有直接的参考意义。
+      </div>
+      <div class="source-links">
+        <a class="source-btn" href="https://www.xdf.cn/news/202606/15243470.html" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 新东方网</a>
+        <a class="source-btn" href="https://news.qq.com/rain/a/20260618A02AL400" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 腾讯新闻</a>
+      </div>
+      <div class="policy-compare">
+        <div class="compare-label">📋 与历年排名对比</div>
+        2027年QS排名对于中国学生有<b>四个关键趋势</b>：①<b>中国内地高校"全线提速"</b>——相比2026年，北大(14→13)、清华(17→14)、复旦(30→26)、上海交大(47→36)均实现显著跃升，72%高校排名上升的"普涨"格局为近年首次；②<b>香港高校"集体跃迁"</b>——港大(11)继续逼近全球前十、港中文(18)首进TOP20、港科大(33)重回前三，与港八大非本地生名额提升至50%的政策形成"排名+名额"双红利；③<b>"英国G5vs港校"替代效应增强</b>——帝国理工(并列第2)和UCL(第8)维持高位，但香港高校的集体跃升配合更近的地理距离、更低的费用和更友好的签证政策，对大陆国际学校学生构成"高性价比替代选项"；④<b>澳大利亚持续上行</b>——58%高校排名上升，悉尼新南威尔士大学首次登顶澳洲榜首（全球第19），澳洲作为"英美之外第三极"的留学目的地吸引力进一步巩固。
+      </div>
+      <div class="depu-alert">
+        <div class="alert-label">🏫 与德普关联提示</div>
+        <ul>
+          <li><strong>多国联申矩阵更新：</strong>香港高校全线上涨+港八大非本地生名额50%，建议德普升学指导中心将"香港TOP5"作为英美之外的重要联申选项纳入2027Fall申请策略，特别是对于雅思6.5+、偏好亚洲文化圈的学生群体。</li>
+          <li><strong>QS排名作为家长沟通工具：</strong>在家长会、升学讲座等场景中，可引用QS 2027最新数据展示"中国高校崛起+香港集体跃升"的客观趋势，帮助家长理解"排名只是参考维度之一，匹配度才是核心"的选校逻辑。</li>
+          <li><strong>A-Level/IB选课与QS学术声誉联动：</strong>QS指标中学术声誉占比30%且高度关联研究产出，建议德普A-Level/IB学生在选课时优先选择与目标大学优势学科匹配的科目组合，提升申请竞争力。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ========== 新闻4 ========== -->
+    <div class="news-card">
+      <div class="card-header">
+        <div class="num">4</div>
+        <h3>UCAS 2027Fall申请通道正式开放：首次上线文件直传功能，6月30日Clearing阶段先行启用，牛津剑桥10月15日截止</h3>
+      </div>
+      <div class="meta">
+        <span>📅 2026-04-28（开放） · 2026-06-13（新政解读）</span>
+        <span>🏷️ 出国留学 · UCAS英本申请</span>
+        <span>📄 <a class="meta-doc-link" href="https://www.jingsailian.com/liuxue/1641681.html" target="_blank" rel="noopener noreferrer">UCAS新政全解析 ↗</a></span>
+      </div>
+      <div class="summary">
+        UCAS 2027Fall英国本科申请季于4月28日正式开放专业查询通道，5月12日申请通道开启注册，9月1日起可正式递交申请表格。本轮UCAS推出五大重磅改革举措：①<b>首次上线文件直传功能</b>——这是UCAS系统十余年来最重要的功能更新，申请者可自行上传学术成绩单、语言证书（雅思/托福/PTE）、护照等身份材料，不再依赖邮件来回催交。文件上传将于2026年6月30日在Clearing补录阶段先行启用，2027Fall主申请季9月1日全面开放。每次最多上传5个文件、整个申请总上限30个、单个文件不超过5MB、非英文材料须附官方翻译件。提交后不可修改替换；②<b>教育背景板块升级</b>——可在系统内填写具体证书和成绩单信息并关联上传支撑材料，即使未拿到最终A-Level/IB成绩也可先提交申请后补成绩；③<b>严格执行"默认拒绝"规则</b>——收到录取结果后未在规定时间内回复视为放弃，大学未在承诺时间内审核则自动驳回；④<b>申请费上涨至34.5英镑</b>（上一季28.5英镑）；⑤<b>关键时间节点更紧凑</b>：牛津剑桥及医学/牙医/兽医专业10月15日18:00（英国时间）截止，绝大多数本科专业2027年1月13日18:00截止，Extra补申2月25日开放，Clearing补录7月2日开放。
+      </div>
+      <div class="source-links">
+        <a class="source-btn" href="https://www.jingsailian.com/liuxue/1641681.html" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 国际教育联盟</a>
+        <a class="source-btn" href="https://www.sohu.com/a/1022383395_121263619" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 搜狐教育</a>
+      </div>
+      <div class="policy-compare">
+        <div class="compare-label">📋 与以往UCAS申请季对比</div>
+        2027Fall UCAS系统具有<b>五个根本性变化</b>：①<b>从"被动等要"到"主动上传"</b>——过去招生官想看的任何材料（成绩单、语言证书、护照）都必须通过邮件来回催促，效率极低且容易错过截止；2027Fall起申请者可在9月1日提交时直接打包所有材料，审核效率大为提升；②<b>"先交后补"机制更灵活</b>——即使A-Level/IB最终成绩尚未公布也可先提交申请后补，这与往年"等成绩再申"的模式不同，利好暑期提前准备的学生；③<b>"默认拒绝"加速整个流程</b>——大学审核和申请者回复的"超时默认拒绝"制度将推动Offer/拒信更早到达，缓解往年"苦等到来年3月"的焦虑；④<b>10月15日牛剑截止不变，但准备窗口变相缩短</b>——由于新增了文件上传功能，申请者需在9月1日前完成材料扫描归档，相比往年"先填表等他找你要"的节奏，准备工作量增加；⑤<b>费用涨6英镑</b>（28.5→34.5），但相比英国签证费/学费的涨幅，对申请决策影响有限。
+      </div>
+      <div class="depu-alert">
+        <div class="alert-label">🏫 与德普关联提示</div>
+        <ul>
+          <li><strong>暑期材料归档窗口：</strong>9月1日正式提交前，德普A2年级学生须在7-8月完成全部申请材料扫描归档——A-Level/IGCSE成绩单、雅思/托福成绩单、护照信息页、在读证明及翻译件——统一命名、分类存放，避免9月开学手忙脚乱。</li>
+          <li><strong>牛剑冲刺节奏：</strong>10月15日牛剑截止不变，德普升学指导应在9月初开学第一周即启动牛剑申请的最终审查，留足文书修改和推荐信确认时间，结合UCAS文件上传功能提前将预测分和支撑材料整理到位。</li>
+          <li><strong>"默认拒绝"双向提醒：</strong>新规下Offer回复超时自动视为放弃，大学审核超时自动驳回——德普升学指导须建立"Conditional Offer截止日台账"，逐生跟踪、逐封提醒，防止因疏忽丧失录取资格。</li>
+          <li><strong>文件质量把控：</strong>UCAS明确禁止上传HEIC格式、生活私照、无关奖状等，一次上传后不可修改——德普升学指导可在开学前组织一次"UCAS材料预审日"，集中检查每个学生的文件合规性。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ========== 新闻5 ========== -->
+    <div class="news-card">
+      <div class="card-header">
+        <div class="num">5</div>
+        <h3>国际学校行业深度洗牌：上海德威浦东浦西合并、南京威雅关停并入常州，英国超100所私校在增值税新政下关闭——洗牌潮从英国蔓延至全球</h3>
+      </div>
+      <div class="meta">
+        <span>📅 2026年4月（事件） · 持续发酵至今</span>
+        <span>🏷️ 行业趋势 · 国际学校洗牌</span>
+      </div>
+      <div class="summary">
+        2026年，国际学校行业正经历前所未有的结构性洗牌。在中国，被视为外籍人员子女学校"风向标"的<b>上海德威外籍人员子女学校</b>于4月突然宣布浦东校区与浦西校区合并——从2026年8月起实行"一校两区"运营模式，浦西高中部（10-13年级）全部转入浦东校区。官方解释称德威亚洲区引入高瓴资本、新加坡GIC等新股东后，新股东要求整合资源将高中师资和课程集中。几乎同期，运营仅约5年的<b>南京威雅公学</b>（Wycombe Abbey UK姐妹校）确认关停并整体并入常州威雅校区。该校于2021年9月正式开学，外方校长和学术副校长将随合并转移。此前，深圳智胤国际书院、深圳厚德书院、北京一土致知等学校也相继停办。数据层面，<b>2024年中国国际化学校在校生数量首次出现负增长（-2.1%）</b>，2025年超四成学校招生不足，头部名校报名同步缩水。海外方面，工党政府自2025年1月起对英国私校学费加征20%增值税（VAT），直接引发私校关停潮——最近一年间英格兰和威尔士已有超100所私立学校关闭，包括具有130年历史的Malvern St James女校。美国同样寒气逼人，最新报告预测未来十年将有超过25%的私立非营利大学关闭，波及逾67万名学生。<b>《财经》杂志评论指出：</b>中外合作办学井喷的同时，教育部也在有序清理低效项目——2025年停止招生3家机构+78个项目，2026年初又终止5家机构+229个项目。这一"一增一减"表明国际化教育正从"粗放扩张"转向"精耕细作"，品牌、合规、质量将成为生存底线。
+      </div>
+      <div class="source-links">
+        <a class="source-btn" href="https://new.qq.com/rain/a/20260420A07R8I00" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 腾讯新闻</a>
+        <a class="source-btn" href="https://so.html5.qq.com/page/real/search_news?docid=70000021_75369ec0f6705452" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 腾讯新闻·教育专栏</a>
+      </div>
+      <div class="policy-compare">
+        <div class="compare-label">📋 与以往行业周期对比</div>
+        本轮国际学校洗牌与2018-2020年政策收紧期相比有<b>三个本质不同</b>：①<b>从"政策驱动"到"市场+政策双驱动"</b>——2018年的洗牌主要由《民办教育促进法实施条例》修订、"公参民"清理等政策驱动；2026年则叠加了出生人口下降导致的生源总量萎缩、英国VAT引发的全球私校连锁反应、家长对国际化教育性价比的重估等多重市场因素；②<b>从"中小机构出清"到"品牌名校也难幸免"</b>——以往关停的多为非品牌、小规模学校，此轮波及上海德威（28年历史、Dulwich College伦敦母校400年）、南京威雅（Wycombe Abbey UK姐妹校）等品牌名校，说明即便是顶级品牌也无法免疫——"资本整合"和"投资回报压力"已成为新变量；③<b>从"区域性调整"到"全球化共振"</b>——英国VAT→私校关闭→外籍教师回流/国际生转向→中国国际学校运营成本上升→招生压力加大，形成了跨国的连锁反应链，单一市场的政策调整不再孤立。
+      </div>
+      <div class="depu-alert">
+        <div class="alert-label">🏫 与德普关联提示</div>
+        <ul>
+          <li><strong>合规护城河：</strong>在洗牌浪潮中，德普作为巴南区2024年年检合格学校（巴南教委发〔2024〕72号）、剑桥全球考试中心/PDQ中心、IB候选校、College Board/Edexcel认证学校，多认证体系本身就是最坚固的"合规护城河"——家长在择校恐慌中更倾向于选择认证齐全、年检合格的学校。</li>
+          <li><strong>招生策略前置：</strong>2024年国际化学校在校生首现负增长（-2.1%）、超四成学校招生不足的数据警示：德普应提前启动招生宣传，用"十二年一贯制+30门IG/A-Level+1:4师生比+≤30人小班"的差异化优势构筑竞争壁垒，避免陷入价格战。</li>
+          <li><strong>品牌建设与家长信心：</strong>上海德威合并、南京威雅关停事件可能引发家长对国际学校"长期稳定性"的担忧。德普可通过公开年检结果、认证资质、师资稳定性数据、办学历史等方式主动传递"可信赖"信号，将行业洗牌转化为自身的品牌溢价机会。</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-title">
+      ✏️ 我的备注
+      <span class="hint">（直接在下方编写笔记，内容自动保存到浏览器）</span>
+    </div>
+    <textarea class="notes-area" id="notesArea" placeholder="在此记录你的观察、分析或待办事项...&#10;&#10;例如：&#10;• 评估新增中外合作办学项目对德普毕业生去向结构的影响，特别是重庆大学本轮是否有获批项目可对接&#10;• 整理AP官方5分率数据，更新德普AP选课手册，标注微积分BC(46%)、日语(47%)等高性价比科目&#10;• 7月6日AP正式出分后，及时汇总德普学生成绩分布，为下一年选课优化提供校内数据支撑&#10;• 暑期组织A2学生完成UCAS材料扫描归档，8月底举办"UCAS材料预审日"，确保9月1日提交零问题&#10;• 更新2027Fall多国联申矩阵：英美+香港TOP5+澳洲G8，将QS 2027排名融入家长会升学讲座"></textarea>
+  </div>
+
+  <div class="footer">
+    本简报由自动化任务每日约9:00自动生成 · 信息来源：教育部 / College Board / QS / UCAS / 《财经》杂志<br>
+    仅供信息参考，具体政策以官方原文为准 · 本期覆盖维度：国家政策(A) + 出国留学(B) + 国际课程(C) + 行业趋势(D)
+  </div>
+
+</div>
+
+<div class="save-hint" id="saveHint">✅ 备注已保存</div>
+
+<script>
+var EMBEDDED_DATES = ["2026-06-18","2026-06-22","2026-06-23","2026-06-24","2026-06-25","2026-06-26","2026-06-27","2026-06-29"];
+var BRIEFING_DATE = "2026-06-29";
+
+(function() {
+  var availableDates = [];
+  var datesReady = false;
+
+  function getTodayStr() { return new Date().toISOString().slice(0,10); }
+  function getCurrentBriefingDate() {
+    if (typeof BRIEFING_DATE !== 'undefined') return BRIEFING_DATE;
+    var m = window.location.pathname.match(/校政热点简报_(\d{4}-\d{2}-\d{2})\.html/);
+    return m ? m[1] : getTodayStr();
+  }
+  function parseDate(str) {
+    var parts = str.split('-');
+    return new Date(+parts[0], +parts[1]-1, +parts[2]);
+  }
+  function formatDateCN(str) {
+    var d = parseDate(str);
+    var w = ['日','一','二','三','四','五','六'];
+    return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日 星期'+w[d.getDay()];
+  }
+  function showToast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(t._tid);
+    t._tid = setTimeout(function(){ t.classList.remove('show'); }, 2000);
+  }
+  function navigateToDate(dateStr) {
+    var today = getTodayStr();
+    if (dateStr > today) {
+      showToast('⚠ ' + dateStr + ' 尚未到来');
+      return;
+    }
+    window.location.href = '校政热点简报_' + dateStr + '.html';
+  }
+
+  function renderCompactCalendar() {
+    var grid = document.getElementById('daysGrid');
+    var current = getCurrentBriefingDate();
+    var cd = parseDate(current);
+    var today = getTodayStr();
+    var todayDate = parseDate(today);
+    var year = cd.getFullYear();
+    var month = cd.getMonth();
+    var firstDay = new Date(year, month, 1);
+    var lastDay = new Date(year, month+1, 0);
+    var totalDays = lastDay.getDate();
+    var startDow = firstDay.getDay();
+
+    var html = '';
+    for (var i=0; i<startDow; i++) { html += '<div class="day-cell empty"></div>'; }
+    for (var d=1; d<=totalDays; d++) {
+      var ds = year+'-'+String(month+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+      var isToday = ds===today;
+      var isActive = ds===current;
+      var hasBrf = availableDates.indexOf(ds) !== -1;
+      var cellDate = new Date(year, month, d);
+      var isFuture = cellDate > todayDate;
+
+      var cls = ['day-cell'];
+      if (isToday) cls.push('today');
+      if (isActive && !isToday) cls.push('active-briefing');
+      if (hasBrf) cls.push('has-briefing');
+      if (isFuture) cls.push('future');
+
+      var styleActive = (isActive && !isToday) ? 'background:#e0f0e4;font-weight:700;color:#004844;border-color:#065700;' : '';
+      html += '<div class="'+cls.join(' ')+'" data-date="'+ds+'" style="'+styleActive+'">'+d+'</div>';
+    }
+    var totalCells = startDow + totalDays;
+    var remaining = (7 - (totalCells%7)) % 7;
+    for (var i=0; i<remaining; i++) { html += '<div class="day-cell empty"></div>'; }
+
+    grid.innerHTML = html;
+    var cells = grid.querySelectorAll('.day-cell:not(.empty)');
+    for (var i=0; i<cells.length; i++) {
+      cells[i].addEventListener('click', function(){
+        var ds = this.dataset.date;
+        navigateToDate(ds);
+      });
+    }
+  }
+
+  if (typeof EMBEDDED_DATES !== 'undefined' && EMBEDDED_DATES.length > 0) {
+    availableDates = EMBEDDED_DATES;
+    datesReady = true;
+    renderCompactCalendar();
+  }
+
+  fetch('briefings_manifest.json').then(function(r){ return r.json(); }).then(function(data){
+    if (data.dates && data.dates.length > 0) {
+      availableDates = data.dates;
+      datesReady = true;
+      renderCompactCalendar();
+    }
+  }).catch(function(){
+    if (!datesReady) {
+      availableDates = [getCurrentBriefingDate()];
+      datesReady = true;
+      renderCompactCalendar();
+    }
+  });
+
+  (function updateHeader(){
+    var current = getCurrentBriefingDate();
+    var bar = document.getElementById('headerDateBar');
+    if (bar) bar.querySelector('.pill:first-child').textContent = '📅 ' + formatDateCN(current);
+  })();
+})();
+
+(function() {
+  var notesArea = document.getElementById('notesArea');
+  var saveHint = document.getElementById('saveHint');
+  var today = new Date().toISOString().slice(0,10);
+  var storageKey = 'briefing_notes_' + today;
+  var saved = localStorage.getItem(storageKey);
+  if (saved) notesArea.value = saved;
+  var saveTimer;
+  notesArea.addEventListener('input', function() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function() {
+      localStorage.setItem(storageKey, notesArea.value);
+      saveHint.classList.add('show');
+      setTimeout(function(){ saveHint.classList.remove('show'); }, 1500);
+    }, 600);
+  });
+})();
+</script>
+
+</body>
+</html>
