@@ -29,7 +29,6 @@
     box-shadow: 0 8px 40px rgba(0,72,68,0.10);
     overflow: hidden;
   }
-  /* ===== 补发说明 ===== */
   .backfill-notice {
     background: linear-gradient(135deg, #fff8e1, #fffde7);
     border-bottom: 2px solid #f0c040;
@@ -487,19 +486,14 @@
 
 <div class="poster">
 
-  <!-- 补发说明 -->
-  <div class="backfill-notice">
-    <span class="icon">📌</span>
-    <div><strong>【补发说明】</strong>本期为补生成简报，原定2026年6月28日（星期六）推送。内容尽可能还原该日期前后3–5天内的真实政策与新闻动态。部分时效性强的内容以"截至本日"标注。</div>
-  </div>
 
   <div class="header">
     <div class="header-content">
-      <span class="header-tag">DAILY BRIEFING · 补发</span>
+      <span class="header-tag">DAILY BRIEFING</span>
       <h1>📰 校政热点简报</h1>
       <div class="subtitle">聚焦民办学校 · 国际学校 · 教育政策动态</div>
       <div class="date-bar" id="headerDateBar">
-        <span class="pill">📅 2026年6月28日 星期六（补发）</span>
+        <span class="pill">📅 2026年6月28日 星期六</span>
         <span class="pill">来源：教育部 / 重庆市教委 / 福布斯 / 贝赛思 / 深圳中考</span>
       </div>
     </div>
@@ -823,7 +817,7 @@ var BRIEFING_DATE = "2026-06-28";
   (function updateHeader(){
     var current = getCurrentBriefingDate();
     var bar = document.getElementById('headerDateBar');
-    if (bar) bar.querySelector('.pill:first-child').textContent = '📅 ' + formatDateCN(current) + '（补发）';
+    if (bar) bar.querySelector('.pill:first-child').textContent = '📅 ' + formatDateCN(current);
   })();
 })();
 

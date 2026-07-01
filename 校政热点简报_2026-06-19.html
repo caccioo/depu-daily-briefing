@@ -89,14 +89,13 @@
 <body>
 <div class="toast" id="toast"></div>
 <div class="poster">
-  <div class="backfill-notice"><span class="icon">📌</span><div><strong>【补发说明】</strong>本期为补生成简报，原定2026年6月19日（星期四）推送。内容尽可能还原该日期前后3–5天内的真实政策与新闻动态。</div></div>
   <div class="header">
     <div class="header-content">
-      <span class="header-tag">DAILY BRIEFING · 补发</span>
+      <span class="header-tag">DAILY BRIEFING</span>
       <h1>📰 校政热点简报</h1>
       <div class="subtitle">聚焦民办学校 · 国际学校 · 教育政策动态</div>
       <div class="date-bar" id="headerDateBar">
-        <span class="pill">📅 2026年6月19日 星期四（补发）</span>
+        <span class="pill">📅 2026年6月19日 星期四</span>
         <span class="pill">来源：美国DHS / 上海民办教育协会 / 福布斯 / 中考政策</span>
       </div>
     </div>
@@ -300,7 +299,7 @@ var BRIEFING_DATE = "2026-06-19";
   document.getElementById('nextMonth').addEventListener('click', function(){ if (this.classList.contains('disabled')) return; viewMonth++; if (viewMonth > 11) { viewMonth = 0; viewYear++; } renderCalendar(viewYear, viewMonth); });
   if (typeof EMBEDDED_DATES !== 'undefined' && EMBEDDED_DATES.length > 0) { availableDates = EMBEDDED_DATES; datesReady = true; renderCalendar(viewYear, viewMonth); }
   fetch('briefings_manifest.json').then(function(r){ return r.json(); }).then(function(data){ if (data.dates && data.dates.length > 0) { availableDates = data.dates; datesReady = true; renderCalendar(viewYear, viewMonth); } }).catch(function(){});
-  (function updateHeader(){ var current = getCurrentBriefingDate(); var bar = document.getElementById('headerDateBar'); if (bar) bar.querySelector('.pill:first-child').textContent = '📅 ' + formatDateCN(current) + '（补发）'; })();
+  (function updateHeader(){ var current = getCurrentBriefingDate(); var bar = document.getElementById('headerDateBar'); if (bar) bar.querySelector('.pill:first-child').textContent = '📅 ' + formatDateCN(current); })();
 })();
 (function() {
   var notesArea = document.getElementById('notesArea');

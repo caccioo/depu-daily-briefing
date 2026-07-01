@@ -462,16 +462,16 @@
 
   <div class="backfill-notice">
     <span class="icon">📌</span>
-    <div><strong>【补发说明】</strong>本期为补生成简报，原定2026年6月21日（星期六）推送。内容尽可能还原该日期前后3–5天内的真实政策与新闻动态。</div>
+    <div><strong>简报说明</strong>聚焦民办教育、国际课程、出国留学、行业趋势四维热点。</div>
   </div>
 
   <div class="header">
     <div class="header-content">
-      <span class="header-tag">DAILY BRIEFING · 补发</span>
+      <span class="header-tag">DAILY BRIEFING</span>
       <h1>📰 校政热点简报</h1>
       <div class="subtitle">聚焦民办学校 · 国际学校 · 教育政策动态</div>
       <div class="date-bar" id="headerDateBar">
-        <span class="pill">📅 2026年6月21日 星期六（补发）</span>
+        <span class="pill">📅 2026年6月21日 星期六</span>
         <span class="pill">来源：教育部 / 中外合作办学 / 深国交 / IBO</span>
       </div>
     </div>
@@ -793,7 +793,7 @@ var BRIEFING_DATE = "2026-06-21";
   (function updateHeader(){
     var current = getCurrentBriefingDate();
     var bar = document.getElementById('headerDateBar');
-    if (bar) bar.querySelector('.pill:first-child').textContent = '📅 ' + formatDateCN(current) + '（补发）';
+    if (bar) bar.querySelector('.pill:first-child').textContent = '📅 ' + formatDateCN(current);
   })();
 })();
 
