@@ -9,9 +9,7 @@
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif; background: linear-gradient(160deg, #f0f7f3 0%, #e8f5ee 30%, #f5fff5 60%, #f9faf7 100%); min-height: 100vh; padding: 24px 12px; color: #1a2a1a; }
   .poster { max-width: 820px; margin: 0 auto; background: #ffffff; border-radius: 20px; box-shadow: 0 8px 40px rgba(0,72,68,0.10); overflow: hidden; }
-  .backfill-notice { background: linear-gradient(135deg, #fff8e1, #fffde7); border-bottom: 2px solid #f0c040; padding: 12px 24px; font-size: 13px; color: #7a5a00; line-height: 1.7; display: flex; align-items: center; gap: 8px; }
-  .backfill-notice .icon { font-size: 18px; }
-  .header { background: linear-gradient(135deg, #003530 0%, #004844 40%, #065700 100%); color: #fff; padding: 40px 36px 32px; position: relative; overflow: hidden; min-height: 200px; }
+.header { background: linear-gradient(135deg, #003530 0%, #004844 40%, #065700 100%); color: #fff; padding: 40px 36px 32px; position: relative; overflow: hidden; min-height: 200px; }
   .header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('depu_logo_white.png') no-repeat center center; background-size: 280px auto; opacity: 0.12; pointer-events: none; z-index: 0; }
   .header .header-content { position: relative; z-index: 1; }
   .header-tag { display: inline-block; background: rgba(255,255,255,0.16); backdrop-filter: blur(4px); padding: 4px 14px; border-radius: 20px; font-size: 12px; letter-spacing: 2px; margin-bottom: 12px; }
@@ -89,9 +87,6 @@
 <body>
 <div class="toast" id="toast"></div>
 <div class="poster">
-  <div class="backfill-notice">
-    <span class="icon">📌</span>
-  </div>
   <div class="header">
     <div class="header-content">
       <span class="header-tag">DAILY BRIEFING</span>
@@ -299,7 +294,18 @@ var BRIEFING_DATE = "2026-06-20";
     var startDow = firstDay.getDay();
     var html = '';
     for (var i = 0; i < startDow; i++) { html += '<div class="day-cell empty"></div>'; }
-    for (var d = 1; d <= totalDays; d++) {
+    // 简报起始日：2026年6月18日，6月份仅显示18日起的日期
+    var dayStart = (y === 2026 && m === 5) ? 18 : 1;
+    // 如果起始日>1，补齐前置空白占位
+    if (dayStart > 1) {
+      var firstOfRange = new Date(y, m, dayStart);
+      var rangeDow = firstOfRange.getDay();
+      if (rangeDow !== startDow) {
+        var padCount = rangeDow - startDow;
+        for (var p = 0; p < padCount; p++) { html += '<div class="day-cell empty" style="visibility:hidden"></div>'; }
+      }
+    }
+    for (var d = dayStart; d <= totalDays; d++) {
       var ds = y + '-' + String(m+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
       var isToday = ds === todayStr;
       var isActive = (y === baseYear && m === baseMonth && ds === currentBriefingDate);

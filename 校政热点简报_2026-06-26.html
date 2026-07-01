@@ -835,7 +835,18 @@ var BRIEFING_DATE = "2026-06-26";
 
     var html = '';
     for (var i = 0; i < startDow; i++) { html += '<div class="day-cell empty"></div>'; }
-    for (var d = 1; d <= totalDays; d++) {
+    // 简报起始日：2026年6月18日，6月份仅显示18日起的日期
+    var dayStart = (y === 2026 && m === 5) ? 18 : 1;
+    // 如果起始日>1，补齐前置空白占位
+    if (dayStart > 1) {
+      var firstOfRange = new Date(y, m, dayStart);
+      var rangeDow = firstOfRange.getDay();
+      if (rangeDow !== startDow) {
+        var padCount = rangeDow - startDow;
+        for (var p = 0; p < padCount; p++) { html += '<div class="day-cell empty" style="visibility:hidden"></div>'; }
+      }
+    }
+    for (var d = dayStart; d <= totalDays; d++) {
       var ds = y + '-' + String(m+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
       var isToday = ds === todayStr;
       var isActive = (y === baseYear && m === baseMonth && ds === currentBriefingDate);
