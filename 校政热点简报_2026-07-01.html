@@ -412,6 +412,171 @@
   }
   .depu-alert li strong { color: #004844; }
 
+  /* Deep Analysis Panel — National Major Policy */
+  .deep-analysis-panel {
+    margin: 0 24px 20px;
+    background: linear-gradient(170deg, #f5f9fc 0%, #eef4f8 40%, #f0f7f3 100%);
+    border: 2px solid #004844;
+    border-left: 6px solid #003530;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 20px rgba(0,53,48,0.07);
+  }
+  .deep-analysis-header {
+    background: linear-gradient(135deg, #003530 0%, #004844 100%);
+    color: #fff;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .deep-analysis-header .da-icon { font-size: 24px; }
+  .deep-analysis-header .da-title {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    line-height: 1.3;
+  }
+  .deep-analysis-header .da-subtitle {
+    font-size: 11px;
+    opacity: 0.72;
+    margin-top: 1px;
+  }
+  .deep-analysis-body {
+    padding: 18px 20px 20px;
+  }
+  .deep-analysis-section {
+    margin-bottom: 18px;
+  }
+  .deep-analysis-section:last-child { margin-bottom: 0; }
+  .deep-analysis-section .das-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #003530;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #065700;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .deep-analysis-section .das-content {
+    font-size: 12.5px;
+    line-height: 1.85;
+    color: #2a3a3a;
+  }
+  .deep-analysis-section .das-content p {
+    margin-bottom: 8px;
+    text-indent: 1em;
+  }
+  .deep-analysis-section .das-content p:last-child { margin-bottom: 0; }
+  .deep-analysis-timeline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 0;
+    margin: 10px 0 6px;
+  }
+  .deep-analysis-timeline .tl-item {
+    flex: 1;
+    min-width: 90px;
+    background: #fff;
+    border: 1px solid #c8ddd0;
+    border-radius: 8px;
+    padding: 8px 10px;
+    text-align: center;
+  }
+  .deep-analysis-timeline .tl-year {
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 3px;
+    font-weight: 600;
+  }
+  .deep-analysis-timeline .tl-desc {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #004844;
+    line-height: 1.4;
+  }
+  .deep-analysis-timeline .tl-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    color: #065700;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .deep-analysis-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .deep-analysis-grid .dag-item {
+    background: #fff;
+    border-left: 3px solid #065700;
+    border-radius: 8px;
+    padding: 12px 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+  }
+  .deep-analysis-grid .dag-label {
+    font-size: 11px;
+    color: #888;
+    font-weight: 600;
+    margin-bottom: 3px;
+    letter-spacing: 0.5px;
+  }
+  .deep-analysis-grid .dag-text {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #2a3a3a;
+  }
+  .deep-analysis-grid .dag-text strong { color: #004844; }
+  .deep-analysis-recs { margin-top: 4px; }
+  .deep-analysis-recs .rec-item {
+    background: #f8fcf9;
+    border: 1px solid #c8ddd0;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .deep-analysis-recs .rec-item:last-child { margin-bottom: 0; }
+  .deep-analysis-recs .rec-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 12px;
+    margin-bottom: 7px;
+    letter-spacing: 0.5px;
+  }
+  .rec-badge.short { background: #e8f5ee; color: #004844; }
+  .rec-badge.mid   { background: #fff3cd; color: #8a5a00; }
+  .rec-badge.long  { background: #e3eaf5; color: #1a3a6a; }
+  .deep-analysis-recs .rec-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #003530;
+    margin-bottom: 5px;
+  }
+  .deep-analysis-recs .rec-desc {
+    font-size: 12px;
+    line-height: 1.7;
+    color: #3a4a3a;
+  }
+  .deep-analysis-recs .rec-desc em {
+    color: #065700;
+    font-style: normal;
+    font-weight: 600;
+  }
+  @media (max-width: 600px) {
+    .deep-analysis-panel { margin-left: 12px; margin-right: 12px; }
+    .deep-analysis-grid { grid-template-columns: 1fr; }
+    .deep-analysis-timeline { flex-direction: column; }
+    .deep-analysis-timeline .tl-arrow { transform: rotate(90deg); }
+  }
+
   .notes-section {
     margin: 0 24px 24px;
     background: #f8faf8;
@@ -585,6 +750,148 @@
           <li><strong>春秋假获中央背书：</strong>重庆此前已由14部门联合印发春秋假指导意见（渝教基发〔2026〕2号），此次获十五五规划明确支持，巴南区试点概率进一步增大。德普需持续关注校历调整需求。</li>
           <li><strong>"引导规范"长期趋势：</strong>规划中"引导规范民办教育发展"的表述，意味着民办学校将从"被动合规"走向"主动规范"的新常态。德普作为资质齐全的规范化学校（年检合格+多项国际认证），在行业洗牌中处于有利位置。</li>
         </ul>
+      </div>
+    </div>
+
+    <!-- ========== 深度分析：十五五规划与民办国际教育 ========== -->
+    <div class="deep-analysis-panel">
+      <div class="deep-analysis-header">
+        <span class="da-icon">📊</span>
+        <div>
+          <div class="da-title">深度分析 · 国家重大政策</div>
+          <div class="da-subtitle">《教育发展"十五五"规划》对民办国际学校的影响与对策</div>
+        </div>
+      </div>
+      <div class="deep-analysis-body">
+
+        <!-- 一、规划总体框架 -->
+        <div class="deep-analysis-section">
+          <div class="das-title">🔍 一、规划总体框架：教育强国建设的"施工图"</div>
+          <div class="das-content">
+            <p>《教育发展"十五五"规划》是继《教育强国建设规划纲要（2024—2035年）》和《加快建设教育强国三年行动计划（2025—2027年）》之后的第三份重磅文件。三者构成完整政策链条——纲要定方向（"终点+跑道"），行动计划起好步（"起跑"），十五五规划则是承上启下的"途中跑"，决定全程成绩。</p>
+            <p>规划按<strong>"5大战略任务→3大布局→6项改革→15个重大项目"</strong>的架构展开，首次在教育五年规划中设立"规划布局"专章，回应学龄人口"梯次变动、错位达峰、区域分化"的重大现实挑战。</p>
+            <p>对民办学校而言，最值得关注的顶层信号是：<strong>教育发展主线从"规模扩张"转向"内涵提升"</strong>，"引导规范"取代了此前的"鼓励""促进"等措辞，成为民办教育政策的主基调。这意味着民办学校将从增量竞争全面进入存量提质时代。</p>
+          </div>
+        </div>
+
+        <!-- 二、民办教育政策演进 -->
+        <div class="deep-analysis-section">
+          <div class="das-title">📜 二、民办教育政策演进：从"鼓励"到"引导规范"的15年</div>
+          <div class="das-content">
+            <p>十五五规划中"引导规范民办教育发展"的表述，不是孤立出现的，而是过去15年政策语言演进的必然结果：</p>
+          </div>
+          <div class="deep-analysis-timeline">
+            <div class="tl-item">
+              <div class="tl-year">2010—2016</div>
+              <div class="tl-desc">"鼓励社会力量兴办教育"</div>
+            </div>
+            <div class="tl-arrow">→</div>
+            <div class="tl-item">
+              <div class="tl-year">2016—2021</div>
+              <div class="tl-desc">"支持和规范社会力量兴办教育"</div>
+            </div>
+            <div class="tl-arrow">→</div>
+            <div class="tl-item">
+              <div class="tl-year">2021—2025</div>
+              <div class="tl-desc">"规范民办教育发展"<br><span style="font-size:10px;color:#888;">双减+民促法实施条例</span></div>
+            </div>
+            <div class="tl-arrow">→</div>
+            <div class="tl-item">
+              <div class="tl-year">2026—2030</div>
+              <div class="tl-desc">"引导规范民办教育发展"</div>
+            </div>
+          </div>
+          <div class="das-content">
+            <p>关键词从"鼓励→支持和规范→规范→引导规范"的演进路径清晰表明：民办教育的角色定位已从"补充增量"变为"结构成分"，政策重心从"是否发展"转向"如何高质量发展"。</p>
+            <p><strong>"引导"二字的加入至关重要</strong>——它意味着政府不再仅仅是被动的"监管者"，而是主动的"引导者"，将通过年检常态化、分类管理、收费指导、质量评估等手段，<em>引导民办学校向规范、优质、特色方向发展</em>。教育部负责人明确将"优化教育管理运行机制"列为六大改革之一，其中民办教育分类管理是核心抓手。</p>
+          </div>
+        </div>
+
+        <!-- 三、国际教育维度 -->
+        <div class="deep-analysis-section">
+          <div class="das-title">🌐 三、国际教育维度：教育对外开放的"协同升级"</div>
+          <div class="das-content">
+            <p>十五五规划在"扩大高水平教育对外开放"章节中，对国际学校直接相关的内容进行了系统部署：</p>
+          </div>
+          <div class="deep-analysis-grid">
+            <div class="dag-item">
+              <div class="dag-label">📍 出国留学</div>
+              <div class="dag-text">"完善<strong>全链条</strong>出国留学服务体系，弘扬留学报国传统"——从此前零散的"支持留学"升级为<strong>全周期服务</strong>，涵盖出国前准备、海外就读、回国认证全流程。</div>
+            </div>
+            <div class="dag-item">
+              <div class="dag-label">📍 来华合作</div>
+              <div class="dag-text">"鼓励国外高水平<strong>理工类</strong>大学来华合作办学"——锁定理工科方向，中外合作办学审批继续从"广撒网"转向"精准匹配国家战略需求"。</div>
+            </div>
+            <div class="dag-item">
+              <div class="dag-label">📍 海外办学</div>
+              <div class="dag-text">"规范有序开展<strong>海外办学</strong>"——鼓励中国教育"走出去"，在海外设立校区或合作项目，提升中国教育品牌的国际影响力。</div>
+            </div>
+            <div class="dag-item">
+              <div class="dag-label">📍 国际影响力</div>
+              <div class="dag-text">"我国教育的<strong>国际影响力、竞争力和话语权</strong>显著提升"写入2030年目标——教育对外开放不仅是"引进来"，更是"走出去"和"发出中国声音"。</div>
+            </div>
+          </div>
+          <div class="das-content" style="margin-top:12px;">
+            <p>这意味着国际学校的两端——<strong>学生出口（出国留学）和课程输入（中外合作办学）</strong>——均被纳入国家战略框架。国际学校不再是"体制外"的存在，而是教育对外开放体系中的重要组成部分。特别是"全链条出国留学服务体系"的提法，<em>为国际学校升学指导工作提供了国家级政策背书</em>。</p>
+          </div>
+        </div>
+
+        <!-- 四、实操建议 -->
+        <div class="deep-analysis-section">
+          <div class="das-title">🎯 四、对德普（民办国际学校）的实操建议</div>
+          <div class="deep-analysis-recs">
+
+            <div class="rec-item">
+              <span class="rec-badge short">短期（1-3月）</span>
+              <div class="rec-title">① 对标"引导规范"——主动完成合规自检</div>
+              <div class="rec-desc">
+                对照十五五规划中"引导规范民办教育发展"的要求，<em>先行自查</em>：年检指标（师资资质、课程备案、收费公示、财务审计）是否100%达标；招生宣传是否完全合规（不攀比分数线、不虚假承诺）；中外合作项目是否取得双备案资质。主动合规是规避未来突击检查的最佳策略。
+              </div>
+            </div>
+
+            <div class="rec-item">
+              <span class="rec-badge short">短期（1-3月）</span>
+              <div class="rec-title">② 搭乘"全链条留学服务"——升级升学指导体系</div>
+              <div class="rec-desc">
+                规划首次以"全链条"定位出国留学服务，德普可将现有升学指导升级为<em>"全链条留学服务"品牌</em>：前置（9-10年级职业规划+留学路径设计）→中程（11-12年级申请+备考）→后程（毕业后的学历认证指导+归国就业/创业资源对接），与中留服认证新规（见新闻5）形成闭环。这在国际学校中尚属差异化蓝海。
+              </div>
+            </div>
+
+            <div class="rec-item">
+              <span class="rec-badge mid">中期（3-12月）</span>
+              <div class="rec-title">③ 抢占"小班化教学"政策红利——构建宣传叙事</div>
+              <div class="rec-desc">
+                "有序推进小班化教学"首次写入国家五年规划。德普现有的1:4师生比、≤30人小班模式<em>正好卡在政策风口上</em>。建议：①在招生宣传中将此明确标注为"与十五五规划方向一致的小班化教学典范"；②向巴南区教委报送小班化教学实践案例，争取成为区域内"小班化教学示范校"；③联合其他优质民办学校形成行业联盟，推动小班化教学的标准化和评估体系建设。
+              </div>
+            </div>
+
+            <div class="rec-item">
+              <span class="rec-badge mid">中期（3-12月）</span>
+              <div class="rec-title">④ 对接"人工智能+教育"——建设AI融合课程</div>
+              <div class="rec-desc">
+                规划明确"推进人工智能全学段教育""开展人工智能+教育行动"。德普可在国际课程框架内率先布局：①在IG/A-Level阶段开设<em>AI素养通识课</em>（批判性使用AI工具+数据伦理+AI与社会）；②将AI融入学科教学（数学建模、科学实验数据分析、英文写作中的AI辅助与反思）；③建立教师AI应用能力培训体系。这既是十五五规划的要求，也是国际学校区别于传统公办的差异化方向。
+              </div>
+            </div>
+
+            <div class="rec-item">
+              <span class="rec-badge long">长期（1-5年）</span>
+              <div class="rec-title">⑤ 把握"春秋假+高中多样化"——布局校本特色课程体系</div>
+              <div class="rec-desc">
+                十五五规划明确"支持有条件的地方推广中小学春秋假"+"促进高中阶段学校多样化发展"+"办好综合高中和科学高中"。德普作为十二年一贯制国际学校，具备<em>同时响应三大政策方向的独特优势</em>：①春秋假如正式落地巴南区，可利用春秋假开展研学旅行、国际交流、社会实践等校本课程；②以"科学高中"定位强化STEM课程（已有30门IG+A-Level的扎实基础）；③以"综合高中"定位打通学术与素养的双轨培养。这些布局可写入学校"十四五/十五五发展规划"，向上级主管部门展示战略一致性。
+              </div>
+            </div>
+
+            <div class="rec-item">
+              <span class="rec-badge long">长期（1-5年）</span>
+              <div class="rec-title">⑥ 关注"教师队伍建设"——人才储备与稳定性</div>
+              <div class="rec-desc">
+                规划将"培养造就高水平教师队伍"列为五大战略任务之一，提出提升教师专业获得感、职业获得感、个人发展获得感。对民办国际学校而言，<em>外教资质审核趋严+双语教师培养</em>是双重挑战：①提前梳理外教资质文件，确保所有外教符合"双证"（本国教师资格证+TESOL/TEFL）要求；②建立内部双语教师培养梯队（尤其理科双语教师，是国际学校最稀缺的资源）；③将"教师发展"纳入学校品牌叙事——"像十五五规划重视教师一样，我们的骨干教师年均培训≥120学时"。
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </div>
     </div>
 
