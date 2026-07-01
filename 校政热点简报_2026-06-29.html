@@ -699,7 +699,7 @@ var BRIEFING_DATE = "2026-06-29";
   function navigateToDate(dateStr) {
     var today = getTodayStr();
     if (dateStr > today) {
-      showToast('\u26a0 ' + dateStr + ' 尚未到来');
+      showToast('⚠ ' + dateStr + ' 尚未到来');
       return;
     }
     window.location.href = '校政热点简报_' + dateStr + '.html';
@@ -828,8 +828,6 @@ var BRIEFING_DATE = "2026-06-29";
     var bar = document.getElementById('headerDateBar');
     if (bar) bar.querySelector('.pill:first-child').textContent = '\ud83d\udcc5 ' + formatDateCN(current);
   })();
-})();
-
 })();
 
 (function() {
