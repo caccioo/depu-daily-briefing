@@ -86,7 +86,7 @@
     box-shadow: 0 6px 20px rgba(13,185,0,0.35);
   }
 
-  /* Calendar */
+  /* Calendar — month blocks */
   .calendar-card {
     background: #fff;
     border-radius: 16px;
@@ -98,71 +98,79 @@
     font-size: 15px;
     font-weight: 700;
     color: #004844;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
     display: flex;
     align-items: center;
     gap: 8px;
   }
-  .calendar-card .weekdays {
+  .month-grid {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+  }
+  .month-cell {
+    background: #f8faf8;
+    border: 2px solid #e0ece3;
+    border-radius: 14px;
+    padding: 18px 12px;
     text-align: center;
-    font-size: 11px;
-    color: #8a9a8a;
-    margin-bottom: 6px;
-    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: block;
+    color: inherit;
   }
-  .calendar-card .weekdays span:first-child,
-  .calendar-card .weekdays span:last-child { color: #c0392b; }
-  .calendar-card .days-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 3px;
+  .month-cell:hover {
+    background: #e8f5ee;
+    border-color: #065700;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,72,68,0.1);
   }
-  .calendar-card .day-cell {
-    aspect-ratio: 1;
+  .month-cell.current {
+    border-color: #065700;
+    background: linear-gradient(180deg, #f0f7f3, #e8f5ee);
+  }
+  .month-cell .month-name {
+    font-size: 22px;
+    font-weight: 800;
+    color: #004844;
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .month-cell .month-count {
+    font-size: 12px;
+    color: #6a8a6a;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-radius: 8px;
-    font-size: 13px;
-    color: #3a4a3a;
-    cursor: pointer;
-    transition: all 0.15s;
-    border: 1px solid transparent;
-    font-weight: 500;
-    min-height: 34px;
-    position: relative;
+    gap: 4px;
   }
-  .calendar-card .day-cell:hover { background: #e8f5ee; border-color: #b0d0b8; }
-  .calendar-card .day-cell.empty { cursor: default; background: transparent; border-color: transparent; }
-  .calendar-card .day-cell.empty:hover { background: transparent; border-color: transparent; }
-  .calendar-card .day-cell.today {
-    background: linear-gradient(135deg, #004844, #065700);
-    color: #fff;
-    font-weight: 700;
-  }
-  .calendar-card .day-cell.today:hover { opacity: 0.9; }
-  .calendar-card .day-cell.has-briefing::after {
-    content: "";
-    position: absolute;
-    bottom: 3px;
-    width: 4px; height: 4px;
+  .month-cell .month-count .m-dot {
+    width: 7px; height: 7px;
     background: #0DB900;
     border-radius: 50%;
+    display: inline-block;
   }
-  .calendar-card .day-cell.today.has-briefing::after { background: #fff; }
-  .calendar-card .day-cell.future { color: #c0cec0; cursor: default; }
-  .calendar-card .day-cell.future:hover { background: transparent; border-color: transparent; }
+  .month-cell .month-count strong {
+    color: #065700;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .month-cell.empty {
+    cursor: default;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .month-cell.empty .m-dot { background: #c0cec0; }
 
-  /* Briefing list */
+  /* Briefing summary */
   .list-card {
     background: #fff;
     border-radius: 16px;
     padding: 20px 24px;
     margin-bottom: 24px;
     box-shadow: 0 2px 12px rgba(0,72,68,0.06);
+    text-align: center;
   }
   .list-card .list-title {
     font-size: 15px;
@@ -171,51 +179,33 @@
     margin-bottom: 14px;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
   }
-  .briefing-item {
+  .briefing-summary {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-    border-radius: 10px;
-    margin-bottom: 6px;
-    transition: all 0.15s;
-    text-decoration: none;
-    color: #2a3a2a;
-    border: 1px solid transparent;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
   }
-  .briefing-item:hover {
-    background: #f0f7f3;
-    border-color: #a0d0b0;
+  .briefing-summary .stat {
+    text-align: center;
   }
-  .briefing-item .bi-date {
-    font-weight: 600;
-    font-size: 14px;
-    color: #004844;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .briefing-item .bi-date .dot {
-    width: 8px; height: 8px;
-    background: #0DB900;
-    border-radius: 50%;
-  }
-  .briefing-item .bi-arrow {
+  .briefing-summary .stat .stat-num {
+    font-size: 36px;
+    font-weight: 800;
     color: #065700;
-    font-size: 14px;
-    opacity: 0;
-    transition: opacity 0.15s, transform 0.15s;
+    line-height: 1;
   }
-  .briefing-item:hover .bi-arrow { opacity: 1; transform: translateX(4px); }
-  .briefing-item .bi-today-badge {
-    background: #065700;
-    color: #fff;
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-weight: 600;
+  .briefing-summary .stat .stat-label {
+    font-size: 12px;
+    color: #6a8a6a;
+    margin-top: 4px;
+  }
+  .briefing-summary .stat-divider {
+    width: 1px; height: 40px;
+    background: #d0e0d0;
   }
 
   /* Info card */
@@ -262,7 +252,7 @@
     .hero h1 { font-size: 22px; }
     .hero .today-btn { font-size: 14px; padding: 10px 24px; }
     .calendar-card { padding: 14px 16px; }
-    .calendar-card .day-cell { font-size: 11px; min-height: 28px; }
+    .month-grid { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
 </head>
@@ -282,19 +272,31 @@
     </div>
   </div>
 
-  <!-- Calendar -->
+  <!-- Calendar — month blocks -->
   <div class="calendar-card">
-    <div class="cal-title">📅 浏览简报日历</div>
-    <div class="weekdays">
-      <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
-    </div>
-    <div class="days-grid" id="daysGrid"></div>
+    <div class="cal-title">📅 浏览简报月份</div>
+    <div class="month-grid" id="monthGrid"></div>
   </div>
 
-  <!-- Briefing list -->
+  <!-- Briefing summary -->
   <div class="list-card">
-    <div class="list-title">📚 已发布简报列表</div>
-    <div id="briefingList"></div>
+    <div class="list-title">📚 已发布简报</div>
+    <div class="briefing-summary">
+      <div class="stat">
+        <div class="stat-num" id="totalCount">0</div>
+        <div class="stat-label">累计简报期数</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <div class="stat-num" id="monthCount">0</div>
+        <div class="stat-label">覆盖月份</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <div class="stat-num" id="latestDate">—</div>
+        <div class="stat-label">最新一期</div>
+      </div>
+    </div>
   </div>
 
   <!-- Info -->
@@ -318,17 +320,6 @@
     var p = str.split('-');
     return new Date(+p[0], +p[1]-1, +p[2]);
   }
-  function formatDateCN(str) {
-    var d = parseDate(str);
-    var w = ['日','一','二','三','四','五','六'];
-    return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日 星期'+w[d.getDay()];
-  }
-  function showToast(msg) {
-    var t = document.getElementById('toast');
-    t.textContent = msg; t.classList.add('show');
-    clearTimeout(t._tid);
-    t._tid = setTimeout(function(){ t.classList.remove('show'); }, 2000);
-  }
 
   // Today button
   (function() {
@@ -337,90 +328,124 @@
     btn.href = '校政热点简报_' + today + '.html';
   })();
 
-  // Render calendar for current month
-  function renderCalendar() {
-    var grid = document.getElementById('daysGrid');
-    var today = getTodayStr();
-    var td = parseDate(today);
-    var year = td.getFullYear();
-    var month = td.getMonth();
-    var firstDay = new Date(year, month, 1);
-    var lastDay = new Date(year, month+1, 0);
-    var totalDays = lastDay.getDate();
-    var startDow = firstDay.getDay();
-
-    var html = '';
-    for (var i=0; i<startDow; i++) { html += '<div class="day-cell empty"></div>'; }
-    for (var d=1; d<=totalDays; d++) {
-      var ds = year+'-'+String(month+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-      var isToday = ds===today;
-      var hasBrf = availableDates.indexOf(ds) !== -1;
-      var isFuture = new Date(year, month, d) > new Date(today);
-
-      var cls = ['day-cell'];
-      if (isToday) cls.push('today');
-      if (hasBrf) cls.push('has-briefing');
-      if (isFuture) cls.push('future');
-
-      html += '<div class="'+cls.join(' ')+'" data-date="'+ds+'">'+d+'</div>';
+  // Build a map of month → [dates]
+  function buildMonthMap(dates) {
+    var map = {};
+    for (var i = 0; i < dates.length; i++) {
+      var parts = dates[i].split('-');
+      var key = parts[0] + '-' + parts[1]; // e.g. "2026-06"
+      if (!map[key]) map[key] = [];
+      map[key].push(dates[i]);
     }
-    var remaining = (7 - ((startDow+totalDays)%7)) % 7;
-    for (var i=0; i<remaining; i++) { html += '<div class="day-cell empty"></div>'; }
-
-    grid.innerHTML = html;
-    var cells = grid.querySelectorAll('.day-cell:not(.empty)');
-    for (var i=0; i<cells.length; i++) {
-      cells[i].addEventListener('click', function(){
-        var ds = this.dataset.date;
-        if (ds > today) { showToast('⚠ ' + ds + ' 尚未到来'); return; }
-        window.location.href = '校政热点简报_' + ds + '.html';
-      });
-    }
+    // Sort each month's dates
+    for (var k in map) { map[k].sort(); }
+    return map;
   }
 
-  // Render briefing list
-  function renderList() {
-    var listEl = document.getElementById('briefingList');
-    var today = getTodayStr();
-    if (availableDates.length === 0) {
-      listEl.innerHTML = '<div style="text-align:center;color:#8a9a8a;padding:20px;">暂无简报数据</div>';
+  // Render month blocks
+  function renderMonthGrid(dates) {
+    var grid = document.getElementById('monthGrid');
+    var monthMap = buildMonthMap(dates);
+    var months = Object.keys(monthMap).sort();
+
+    if (months.length === 0) {
+      grid.innerHTML = '<div style="text-align:center;color:#8a9a8a;padding:20px;grid-column:1/-1;">暂无简报</div>';
       return;
     }
-    // Sort newest first
-    var sorted = availableDates.slice().sort().reverse();
+
+    var today = getTodayStr();
+    var todayMonth = today.slice(0, 7); // "2026-07"
+
+    // Determine date range to show (from earliest to latest + potentially future months)
+    var firstMonth = months[0];
+    var lastMonth = months[months.length - 1];
+    // Also include current month if it's beyond last month with data
+    if (todayMonth > lastMonth) lastMonth = todayMonth;
+
+    // Generate all months from first to last
+    var allMonths = [];
+    var fmParts = firstMonth.split('-');
+    var lmParts = lastMonth.split('-');
+    var fy = +fmParts[0], fm = +fmParts[1] - 1;
+    var ly = +lmParts[0], lm = +lmParts[1] - 1;
+
+    var y = fy, m = fm;
+    while (y < ly || (y === ly && m <= lm)) {
+      var key = y + '-' + String(m + 1).padStart(2, '0');
+      allMonths.push({ key: key, year: y, month: m, count: monthMap[key] ? monthMap[key].length : 0, dates: monthMap[key] || [] });
+      m++;
+      if (m > 11) { m = 0; y++; }
+    }
+
     var html = '';
-    for (var i=0; i<sorted.length; i++) {
-      var ds = sorted[i];
-      var isToday = ds === today;
-      html += '<a class="briefing-item" href="校政热点简报_' + ds + '.html">';
-      html += '<span class="bi-date"><span class="dot"></span>' + formatDateCN(ds) + '</span>';
-      html += '<span style="display:flex;align-items:center;gap:8px;">';
-      if (isToday) html += '<span class="bi-today-badge">今天</span>';
-      html += '<span class="bi-arrow">查看 →</span></span>';
+    for (var i = 0; i < allMonths.length; i++) {
+      var mon = allMonths[i];
+      var isCurrent = mon.key === todayMonth;
+      var hasData = mon.count > 0;
+      var cnName = (mon.month + 1) + '月';
+
+      if (!hasData && !isCurrent) {
+        // Skip empty non-current months (keep it compact)
+        continue;
+      }
+
+      var cls = ['month-cell'];
+      if (isCurrent) cls.push('current');
+      if (!hasData) cls.push('empty');
+
+      var href = hasData
+        ? 'href="校政热点简报_' + mon.dates[mon.dates.length - 1] + '.html"'
+        : '';
+
+      html += '<a class="' + cls.join(' ') + '" ' + href + '>';
+      html += '<div class="month-name">' + cnName + '</div>';
+      html += '<div class="month-count">';
+      if (hasData) {
+        html += '<span class="m-dot"></span> <strong>' + mon.count + '</strong> 期简报';
+      } else {
+        html += '<span style="color:#a0b8a0;">暂无简报</span>';
+      }
+      html += '</div>';
       html += '</a>';
     }
-    listEl.innerHTML = html;
+
+    grid.innerHTML = html;
+  }
+
+  // Render summary stats
+  function renderSummary(dates) {
+    var monthMap = buildMonthMap(dates);
+    var totalMonths = Object.keys(monthMap).length;
+
+    document.getElementById('totalCount').textContent = dates.length;
+    document.getElementById('monthCount').textContent = totalMonths;
+
+    if (dates.length > 0) {
+      var sorted = dates.slice().sort();
+      var latest = sorted[sorted.length - 1];
+      var d = parseDate(latest);
+      document.getElementById('latestDate').textContent = (d.getMonth() + 1) + '/' + d.getDate();
+    }
   }
 
   // Init
   if (EMBEDDED_DATES.length > 0) {
     availableDates = EMBEDDED_DATES;
-    renderCalendar();
-    renderList();
+    renderMonthGrid(availableDates);
+    renderSummary(availableDates);
   }
 
   fetch('briefings_manifest.json').then(function(r){ return r.json(); }).then(function(data){
     if (data.dates && data.dates.length > 0) {
       availableDates = data.dates;
-      renderCalendar();
-      renderList();
-      // Update today button href
+      renderMonthGrid(availableDates);
+      renderSummary(availableDates);
+      // Update today button
       var today = getTodayStr();
-      if (data.dates.indexOf(today) !== -1) {
-        document.getElementById('todayBtn').textContent = '📋 查看今日简报';
-      } else {
+      if (data.dates.indexOf(today) === -1) {
+        var sorted = data.dates.slice().sort();
         document.getElementById('todayBtn').textContent = '📋 查看最新简报';
-        document.getElementById('todayBtn').href = '校政热点简报_' + data.dates[data.dates.length-1] + '.html';
+        document.getElementById('todayBtn').href = '校政热点简报_' + sorted[sorted.length - 1] + '.html';
       }
     }
   }).catch(function(){});
