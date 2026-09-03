@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>校政热点简报</title>
+<style>
+  :root {
+    --dp-green-dark: #004844;
+    --dp-green-mid: #065700;
+    --dp-green-bright: #0DB900;
+    --dp-green-light: #e8f5ee;
+    --dp-green-bg: #f0f7f3;
+    --risk-red: #c0392b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+    background: linear-gradient(160deg, #f0f7f3 0%, #e8f5ee 30%, #f5fff5 60%, #f9faf7 100%);
+    min-height: 100vh;
+    padding: 24px 12px;
+    color: #1a2a1a;
+  }
+
+  .poster {
+    max-width: 820px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 8px 40px rgba(0,72,68,0.10);
+    overflow: hidden;
+  }
+
+  /* ===== 顶部海报头 ===== */
+  .header {
+    background: linear-gradient(135deg, #003530 0%, #004844 40%, #065700 100%);
+    color: #fff;
+    padding: 40px 36px 32px;
+    position: relative;
+    overflow: hidden;
+    min-height: 200px;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url('depu_logo_white.png') no-repeat center center;
+    background-size: 280px auto;
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .header .header-content { position: relative; z-index: 1; }
+  .header-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.16);
+    backdrop-filter: blur(4px);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+  .header h1 { font-size: 28px; font-weight: 700; letter-spacing: 2px; margin-bottom: 6px; }
+  .header .subtitle { font-size: 14px; opacity: 0.85; }
+  .header .date-bar {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+  }
+  .header .date-bar .pill { background: rgba(255,255,255,0.14); padding: 4px 14px; border-radius: 16px; }
+
+  /* ===== 紧凑月历 ===== */
+  .calendar-section {
+    background: linear-gradient(180deg, #fff 0%, #f8faf8 100%);
+    border-bottom: 1px solid #e0ece3;
+    padding: 10px 16px 12px;
+  }
+  .month-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .month-nav-btn {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: #e8f5ee;
+    border: 1px solid #b0d0b8;
+    color: #004844;
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s;
+    line-height: 1;
+  }
+  .month-nav-btn:hover { background: #d0eada; border-color: #065700; }
+  .month-nav-btn.disabled { opacity: 0.35; cursor: default; pointer-events: none; }
+  .month-nav-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #004844;
+    min-width: 90px;
+    text-align: center;
+  }
+  .calendar-section .weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 10px;
+    color: #8a9a8a;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .calendar-section .weekdays span:first-child,
+  .calendar-section .weekdays span:last-child { color: #c0392b; }
+  .calendar-section .days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+  }
+  .calendar-section .day-cell {
+    aspect-ratio: 1.3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    font-size: 12px;
+    color: #3a4a3a;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+    border: 1px solid transparent;
+    font-weight: 500;
+    height: 26px;
+  }
+  .calendar-section .day-cell:hover { background: #e8f5ee; border-color: #b0d0b8; }
+  .calendar-section .day-cell.empty { cursor: default; background: transparent; border-color: transparent; height: 26px; }
+  .calendar-section .day-cell.empty:hover { background: transparent; border-color: transparent; }
+  .calendar-section .day-cell.today {
+    background: linear-gradient(135deg, #004844, #065700);
+    color: #fff;
+    font-weight: 700;
+    border-color: #004844;
+  }
+  .calendar-section .day-cell.today:hover { opacity: 0.9; }
+  .calendar-section .day-cell.has-briefing::after {
+    content: "";
+    position: absolute;
+    bottom: 2px;
+    width: 3px; height: 3px;
+    background: #0DB900;
+    border-radius: 50%;
+  }
+  .calendar-section .day-cell.today.has-briefing::after { background: #fff; }
+  .calendar-section .day-cell.future { color: #c0cec0; cursor: default; }
+  .calendar-section .day-cell.future:hover { background: transparent; border-color: transparent; }
+
+  /* ===== 今日要点 + 风险提示 统一模块 ===== */
+  .summary-risk-module {
+    margin: 0;
+    background: linear-gradient(135deg, #f0f9f3 0%, #e8f5ee 100%);
+    border-left: 5px solid #065700;
+    overflow: hidden;
+  }
+  .summary-risk-module .summary-part {
+    padding: 14px 24px 10px;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: #1d3d1d;
+  }
+  .summary-risk-module .summary-part strong { color: #004844; }
+  .summary-risk-module .divider {
+    height: 1px;
+    margin: 0 24px;
+    background: linear-gradient(90deg, transparent, #92bfa0, transparent);
+  }
+  .summary-risk-module .risk-part { padding: 12px 24px 14px; }
+  .summary-risk-module .risk-part .risk-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #c0392b;
+    margin-bottom: 8px;
+  }
+  .summary-risk-module .risk-part ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px 16px;
+  }
+  .summary-risk-module .risk-part li {
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #7b2d2d;
+    padding-left: 18px;
+    position: relative;
+  }
+  .summary-risk-module .risk-part li::before {
+    content: "⚠";
+    position: absolute;
+    left: 0;
+    font-size: 11px;
+  }
+
+  /* ===== 新闻卡片 ===== */
+  .news-section { padding: 8px 24px 8px; }
+  .section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #004844;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title .icon { font-size: 20px; }
+
+  .news-card {
+    border: 1px solid #d9e6dc;
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 14px;
+    transition: box-shadow 0.2s, transform 0.2s;
+    background: #fff;
+  }
+  .news-card:hover { box-shadow: 0 4px 20px rgba(0,72,68,0.12); transform: translateY(-1px); }
+  .news-card .card-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+  .news-card .num {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, #004844, #065700);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .news-card h3 { font-size: 15.5px; font-weight: 600; line-height: 1.5; color: #1a2a1a; }
+  .news-card .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 18px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: #6a8a6a;
+  }
+  .news-card .meta span { display: inline-flex; align-items: center; gap: 4px; }
+
+  .meta-doc-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    color: #8a6a00;
+    text-decoration: none;
+    font-size: 12px;
+    padding: 2px 0;
+    border-bottom: 1px dashed #c4b04a;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .meta-doc-link:hover { color: #604a00; border-bottom-color: #8a6a00; }
+
+  .news-card .summary { font-size: 13.5px; line-height: 1.75; color: #3a4a3a; margin-bottom: 10px; }
+
+  .news-card .source-links { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 2px; }
+  .source-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #e8f5ee;
+    color: #004844;
+    text-decoration: none;
+    padding: 7px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s;
+    border: 1.5px solid #a0d0b0;
+  }
+  .source-btn:hover {
+    background: #d0eada;
+    border-color: #065700;
+    color: #003530;
+    transform: translateX(2px);
+  }
+  .source-btn .arrow { display: inline-block; transition: transform 0.2s; }
+  .source-btn:hover .arrow { transform: translateX(3px); }
+
+  .policy-compare {
+    margin-top: 10px;
+    background: #fffbf0;
+    border: 1px dashed #d4a843;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #6a4a1a;
+  }
+  .policy-compare .compare-label {
+    font-weight: 700;
+    color: #8a5a00;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .depu-alert {
+    margin-top: 12px;
+    background: linear-gradient(135deg, #f0f7f3, #e6f2ea);
+    border: 1px dashed #065700;
+    border-radius: 10px;
+    padding: 12px 16px;
+  }
+  .depu-alert .alert-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #004844;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .depu-alert ul { list-style: none; padding: 0; }
+  .depu-alert li {
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #2a4a2a;
+    padding-left: 16px;
+    position: relative;
+    margin-bottom: 3px;
+  }
+  .depu-alert li::before { content: "▸"; position: absolute; left: 2px; color: #065700; font-size: 10px; }
+  .depu-alert li strong { color: #004844; }
+
+  /* ===== 深度分析面板 ===== */
+  .deep-analysis-panel {
+    margin-top: 14px;
+    background: linear-gradient(135deg, #f5f9fc 0%, #f0f7f3 100%);
+    border: 2px solid #004844;
+    border-left-width: 6px;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .deep-analysis-header {
+    background: linear-gradient(135deg, #003530 0%, #004844 100%);
+    color: #fff;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .deep-analysis-body { padding: 14px 18px; }
+  .das-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #004844;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid #065700;
+    display: inline-block;
+  }
+  .das-section { margin-bottom: 14px; }
+  .das-section p, .das-section li {
+    font-size: 12.5px;
+    line-height: 1.8;
+    color: #2a4a2a;
+  }
+  .das-section ul { list-style: none; padding-left: 0; }
+  .das-section li { padding-left: 14px; position: relative; margin-bottom: 4px; }
+  .das-section li::before { content: "•"; position: absolute; left: 0; color: #065700; font-weight: 700; }
+  .deep-analysis-timeline {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin: 8px 0;
+  }
+  .tl-item {
+    background: #fff;
+    border: 1px solid #b0d0b8;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: #2a4a2a;
+    max-width: 150px;
+  }
+  .tl-item strong { display: block; color: #004844; font-size: 12px; margin-bottom: 2px; }
+  .tl-arrow { color: #065700; font-size: 16px; font-weight: 700; align-self: center; }
+  .deep-analysis-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .dag-item {
+    background: #fff;
+    border: 1px dashed #065700;
+    border-radius: 8px;
+    padding: 10px;
+  }
+  .dag-item strong { display: block; color: #004844; font-size: 12px; margin-bottom: 4px; }
+  .dag-item p { font-size: 11.5px; line-height: 1.6; color: #3a4a3a; }
+  .deep-analysis-recs { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 8px; }
+  .rec-item {
+    display: flex;
+    gap: 10px;
+    background: #fff;
+    border-radius: 8px;
+    padding: 10px 12px;
+    border: 1px solid #d0e0d0;
+  }
+  .rec-badge {
+    flex-shrink: 0;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    align-self: flex-start;
+  }
+  .rec-badge.short { background: #e8f5ee; color: #065700; }
+  .rec-badge.mid { background: #fff3cd; color: #856404; }
+  .rec-badge.long { background: #e3eaf5; color: #1a3a5a; }
+  .rec-content { font-size: 12px; line-height: 1.7; color: #2a4a2a; }
+
+  /* ===== 备注栏 ===== */
+  .notes-section {
+    margin: 0 24px 24px;
+    background: #f8faf8;
+    border: 2px dashed #b3d0bb;
+    border-radius: 14px;
+    padding: 18px 22px;
+  }
+  .notes-section .notes-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #3a5a3a;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .notes-section .notes-title .hint { font-size: 11px; font-weight: 400; color: #8aa88a; }
+  .notes-area {
+    width: 100%;
+    min-height: 120px;
+    border: none;
+    background: transparent;
+    font-size: 13.5px;
+    line-height: 1.8;
+    color: #2a3a2a;
+    resize: vertical;
+    font-family: inherit;
+    outline: none;
+  }
+  .notes-area::placeholder { color: #b0ccb0; }
+  .notes-area:focus { background: #fff; border-radius: 8px; padding: 8px 10px; }
+
+  /* ===== 底部 ===== */
+  .footer {
+    background: linear-gradient(135deg, #003530, #004844);
+    color: rgba(255,255,255,0.75);
+    text-align: center;
+    padding: 16px 24px;
+    font-size: 11.5px;
+    line-height: 1.8;
+  }
+  .footer a { color: #0DB900; text-decoration: none; }
+
+  .toast {
+    position: fixed;
+    top: 20px; left: 50%;
+    transform: translateX(-50%);
+    background: #004844;
+    color: #fff;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-size: 13px;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+
+  .save-hint {
+    position: fixed;
+    bottom: 20px; right: 20px;
+    background: #004844;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 999;
+  }
+  .save-hint.show { opacity: 1; }
+
+  @media (max-width: 600px) {
+    .header { padding: 28px 18px 22px; min-height: 160px; }
+    .header::before { background-size: 200px auto; }
+    .header h1 { font-size: 21px; }
+    .calendar-section { padding: 8px 12px 10px; }
+    .calendar-section .day-cell { font-size: 11px; height: 22px; }
+    .summary-risk-module .summary-part,
+    .summary-risk-module .risk-part { padding-left: 14px; padding-right: 14px; }
+    .summary-risk-module .divider { margin-left: 14px; margin-right: 14px; }
+    .news-card { padding: 14px 16px; }
+    .summary-risk-module .risk-part ul { grid-template-columns: 1fr; }
+    .deep-analysis-grid { grid-template-columns: 1fr; }
+    .deep-analysis-timeline { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<div class="poster">
+
+  <div class="header">
+    <div class="header-content">
+      <span class="header-tag">DAILY BRIEFING</span>
+      <h1>📰 校政热点简报</h1>
+      <div class="subtitle">聚焦民办学校 · 国际学校 · 教育政策动态</div>
+      <div class="date-bar" id="headerDateBar">
+        <span class="pill">📅 2026年9月3日 星期四</span>
+        <span class="pill">来源：教育部 / 央广网 / 新华日报 / APS审核部 / 日媒《朝日新闻》</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="calendar-section" id="calendarSection">
+    <div class="month-nav">
+      <span class="month-nav-btn" id="prevMonth">‹</span>
+      <span class="month-nav-label" id="monthNavLabel"></span>
+      <span class="month-nav-btn" id="nextMonth">›</span>
+    </div>
+    <div class="weekdays">
+      <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+    </div>
+    <div class="days-grid" id="daysGrid"></div>
+  </div>
+
+  <div class="summary-risk-module">
+    <div class="summary-part">
+      <strong>📌 今日要点：</strong>教育部办公厅发布《关于做好庆祝第42个教师节有关工作的通知》（<b>教师厅函〔2026〕6号</b>，8/21印发·9/10教师节），主题"大力弘扬教育家精神，共筑尊师重教风尚"，推出"惠师大礼包"覆盖交通出行/文化提升/教研资源，联动<国家卓越教师学院>建设；义务教育国家课程新教材<b>2026秋季全面完成替换</b>（央广网9/2报道），三年过渡收官，<b>小学四五六+初中九年级语文/数学/英语/道德与法治全面换新</b>，育人导向从"学科知识"转向"国家意志与核心素养"；江苏中小学秋季学期<b>全面开设人工智能通识课</b>（"校校开课、班班覆盖、人人学习"），同步山东出台《关于加强校外托管机构监管的意见》（<b>鲁政办发〔2026〕8号</b>）<b>9月16日施行</b>，6部分18条意见首次划清监管红线；德国APS审核部正式公布<b>留德新规9月15日生效</b>，高考门槛从525分降至<b>450分</b>（60%档），中等分数段考生获得公立预科申请资格；日媒《朝日新闻》调研显示<b>27所被访国内重点高校中21所暂停赴日交换</b>项目，复旦/上交/北外/北林等多名校在列，北海道/名古屋/广岛等日本名校接停派通知。
+    </div>
+    <div class="divider"></div>
+    <div class="risk-part">
+      <div class="risk-title">🚨 民办国际学校风险提示</div>
+      <ul>
+        <li><strong>教师节合规自律风险：</strong>教师厅函6号明确要求"坚决杜绝形式主义、严防铺张浪费"，<b>德普须对照务实简朴原则设计教师节活动</b>，禁止非教育教学任务加重教师负担</li>
+        <li><strong>新教材衔接风险：</strong>9/1开学德普小学部相关年级须对照2022版新课标完成教材切换，<b>数学教师须提前研判"简易方程调整到初中+尺规作图小学新增"的教学衔接</b></li>
+        <li><strong>AI通识课落地参考：</strong>江苏"校校开课/班班覆盖"配套903万人次师资培训，<b>德普可参考江苏模式评估十二年一贯制AI通识课程设置</b></li>
+        <li><strong>赴日交换预警波及：</strong>21所国内顶尖高校暂停赴日交换、在日中国留学生13万人背景下，<b>德普日本方向升学规划须审慎评估双向交流意愿与签证涨价5倍压力</b></li>
+        <li><strong>留德APS新规机遇：</strong>高考60%-70%档（450-525分）考生获预科通道，<b>德普作为国际化学校须关注"中等分数段考生"对德国本科升学路径的咨询需求</b></li>
+        <li><strong>山东托管监管示范：</strong>鲁政办发8号5人以下互助托管不纳入、严禁变相学科培训，<b>德普家委会需对照评估周边托管机构合规性</b>，严防"托管+培训"擦边球回潮</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="news-section">
+    <div class="section-title"><span class="icon">🔥</span> 政策与热点新闻</div>
+
+    <!-- ========== 新闻1 ========== -->
+    <div class="news-card">
+      <div class="card-header">
+        <div class="num">1</div>
+        <h3>教育部办公厅发布《关于做好庆祝第42个教师节有关工作的通知》（教师厅函〔2026〕6号）："大力弘扬教育家精神，共筑尊师重教风尚"，推出"惠师大礼包"+启动国家卓越教师学院建设</h3>
+      </div>
+      <div class="meta">
+        <span>📅 2026-08-21 教育部 / 光明日报</span>
+        <span>🏷️ 国家政策 · 教师节 · 教师减负</span>
+        <a class="meta-doc-link" href="https://www.moe.gov.cn/srcsite/A10/s7002/202608/t20260821_1447456.html" target="_blank" rel="noopener noreferrer">📄 教育部办公厅原文（教师厅函〔2026〕6号）</a>
+      </div>
+      <div class="summary">
+        教育部办公厅8月21日正式印发《关于做好庆祝庆祝第42个教师节有关工作的通知》（<b>教师厅函〔2026〕6号</b>），2026年9月10日是我国第42个教师节，今年主题为<b>"大力弘扬教育家精神，共筑尊师重教风尚"</b>。通知要求三方面重点工作：<br><br>
+        <b>①宣传优师典型</b>——推出《习近平的教师情》专题片生动展现习近平总书记对教师的深切关怀；开展全国"最美教师"宣传选树，举办"讲述我的育人故事"全国展示活动；开展第四批"全国高校黄大年式教师团队"创建宣传；联动中央主要媒体刊发"人民需要这样的教育家"名师故事；推出高校"双带头人"教师党支部书记《强国行·师者说》专题片；拍摄《教材的故事》纪录片及教师节主题微电影；上映教师题材电影《长大的儿童》。<br>
+        <b>②弘扬尊师美德</b>——教育部组织开展"百位教师共话教育家精神""新时代教师重走长征路"等宣传活动；指导举办《星光·致敬引路人》教育家精神专场音乐会；开展"师者荣光·群星闪耀"高校优秀作品线上展示；发起"云上同唱一首歌"线上AI互动；在全国发起"为教师亮灯"线上线下联动公益活动。<br>
+        <b>③推出强师举措</b>——谋划实施"教师发展国家行动"，启动建设<b>国家卓越教师学院</b>，全面推动卓越教师培养改革；持续实施教师教育能力提升工程；推动《关于加强新时代高校青年教师队伍建设的指导意见》落实见效；健全高校教师发展支持服务体系。教育部还将联动社会资源推出<b>"惠师大礼包"</b>，拓展交通出行、文化提升、教研资源等专属优惠权益。<br><br>
+        <b>教师减负与权益保障：</b>健全教师权益保障体系，<b>深化中小学教师非教育教学负担综合治理</b>，持续净化从教环境与舆论生态；对恶意干扰正常教学秩序、侮辱伤害教师的行为和涉师谣言依法严肃处理；<b>完善义务教育学校绩效工资分配机制</b>，确保工资待遇落实到位；优化"中国教师"小程序"育英心坊"平台，提供专业化心理支持。<br>
+        <b>形式主义管控：</b>通知特别要求，各地各校要<b>坚决杜绝形式主义，严防铺张浪费</b>；在教师节各类活动中严守基层减负要求，不干扰正常教学秩序，确保教师"安心从教、热心从教、舒心从教、静心从教"。<br><br>
+        <b>地方落实：</b>辽宁省教育厅8/25、福建省教育厅办公室8/28陆续转发教师厅函6号，结合本地实际贯彻落实。福建省配套开展"礼遇师者·尊师惠师"活动，在教师节前汇总公布一批教师公共服务优先优惠清单。
+      </div>
+      <div class="source-links">
+        <a class="source-btn" href="https://www.moe.gov.cn/srcsite/A10/s7002/202608/t20260821_1447456.html" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 教育部官网</a>
+        <a class="source-btn" href="https://news.gmw.cn/2026-08/22/content_38957391.htm" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 光明日报报道</a>
+        <a class="source-btn" href="https://jyt.fujian.gov.cn/xxgk/zfxxgkzl/zfxxgkml/zcwj/202608/t20260831_7206783.htm" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 福建省教育厅转发</a>
+      </div>
+      <div class="policy-compare">
+        <div class="compare-label">📋 与以往政策区别</div>
+        与此前推送的教师节通知相比，本条教师厅函6号<b>首次将"教师发展国家行动"+国家卓越教师学院建设写入教师节文件</b>，"惠师大礼包"权益覆盖范围从交通出行延伸至文化提升+教研资源，标志教师节从"精神层面表彰"扩展为<b>"精神表彰+物质保障+职业发展"三位一体</b>。教师减负要求从"减负"细化为"非教育教学负担综合治理"，明确了形式主义管控的"四个从教"（安心/热心/舒心/静心）核心目标。
+      </div>
+      <div class="depu-alert">
+        <div class="alert-label">🏫 与德普关联提示</div>
+        <ul>
+          <li><strong>教师节活动合规自查：</strong>9/10教师节在即，<b>德普须对照教师厅函6号"务实简朴、杜绝形式主义"原则</b>设计庆祝活动，禁止铺张浪费，避免非教学活动挤占教学时间。</li>
+          <li><strong>教师减负刚性要求：</strong>通知明确"深化中小学教师非教育教学负担综合治理"，<b>德普须对教师承担的行政/迎检/创建/征文/打卡等任务开展清单化梳理</b>，保留必要项、清理形式项。</li>
+          <li><strong>"惠师大礼包"权益对接：</strong>交通出行、文化提升、教研资源三类专属优惠，<b>德普可联系巴南区教委和合作商户</b>，为教师争取本地化的福利包配套。</li>
+          <li><strong>师德师风第一标准：</strong>通知要求"以教育家精神为引领"，<b>德普师德培训须将教育家精神纳入新学期教师发展必修模块</b>，结合学科组研讨落地。</li>
+          <li><strong>国家卓越教师学院跟踪：</strong>国家卓越教师学院建设启动，<b>德普数学、英语等优势学科可关注部属师范大学相关联合培养项目</b>，拓宽骨干教师国家级提升通道。</li>
+          <li><strong>绩效工资分配机制：</strong>义务教育阶段绩效工资分配机制完善方向已明确，<b>德普须在合规框架内优化校内绩效分配方案</b>，确保工资待遇落实到位。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ========== 新闻2 ========== -->
+    <div class="news-card">
+      <div class="card-header">
+        <div class="num">2</div>
+        <h3>义务教育国家课程新教材2026秋季全面替换：三年过渡收官、育人导向从"学科知识"转向"国家意志与核心素养"，教师须完成"讲师→设计师"三转变</h3>
+      </div>
+      <div class="meta">
+        <span>📅 2026-09-02 央广网 / 教育部</span>
+        <span>🏷️ 国家政策 · 课程改革 · 教材更替</span>
+        <a class="meta-doc-link" href="https://www.toutiao.com/article/7680742016515162634" target="_blank" rel="noopener noreferrer">📄 今年秋季新学期义务教育新教材全面落地（央广网）</a>
+      </div>
+      <div class="summary">
+        据央广网9月2日报道，经过三年过渡，<b>2026年秋季学期，义务教育国家课程教材将在全国小学、初中阶段完成全部替换</b>。开学后，<b>小学四、五、六年级的道德与法治、语文、数学等科目将首次使用新教材；初中三年级的语文、数学、英语等科目也同步使用新教材</b>。<br><br>
+        <b>三年过渡路径：</b>2022年教育部发布《义务教育课程方案和课程标准（2022年版）》；2024年秋季新教材在小学一年级和初中七年级率先启用；2025年秋季过渡到小学二三年级和初中八年级；<b>2026年秋季完成小学和初中所有年级全覆盖</b>。<br><br>
+        <b>各学科调整：</b><br>
+        <b>①语文</b>——小学一至六年级课文总数减少；增选反映社会主义先进文化选文（<b>《航天员写给孩子的信》《我站立的地方是中国》</b>）；丰富革命文化经典篇目（《雷锋日记二则》）；语文园地新增"梳理与交流"板块，引导深度学习。<br>
+        <b>②数学</b>——<b>简易方程调整到初中学习</b>，小学仅增加尺规作图（培养学生几何直观）；"数与代数"领域由过去的6个主题浓缩为两个主题；"图形与几何"领域由4个主题浓缩为两个主题。<br>
+        <b>③英语</b>——词汇量总体变化不大；大幅增加中国文化内容，<b>强调"用英语讲好中国故事"，非虚构文本占比明显上升</b>。<br>
+        <b>④道德与法治、历史</b>——道德与法治、语文、历史三科统编教材显著增加时代主题内容；数学等学科嵌入大量古代数学思想、传统文化元素；历史教材将中华文明探源工程等重大考古发现写入课文。<br><br>
+        <b>育人导向三大转型（专业解读）：</b><br>
+        <b>①育人导向从"学科知识"转向"国家意志与核心素养"</b>；<br>
+        <b>②内容结构从"线性排列"转向"螺旋进阶与综合实践"</b>——语文增设"阅读综合实践"板块，数学采用"螺旋式"编排；<br>
+        <b>③教学逻辑从"教师讲授"转向"学生探索"</b>——新教材大量"留白"，倒逼课堂从"灌输"转向"引导"。<br><br>
+        <b>教师三个转变：</b>从"讲师"变为"设计师"；从"教教材"转向"用教材教"；从"统一标准"转向"因材施导"，<b>关注学生思维过程而非只看结果</b>。
+      </div>
+      <div class="source-links">
+        <a class="source-btn" href="https://www.toutiao.com/article/7680742016515162634" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 央广网报道</a>
+        <a class="source-btn" href="https://www.xiantao.gov.cn/zwgk/xtyw/202609/t20260903_6006522.shtml" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 仙桃市政府转载</a>
+        <a class="source-btn" href="https://jy.tj.gov.cn//JYXW/GNJY/" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 天津市教委</a>
+        <a class="source-btn" href="https://www.huaibei.gov.cn/zwgk/public/15/65118957.html" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 淮北市政府</a>
+      </div>
+      <div class="policy-compare">
+        <div class="compare-label">📋 与以往政策区别</div>
+        <b>三年过渡节奏明确</b>：2024秋一/七年级→2025秋二三/八年级→<b>2026秋四五六/九年级收官</b>，是<b>义务教育课程方案和课程标准2022版修订后的首次全学段覆盖</b>。从"学科知识"到"国家意志与核心素养"的转向，与此前2016版教材"教什么、学什么"的内容规范形成代际差异——<b>新教材力图回答"为什么教、为谁而教"的价值取向问题</b>。"用旧方法教新教材，效果会打折扣"成为核心警示。
+      </div>
+      <div class="depu-alert">
+        <div class="alert-label">🏫 与德普关联提示</div>
+        <ul>
+          <li><strong>小学部教材切换对标：</strong>9/1开学德普小学部四五六年级须对照2022版新课标完成教材切换，<b>道德与法治、语文、数学、音乐、美术、科学全面启用新教材</b>，五/六年级英语同步使用新教材。</li>
+          <li><strong>数学教学衔接研判：</strong>简易方程调整到初中+尺规作图小学新增，德普小学部数学组须立即开展<b>"小升初衔接"双向研讨</b>，避免四五六学段过快或过慢的教学节奏。</li>
+          <li><strong>教师三转变落实：</strong>9月起新教材"大量留白"，<b>德普教师培训须从"教学技术"转向"学习设计"</b>，鼓励围绕真实情境开展学科活动，把时间让给学生阅读/实践/辩论。</li>
+          <li><strong>语文学科文化自信涵养：</strong>新教材增选《航天员写给孩子的信》《我站立的地方是中国》等时代性选文，<b>德普语文组可结合"用英语讲好中国故事"形成跨学科融合课题</b>。</li>
+          <li><strong>非虚构文本上升趋势：</strong>英语新教材非虚构文本占比明显上升，<b>德普高中部IGCSE/A-Level/IBDP英语课程应提前研判与初中部的衔接</b>，避免阅读难度断层。</li>
+          <li><strong>学业评价方式调整：</strong>新教材"用旧方法教新教材效果会打折扣"，<b>德普须重审题海战术</b>，将命题导向从"解题"转向"解决问题"，呼应中考改革"探索素养导向"的命题方向。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ========== 新闻3 ========== -->
+    <div class="news-card">
+      <div class="card-header">
+        <div class="num">3</div>
+        <h3>江苏中小学秋季全面开设AI通识课"校校开课、班班覆盖、人人学习"，山东《关于加强校外托管机构监管的意见》（鲁政办发〔2026〕8号）9/16施行首次划清监管红线</h3>
+      </div>
+      <div class="meta">
+        <span>📅 2026-08-18 / 2026-08-07 江苏教育 / 山东省政府</span>
+        <span>🏷️ 地方政策 · AI教育 · 校外托管监管</span>
+        <a class="meta-doc-link" href="https://www.jsenews.com/news/yw/202608/t20260820_8589434.shtml" target="_blank" rel="noopener noreferrer">📄 江苏教育新闻网·今秋中小学全面开设人工智能通识课</a>
+      </div>
+      <div class="summary">
+        本期地方政策层面两大事件值得对照参考：<br><br>
+        <b>①江苏中小学全面开设AI通识课</b>（8/18启动仪式，秋季学期全面开课）<br>
+        江苏省中小学人工智能通识教育课全覆盖项目8月18日在南京正式启动。今年秋季学期起，<b>江苏所有中小学将全面开设人工智能通识课</b>，目标为"校校开课、班班覆盖、人人学习"。三大保障措施：<br>
+        <b>师资到位：</b>暑期省教育信数中心联合省教科院推出分层分类直播培训（涵盖政策解读/通识知识/教学策略），<b>16课时培训已全部完成，累计收看达903万人次</b>，基本实现全省中小学人工智能通识课专兼职教师、学科教研员全覆盖。<br>
+        <b>资源免费：</b>江苏省名师空中课堂上线<b>中小学人工智能通识课数字资源专区</b>，打通国家中小学智慧教育平台聚合130余个覆盖科普认知/课堂教学/AI伦理的国家级课程；联合江南大学、科大讯飞、上海世外智慧教育等高校与企业上线近800课时体系化课程，完整覆盖一至十二年级。<br>
+        <b>乡村兜底：</b>送教上门、云端课堂、技术专员帮扶三项机制"三管齐下"，确保乡村学校开课不掉队、质量不打折。<br><br>
+        <b>南通率先落地"开学第一课"：</b>南通三所学校（紫琅第一小学、通中附校、通大附中）9月1日同上AI"开学第一课"，标志着AI通识教育从部分学校的特色探索走向面向全体学生的普及实施。<b>课时安排</b>：小学每学年不少于<b>8课时</b>，初中不少于<b>12课时</b>，高中不少于<b>16课时</b>。<br><br>
+        <b>②山东《关于加强校外托管机构监管的意见》（鲁政办发〔2026〕8号）9/16施行</b><br>
+        山东省人民政府办公厅8月6日成文、8月7日印发《关于加强校外托管机构监管的意见》（<b>鲁政办发〔2026〕8号</b>），<b>自2026年9月16日起施行，有效期至2031年9月15日</b>，是<b>山东首次从省级层面系统提出涵盖主体登记/场所安全/燃气使用/餐饮服务许可等全链条标准要求</b>，为全省中小学生校外托管机构划定清晰合规"红线"。<br>
+        <b>6部分18条意见</b>核心：<br>
+        <b>①明确适用范围</b>——本省行政区域内由公民/法人/其他组织开办、利用学校以外固定场所为中小学生非在校时段提供接送/休息/看护等服务的机构；<b>5人以下家长互助托管不纳入</b>。<br>
+        <b>②五方面标准条件</b>——依法办理主体登记（营利性办营业执照、非营利性办民非登）；符合场所安全条件（不得与易燃易爆危险品场所同建筑，不得设在地下室/半地下室/低A金属夹芯板建筑/仓储建筑）；依法办理消防审验；符合燃气使用安全要求；依法取得餐饮服务许可（<50㎡可办小餐饮登记）。<br>
+        <b>③落实机构责任</b>——每季度不少于1次初起火灾扑救和疏散逃生演练；每半年不少于1次托管学生消防安全培训；接触直接入口食品人员每年体检；<b>不得以托管服务名义变相开展校外教育培训</b>，不发布相关广告。<br>
+        <b>④压实属地和部门监管责任</b>——教育/公安/民政/自然资源/住建/应急/市场监管/疾控/消防/行政审批等十余部门协同；各市每年春秋两季开学前后联合检查。<br>
+        <b>⑤分类治理存量机构</b>——证照不全的引导补办；消防审验不全的限期整改；存在重大安全隐患的依法查处。<br>
+        <b>⑥源头疏导</b>——鼓励社区、工会、共青团、妇联开展公益性、普惠性托管服务；支持有条件的用人单位为职工子女提供寒暑假托管。
+      </div>
+      <div class="source-links">
+        <a class="source-btn" href="https://www.jsenews.com/news/yw/202608/t20260820_8589434.shtml" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 江苏教育新闻·新华日报</a>
+        <a class="source-btn" href="https://www.nantong.gov.cn/ntsrmzf/tpxw/content/36e200c2-4e58-4710-9d47-e8d232dd3629.html" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 南通市开学第一课</a>
+        <a class="source-btn" href="https://sd.people.com.cn/BIG5/n2/2026/0809/c166192-41663078.html" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 人民网山东频道</a>
+        <a class="source-btn" href="https://sdxw.iqilu.com/w/article/YS0yMS0xNzM0NDc2MQ.html" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 山东闪电新闻解读</a>
+      </div>
+      <div class="policy-compare">
+        <div class="compare-label">📋 与以往政策区别</div>
+        <b>江苏AI通识</b>：与此前推送的6/24"AI+教育"行动计划（教科信〔2026〕1号）等宏观框架相比，本条聚焦<b>省级层面"校校开课、班班覆盖、人人学习"刚性落地</b>，903万人次师资培训量在全国省级AI通识教育覆盖中规模突出，<b>"三管齐下"乡村兜底机制</b>（送培上门/云端课堂/技术专员帮扶）可作为同类方案的范本。<br>
+        <b>山东校外托管监管</b>：与8/16推送的"广东省民办学校重大事项变更与退出办法"（粤教策〔2026〕8号）相比，本条聚焦<b>校外托管机构这一长期监管盲区</b>，是首个省级层面系统提出全链条标准的文件，"5人以下互助托管不纳入"既尊重家长互助实际又划清监管边界，<b>严禁变相学科培训</b>与"双减"政策形成闭环呼应。
+      </div>
+      <div class="depu-alert">
+        <div class="alert-label">🏫 与德普关联提示</div>
+        <ul>
+          <li><strong>AI通识课程可行性参考：</strong>江苏"903万人次师资培训+800课时体系课程+乡村兜底"模式，<b>德普可参考评估十二年一贯制人工智能通识课程设置</b>，小学8课时/初中12课时/高中16课时的年度标准可作为课时锚点。</li>
+          <li><strong>民办学校对外合作参考：</strong>江苏省联合江南大学、上海世外智慧教育等高校企业，<b>德普可主动对接高校与企业资源</b>，将校外资源方纳入AI通识课教学团队。</li>
+          <li><strong>乡村学校国际部对接：</strong>江苏"送培上门/云端课堂/技术专员帮扶"三管齐下，<b>德普作为国际化学校可参与教育帮扶项目</b>，向巴南区及周边乡村学校输出AI通识课资源。</li>
+          <li><strong>学生托管安全提示：</strong>鲁政办发8号9/16施行后，<b>德普家委会应主动排查学生参与校外托管情况</b>，评估托管机构"证照资质/场所安全/餐饮许可"三项硬条件，避免学生流入不合格机构。</li>
+          <li><strong>"变相学科培训"红线对照：</strong>山东严禁校外托管变相开展学科类+非学科类校外培训，<b>德普须警惕部分托管机构借"晚托+辅导"名义变相培训</b>，必要时主动向家长发布识别指南。</li>
+          <li><strong>中小学收费红线对照：</strong>鲁政办发8号将食品安全+消防安全+接送安全作为校外托管监管核心，<b>德普自身校内托管服务</b>（晚托/周末托管/课后服务）须对照自查，确保标准不低于监管要求。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ========== 新闻4 ========== -->
+    <div class="news-card">
+      <div class="card-header">
+        <div class="num">4</div>
+        <h3>德国APS留德新规9月15日生效：高考门槛从525分降至450分（60%档），中等分数段考生获德国公立预科申请资格，结业后可申公立大学本科</h3>
+      </div>
+      <div class="meta">
+        <span>📅 2026年8月 德国驻华使馆APS审核部 / 新东方前途出国</span>
+        <span>🏷️ 出国留学 · 德国 · APS审核</span>
+        <a class="meta-doc-link" href="https://eic.org.cn/news/detail/ca0a074e46a745c580e21b682e77e656" target="_blank" rel="noopener noreferrer">📄 APS官宣!德国本科申请门槛大降</a>
+      </div>
+      <div class="summary">
+        德国驻华使馆文化处留德人员审核部（APS）正式公布<b>《关于新修改的德国高校入学资格评估建议》</b>，依据德国各州文化部长联席会议（KMK）<b>2026年6月18日审议通过</b>的最新规定，对中国学生通过高考程序申请德国高校的入学资格评估门槛做出历史性下调。<br><br>
+        <b>关键时间节点：</b><br>
+        <b>2026年9月1日</b>——此后送达APS的审核申请（以<b>APS签收日期</b>为准）一律按新规评估；<br>
+        <b>2026年9月15日</b>——新评估建议正式施行；<br>
+        <b>2027年夏季学期（SS2027）</b>起——所有入学申请均适用新规。<br>
+        ⚠️ <b>以材料签收日期决定适用规则</b>——9月15日前（含）寄达的材料按旧规处理；9月15日后（含）签收的按新规处理，<b>务必保留邮寄凭证</b>。<br><br>
+        <b>核心变化：门槛从525分降到450分（两档分流）</b><br>
+        <b>旧政策（一档定终身）：</b>中国高考生走"高考程序"申请德国本科或预科，高考成绩需达到总分的70%（<b>以满分750分为例即525分</b>）。525分以下基本与德国公立大学体系无缘。<br>
+        <b>新政策（两档分流，多一条清晰出路）：</b><br>
+        <b>①高考成绩≥总分70%（525分）：</b>可直接获得德国高校相关专业本科入学资格（与旧规一致）。<br>
+        <b>②高考成绩≥总分60%（450分）：</b>可获得<b>德国公立大学预科申请资格</b>，完成一年预科学习并通过结业考试（FSP）后，可升入<b>德国公立大学本科</b>——包括TU9理工联盟院校。<br><br>
+        <b>450分-525分考生"一年预科+三年本科"完整路径：</b>通过APS高考程序→获得预科申请资格→申请德国预科（一般要求德语B1）→预科一年学习+结业考试（FSP）→结业后申请德国公立大学本科（含TU9）。绝大多数德国公立大学本科免学费，每学期仅缴200-400欧元注册费。<br><br>
+        <b>其他学历路径：</b><br>
+        <b>本科在读途径：</b>450-525分段考生若在国内正规全日制本科院校已修读至少<b>2个学期</b>，可直接获得德国大学相关专业的直接入学资格（<b>无需读预科</b>）。<br>
+        <b>本科毕业后：</b>持有被认可的中国高校颁发的普通四/五年制全日制本科毕业证+学士学位证，可获直接入学资格（<b>不限专业</b>）。<br><br>
+        <b>常见误区澄清：</b><br>
+        ❌ <b>450分≠直接读德国本科</b>——是获得预科申请资格，必须读完预科+通过结业考试才可读本科；<br>
+        ❌ <b>450分走预科≠稳录TU9</b>——预科只是入场券，名校录取看预科结业成绩/语言/专业匹配择优；<br>
+        ❌ <b>9月15日前递交材料也适用新政策</b>——以APS签收日期为准。<br><br>
+        <b>医学/法律专业：</b>医学/法学专业分数门槛更高，即使预科结业，依旧有额外分数限制。
+      </div>
+      <div class="source-links">
+        <a class="source-btn" href="https://eic.org.cn/news/detail/ca0a074e46a745c580e21b682e77e656" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 启德教育·APS官宣</a>
+        <a class="source-btn" href="https://liuxue.xdf.cn/blog/blog_8043022.shtml" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 新东方前途出国</a>
+        <a class="source-btn" href="https://so.html5.qq.com/page/real/search_news?docid=70000021_1276a90d19a31152" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 腾讯新闻汇总</a>
+      </div>
+      <div class="policy-compare">
+        <div class="compare-label">📋 与以往政策区别</div>
+        与此前推送的6/30"英国Graduate Route缩短"+8/24"全球留学去低端化"等签证端政策相比，本条聚焦<b>德国学历认证端（APS审核）的历史性放低</b>。从"筛选者"到"抢人大军"——德国产业界对华合作需求增长+智能制造领域人才缺口扩大背景下，KMK主动将45%缓冲带（450-525分）考生从"无法申请"转为"预科通道"。<b>这是德国留学政策近10年来最大幅度的一次开放</b>，与英国签证收紧/澳洲签证涨价形成对比。
+      </div>
+      <div class="depu-alert">
+        <div class="alert-label">🏫 与德普关联提示</div>
+        <ul>
+          <li><strong>德国方向升学新利好：</strong>APS新规为留德路径开辟全新通道，<b>德普升学指导教师须将"450分→预科→TU9"作为可推广方案</b>纳入德国方向升学手册。</li>
+          <li><strong>德语预科衔接规划：</strong>新规要求预科申请者德语达B1水平，<b>德普德语教师团队须评估开设"德语+学术预备"选修课</b>，为有留德意向的学生提供语言出口。</li>
+          <li><strong>中等分数段家长沟通：</strong>450-525分段家长群体庞大、传统认知"德国留学门槛极高"，<b>德普升学指导应主动更新家长讲座内容</b>，破除"分数不够不能留德"的认知误区。</li>
+          <li><strong>材料签收日期节点警示：</strong>9月15日为APS新旧规切换节点，<b>德普升学指导须提醒2027届申请者尽早规划APS审核材料</b>，避免因材料时序问题影响新规适用。</li>
+          <li><strong>免学费+TU9含金量优势：</strong>绝大多数德国公立大学本科免学费+TU9理工联盟具备全球认可度，<b>德普可在"性价比留学"宣传中将德国作为英美澳新之外的差异化推荐方向</b>。</li>
+          <li><strong>医学/法律专业特别提示：</strong>医法专业门槛更高，<b>德普生涯规划课程须提醒医学/法律方向学生德国申请难度显著高于工科</b>，避免预期落差。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ========== 新闻5 ========== -->
+    <div class="news-card">
+      <div class="card-header">
+        <div class="num">5</div>
+        <h3>中国21所顶尖高校暂停赴日交换项目：日媒《读卖新闻》《朝日新闻》调研，复旦/上交/北外/北林等多校在列，北海道/名古屋/广岛等日本名校接停派通知</h3>
+      </div>
+      <div class="meta">
+        <span>📅 2026-09-03 今日头条 / 星岛头条 / 香港01</span>
+        <span>🏷️ 国际教育 · 中日交流 · 留学预警</span>
+        <a class="meta-doc-link" href="www.stheadline.com/realtime-china/3569389" target="_blank" rel="noopener noreferrer">📄 日媒指21內地大學取消交換生計劃（星岛头条）</a>
+      </div>
+      <div class="summary">
+        据日本《读卖新闻》5月7日深度调查、《朝日新闻》专项调研（2026年9月3日最新综合报道），<b>国内对长期开展的赴日校际交换生项目进行调整，多所院校暂停了相关派遣计划</b>。根据日媒走访调查，他们一共联系了<b>27所国内重点高校</b>，其中<b>足足21所学校已暂停向日本高校派送交换生名额</b>。<br><br>
+        <b>中方暂停高校（部分）：</b>复旦大学、上海交通大学、北京外国语大学、北京林业大学等多所知名院校。复旦大学表态<b>"不鼓励学生赴日本留学"</b>，并停止今年4月新学期交换计划；北京林业大学劝退有意申请到日本留学的学生，最终导致<b>无人申请</b>。<br><br>
+        <b>受影响日方大学：</b>北海道大学、名古屋大学、广岛大学、爱媛大学、岛根大学、大分大学、鹿儿岛大学等多所日本名校陆续收到中方合作院校发来的停派通知。<br><br>
+        <b>事件回溯：</b><br>
+        <b>2025年11月</b>——日本首相<b>高市早苗</b>在国会答辩中发表涉及台海问题的"台湾有事"言论，触碰中方核心利益红线。<br>
+        <b>2025年11月7日</b>高市答询后<b>9天</b>，<b>中国教育部发布2025年第4号留学预警</b>，明确提醒"近期日本治安环境复杂，针对中国公民的案件有所增多，建议谨慎规划赴日留学安排"。<br>
+        <b>2026年4月</b>起新学期，复旦/上交等多校响应预警率先暂停交换计划。<br>
+        <b>2026年秋季后</b>——更多高校跟进，21所暂停清单形成。<br><br>
+        <b>日本高校反向受阻：</b>京都立命馆大学与中韩大学的<b>Campus Asia交流计划</b>因为中方停止接收学生，<b>原订新学期前往中国的4名学生无法成行</b>。<br><br>
+        <b>香港同步收紧：</b>香港民政及青年事务局公布2026-27年度国际青年交流资助名单，<b>共包含95个项目，覆盖全球45个国家和地区，唯独没有日本项目入选</b>——连续参加13年的官方青少年交流计划，香港也选择主动退出。<br><br>
+        <b>政策意图分析：</b>暂停交换项目是用"温和、非对抗"方式向日方传递明确信号。<b>官方校际交换代表国家间认可与信任</b>，日方不断触碰红线必然付出代<br>
+        价；而<b>个人自费留学属于学生个人行为，不受本次调整限制</b>，东京当地留学中介反馈今年4月新生人数与往年大致持平。<br><br>
+        <b>对日本教育/经济的多维冲击：</b><br>
+        <b>①科研层面</b>——<b>2024年在日中国留学生达13万人，占日本国际学生三分之一</b>，日本多所顶尖高校的核心实验室、重点科研课题高度依赖中国留学生支撑；<br>
+        <b>②签证成本</b>——今年夏季<b>日本单次签证费用涨价5倍</b>，学生和家长预算压力骤增，不少人被劝退；<br>
+        <b>③经济层面</b>——中国赴日游客同比减少六成（5月数据），旅游/零售/餐饮全面遇冷，中小商户营收锐减。
+      </div>
+      <div class="source-links">
+        <a class="source-btn" href="https://www.toutiao.com/article/7681250074063553075/" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 读卖新闻深度调查·今日头条</a>
+        <a class="source-btn" href="https://www.stheadline.com/realtime-china/3569389" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 星岛头条·朝日新闻</a>
+        <a class="source-btn" href="https://global.hk01.com/%E5%A4%A7%E5%9B%BD%E5%B0%8F%E4%BA%8B/60347153/" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 香港01</a>
+      </div>
+      <div class="policy-compare">
+        <div class="compare-label">📋 与以往政策区别</div>
+        与此前推送的8/28"5所英国顶级私校集中进入泰国"+8/4"Fairmont越南河内首校"等国际学校海外扩张相比，本条聚焦<b>国家层面教育交流的战略性收缩</b>。21/27的暂停比例（约77.8%）显示此次调整<b>非个别学校行为</b>，而是教育系统对中日关系遇冷的"集体响应"。与英美澳新签证端的不断收紧不同，中方此次采取的是<b>"教育部预警+高校自主响应"的双层机制</b>——既保留个人自费留学通道，又对官方交换项目做系统性收缩。
+      </div>
+      <div class="depu-alert">
+        <div class="alert-label">🏫 与德普关联提示</div>
+        <ul>
+          <li><strong>日本方向升学预警：</strong>教育部2025年第4号留学预警与21所顶尖高校暂停赴日交换，<b>德普日本方向升学规划须审慎评估双边关系+签证涨价（5倍）+治安风险三重因素</b>。</li>
+          <li><strong>校际交换合作伙伴评估：</strong>德普与日本合作院校（含姐妹校/交换项目）的协议须重新审视，<b>主动了解日方合作院校是否受中方停派影响</b>，评估续约可行性与替代方案。</li>
+          <li><strong>个人申请与官方渠道区分：</strong>本次调整<b>仅限校际官方交换</b>，个人自费赴日读大学/语言学校/短期游学不受限制，<b>德普升学指导教师应向学生家长准确传达这一关键区分</b>。</li>
+          <li><strong>替代留学方向储备：</strong>新加坡、韩国等"稳定友好地区"成为新热门选择，<b>德普国际化课程可补充"东亚多元路径"选项</b>，降低单一国家依赖风险。</li>
+          <li><strong>学生人身安全刚性原则：</strong>在当前形势背景下，<b>德普教师须将"安全第一"作为留学指导的核心原则</b>，与家长沟通时强调"官方预警→学校响应→学生自决"的合理链条。</li>
+          <li><strong>德普对日合作资产盘点：</strong>德普此前若与日方学校建立过任何合作协议/教师互访/学生交换项目，<b>须提交行政办一份"对日合作资产清单"</b>，评估是否需要启动预案。</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-title">
+      ✏️ 我的备注
+      <span class="hint">（直接在下方编写笔记，内容自动保存到浏览器）</span>
+    </div>
+    <textarea class="notes-area" id="notesArea" placeholder="在此记录你的观察、分析或待办事项...&#10;&#10;例如：&#10;• 对照教师厅函6号设计德普9/10教师节活动（务实简朴/杜绝形式主义），梳理非教学负担清单并清理形式项&#10;• 9/1开学小学部四五六年级道德与法治/语文/数学新教材已切换，德普数学组开展小升初衔接双向研讨&#10;• 联系巴南区教委和合作商户为教师争取"惠师大礼包"本地化福利包（交通/文化/教研资源）&#10;• 参考江苏903万人次师资培训模式，评估德普十二年一贯制AI通识课设置（小学8/初中12/高中16课时）&#10;• 鲁政办发8号9/16施行，德普家委会排查学生参与校外托管情况，发布"变相学科培训"识别指南&#10;• 德国APS新规9/15生效，更新德普升学指导手册"450-525分段→预科→TU9"完整路径&#10;• 21所国内顶尖高校暂停赴日交换，德普对日合作资产盘点，启动预案与替代方向（新加坡/韩国）"></textarea>
+  </div>
+
+  <div class="footer">
+    本简报由自动化任务每日 9:00 自动生成 · 信息来源：教育部 / 央广网 / 江苏教育新闻 / APS审核部 / 日媒《朝日新闻》<br>
+    仅供信息参考，具体政策以官方原文为准
+  </div>
+
+</div>
+
+<div class="save-hint" id="saveHint">✅ 备注已保存</div>
+
+<script>
+// 内嵌简报日期清单 —— 生成时从 briefings_manifest.json 写入，避免 file:// 下 fetch 被拦截
+var EMBEDDED_DATES = ["2026-06-18","2026-06-19","2026-06-20","2026-06-21","2026-06-22","2026-06-23","2026-06-24","2026-06-25","2026-06-26","2026-06-27","2026-06-28","2026-06-29","2026-06-30","2026-07-01","2026-07-02","2026-07-03","2026-07-10","2026-07-11","2026-07-12","2026-07-17","2026-07-19","2026-07-20","2026-07-21","2026-07-23","2026-07-25","2026-07-28","2026-07-31","2026-08-03","2026-08-04","2026-08-05","2026-08-06","2026-08-15","2026-08-16","2026-08-18","2026-08-19","2026-08-21","2026-08-23","2026-08-24","2026-08-28","2026-08-30","2026-08-31","2026-09-02","2026-09-03"];
+var BRIEFING_DATE = "2026-09-03";
+
+// ===== 紧凑月历（含月份切换） =====
+(function() {
+  var availableDates = [];
+  var datesReady = false;
+
+  function getTodayStr() { return new Date().toISOString().slice(0,10); }
+  function getCurrentBriefingDate() {
+    if (typeof BRIEFING_DATE !== 'undefined') return BRIEFING_DATE;
+    var m = window.location.pathname.match(/校政热点简报_(\d{4}-\d{2}-\d{2})\.html/);
+    return m ? m[1] : getTodayStr();
+  }
+  function parseDate(str) {
+    var parts = str.split('-');
+    return new Date(+parts[0], +parts[1]-1, +parts[2]);
+  }
+  function formatDateCN(str) {
+    var d = parseDate(str);
+    var w = ['日','一','二','三','四','五','六'];
+    return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日 星期'+w[d.getDay()];
+  }
+  function showToast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(t._tid);
+    t._tid = setTimeout(function(){ t.classList.remove('show'); }, 2000);
+  }
+  function navigateToDate(dateStr) {
+    var today = getTodayStr();
+    if (dateStr > today) {
+      showToast('⚠ ' + dateStr + ' 尚未到来');
+      return;
+    }
+    window.location.href = '校政热点简报_' + dateStr + '.html';
+  }
+
+  /* 月份切换状态 */
+  var currentBriefingDate = getCurrentBriefingDate();
+  var bdParts = currentBriefingDate.split('-');
+  var baseYear = +bdParts[0], baseMonth = +bdParts[1]-1;
+  var viewYear = baseYear, viewMonth = baseMonth;
+
+  var todayStr = getTodayStr();
+  var todayParts = todayStr.split('-');
+  var todayYear = +todayParts[0], todayMonth = +todayParts[1]-1;
+
+  function getMinYearMonth() {
+    var minY = 9999, minM = 12;
+    for (var i = 0; i < availableDates.length; i++) {
+      var p = availableDates[i].split('-');
+      var y = +p[0], m = +p[1]-1;
+      if (y < minY || (y === minY && m < minM)) { minY = y; minM = m; }
+    }
+    return { year: minY, month: minM };
+  }
+
+  function monthLabel(y, m) { return y + '年' + (m+1) + '月'; }
+
+  function updateNavButtons() {
+    var minYM = getMinYearMonth();
+    var prevBtn = document.getElementById('prevMonth');
+    var nextBtn = document.getElementById('nextMonth');
+    var label = document.getElementById('monthNavLabel');
+    label.textContent = monthLabel(viewYear, viewMonth);
+
+    if (viewYear === minYM.year && viewMonth === minYM.month) {
+      prevBtn.classList.add('disabled');
+    } else {
+      prevBtn.classList.remove('disabled');
+    }
+    if (viewYear === todayYear && viewMonth === todayMonth) {
+      nextBtn.classList.add('disabled');
+    } else {
+      nextBtn.classList.remove('disabled');
+    }
+  }
+
+  function renderCalendar(y, m) {
+    var grid = document.getElementById('daysGrid');
+    var firstDay = new Date(y, m, 1);
+    var lastDay = new Date(y, m+1, 0);
+    var totalDays = lastDay.getDate();
+    var startDow = firstDay.getDay();
+
+    var html = '';
+    for (var i = 0; i < startDow; i++) { html += '<div class="day-cell empty"></div>'; }
+    // 简报起始日：2026年6月18日，6月份仅显示18日起的日期
+    var dayStart = (y === 2026 && m === 5) ? 18 : 1;
+    if (dayStart > 1) {
+      var firstOfRange = new Date(y, m, dayStart);
+      var rangeDow = firstOfRange.getDay();
+      if (rangeDow !== startDow) {
+        var padCount = rangeDow - startDow;
+        for (var p = 0; p < padCount; p++) { html += '<div class="day-cell empty" style="visibility:hidden"></div>'; }
+      }
+    }
+    for (var d = dayStart; d <= totalDays; d++) {
+      var ds = y + '-' + String(m+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+      var isToday = ds === todayStr;
+      var isActive = (y === baseYear && m === baseMonth && ds === currentBriefingDate);
+      var hasBrf = availableDates.indexOf(ds) !== -1;
+      var cellDate = new Date(y, m, d);
+      var isFuture = cellDate > parseDate(todayStr);
+
+      var cls = ['day-cell'];
+      if (isToday) cls.push('today');
+      if (isActive && !isToday) cls.push('active-briefing');
+      if (hasBrf) cls.push('has-briefing');
+      if (isFuture) cls.push('future');
+
+      var styleActive = (isActive && !isToday) ? 'background:#e0f0e4;font-weight:700;color:#004844;border-color:#065700;' : '';
+      html += '<div class="' + cls.join(' ') + '" data-date="' + ds + '" style="' + styleActive + '">' + d + '</div>';
+    }
+    var totalCells = startDow + totalDays;
+    var remaining = (7 - (totalCells % 7)) % 7;
+    for (var i = 0; i < remaining; i++) { html += '<div class="day-cell empty"></div>'; }
+
+    grid.innerHTML = html;
+    var cells = grid.querySelectorAll('.day-cell:not(.empty)');
+    for (var i = 0; i < cells.length; i++) {
+      cells[i].addEventListener('click', function(){
+        var ds = this.dataset.date;
+        navigateToDate(ds);
+      });
+    }
+
+    updateNavButtons();
+  }
+
+  document.getElementById('prevMonth').addEventListener('click', function(){
+    if (this.classList.contains('disabled')) return;
+    viewMonth--;
+    if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+    renderCalendar(viewYear, viewMonth);
+  });
+  document.getElementById('nextMonth').addEventListener('click', function(){
+    if (this.classList.contains('disabled')) return;
+    viewMonth++;
+    if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+    renderCalendar(viewYear, viewMonth);
+  });
+
+  if (typeof EMBEDDED_DATES !== 'undefined' && EMBEDDED_DATES.length > 0) {
+    availableDates = EMBEDDED_DATES;
+    datesReady = true;
+    renderCalendar(viewYear, viewMonth);
+  }
+
+  fetch('briefings_manifest.json').then(function(r){ return r.json(); }).then(function(data){
+    if (data.dates && data.dates.length > 0) {
+      availableDates = data.dates;
+      datesReady = true;
+      renderCalendar(viewYear, viewMonth);
+    }
+  }).catch(function(){
+    if (!datesReady) {
+      availableDates = [getCurrentBriefingDate()];
+      datesReady = true;
+      renderCalendar(viewYear, viewMonth);
+    }
+  });
+
+  (function updateHeader(){
+    var current = getCurrentBriefingDate();
+    var bar = document.getElementById('headerDateBar');
+    if (bar) bar.querySelector('.pill:first-child').textContent = '📅 ' + formatDateCN(current);
+  })();
+})();;
+
+// ===== 备注保存 =====
+(function() {
+  var notesArea = document.getElementById('notesArea');
+  var saveHint = document.getElementById('saveHint');
+  var today = new Date().toISOString().slice(0,10);
+  var storageKey = 'briefing_notes_' + today;
+  var saved = localStorage.getItem(storageKey);
+  if (saved) notesArea.value = saved;
+  var saveTimer;
+  notesArea.addEventListener('input', function() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function() {
+      localStorage.setItem(storageKey, notesArea.value);
+      saveHint.classList.add('show');
+      setTimeout(function(){ saveHint.classList.remove('show'); }, 1500);
+    }, 600);
+  });
+})();
+</script>
+
+</body>
+</html>
