@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>校政热点简报</title>
+<style>
+  :root {
+    --dp-green-dark: #004844;
+    --dp-green-mid: #065700;
+    --dp-green-bright: #0DB900;
+    --dp-green-light: #e8f5ee;
+    --dp-green-bg: #f0f7f3;
+    --risk-red: #c0392b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+    background: linear-gradient(160deg, #f0f7f3 0%, #e8f5ee 30%, #f5fff5 60%, #f9faf7 100%);
+    min-height: 100vh;
+    padding: 24px 12px;
+    color: #1a2a1a;
+  }
+
+  .poster {
+    max-width: 820px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 8px 40px rgba(0,72,68,0.10);
+    overflow: hidden;
+  }
+
+  /* ===== 顶部海报头 ===== */
+  .header {
+    background: linear-gradient(135deg, #003530 0%, #004844 40%, #065700 100%);
+    color: #fff;
+    padding: 40px 36px 32px;
+    position: relative;
+    overflow: hidden;
+    min-height: 200px;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url('depu_logo_white.png') no-repeat center center;
+    background-size: 280px auto;
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .header .header-content { position: relative; z-index: 1; }
+  .header-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.16);
+    backdrop-filter: blur(4px);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+  .header h1 { font-size: 28px; font-weight: 700; letter-spacing: 2px; margin-bottom: 6px; }
+  .header .subtitle { font-size: 14px; opacity: 0.85; }
+  .header .date-bar {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+  }
+  .header .date-bar .pill { background: rgba(255,255,255,0.14); padding: 4px 14px; border-radius: 16px; }
+
+  /* ===== 紧凑月历 ===== */
+  .calendar-section {
+    background: linear-gradient(180deg, #fff 0%, #f8faf8 100%);
+    border-bottom: 1px solid #e0ece3;
+    padding: 10px 16px 12px;
+  }
+  .month-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .month-nav-btn {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: #e8f5ee;
+    border: 1px solid #b0d0b8;
+    color: #004844;
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s;
+    line-height: 1;
+  }
+  .month-nav-btn:hover { background: #d0eada; border-color: #065700; }
+  .month-nav-btn.disabled { opacity: 0.35; cursor: default; pointer-events: none; }
+  .month-nav-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #004844;
+    min-width: 90px;
+    text-align: center;
+  }
+  .calendar-section .weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 10px;
+    color: #8a9a8a;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .calendar-section .weekdays span:first-child,
+  .calendar-section .weekdays span:last-child { color: #c0392b; }
+  .calendar-section .days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+  }
+  .calendar-section .day-cell {
+    aspect-ratio: 1.3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    font-size: 12px;
+    color: #3a4a3a;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+    border: 1px solid transparent;
+    font-weight: 500;
+    height: 26px;
+  }
+  .calendar-section .day-cell:hover {
+    background: #e8f5ee;
+    border-color: #b0d0b8;
+  }
+  .calendar-section .day-cell.empty { cursor: default; background: transparent; border-color: transparent; height: 26px; }
+  .calendar-section .day-cell.empty:hover { background: transparent; border-color: transparent; }
+  .calendar-section .day-cell.today {
+    background: linear-gradient(135deg, #004844, #065700);
+    color: #fff;
+    font-weight: 700;
+    border-color: #004844;
+  }
+  .calendar-section .day-cell.today:hover { opacity: 0.9; }
+  .calendar-section .day-cell.has-briefing::after {
+    content: "";
+    position: absolute;
+    bottom: 2px;
+    width: 3px; height: 3px;
+    background: #0DB900;
+    border-radius: 50%;
+  }
+  .calendar-section .day-cell.today.has-briefing::after { background: #fff; }
+  .calendar-section .day-cell.future {
+    color: #c0cec0;
+    cursor: default;
+  }
+  .calendar-section .day-cell.future:hover { background: transparent; border-color: transparent; }
+
+  /* ===== 今日要点 + 风险提示 统一模块 ===== */
+  .summary-risk-module {
+    margin: 0;
+    background: linear-gradient(135deg, #f0f9f3 0%, #e8f5ee 100%);
+    border-left: 5px solid #065700;
+    overflow: hidden;
+  }
+  .summary-risk-module .summary-part {
+    padding: 14px 24px 10px;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: #1d3d1d;
+  }
+  .summary-risk-module .summary-part strong { color: #004844; }
+  .summary-risk-module .divider {
+    height: 1px;
+    margin: 0 24px;
+    background: linear-gradient(90deg, transparent, #92bfa0, transparent);
+  }
+  .summary-risk-module .risk-part {
+    padding: 12px 24px 14px;
+  }
+  .summary-risk-module .risk-part .risk-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #c0392b;
+    margin-bottom: 8px;
+  }
+  .summary-risk-module .risk-part ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px 16px;
+  }
+  .summary-risk-module .risk-part li {
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #7b2d2d;
+    padding-left: 18px;
+    position: relative;
+  }
+  .summary-risk-module .risk-part li::before {
+    content: "⚠";
+    position: absolute;
+    left: 0;
+    font-size: 11px;
+  }
+
+  /* ===== 新闻卡片 ===== */
+  .news-section { padding: 8px 24px 8px; }
+  .section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #004844;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title .icon { font-size: 20px; }
+
+  .news-card {
+    border: 1px solid #d9e6dc;
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 14px;
+    transition: box-shadow 0.2s, transform 0.2s;
+    background: #fff;
+  }
+  .news-card:hover {
+    box-shadow: 0 4px 20px rgba(0,72,68,0.12);
+    transform: translateY(-1px);
+  }
+  .news-card .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .news-card .num {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, #004844, #065700);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .news-card h3 {
+    font-size: 15.5px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #1a2a1a;
+  }
+  .news-card .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 18px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: #6a8a6a;
+  }
+  .news-card .meta span { display: inline-flex; align-items: center; gap: 4px; }
+
+  .meta-doc-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    color: #8a6a00;
+    text-decoration: none;
+    font-size: 12px;
+    padding: 2px 0;
+    border-bottom: 1px dashed #c4b04a;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .meta-doc-link:hover {
+    color: #604a00;
+    border-bottom-color: #8a6a00;
+  }
+
+  .news-card .summary {
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: #3a4a3a;
+    margin-bottom: 10px;
+  }
+
+  .news-card .source-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 2px;
+  }
+  .source-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #e8f5ee;
+    color: #004844;
+    text-decoration: none;
+    padding: 7px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s;
+    border: 1.5px solid #a0d0b0;
+  }
+  .source-btn:hover {
+    background: #d0eada;
+    border-color: #065700;
+    color: #003530;
+    transform: translateX(2px);
+  }
+  .source-btn .arrow {
+    display: inline-block;
+    transition: transform 0.2s;
+  }
+  .source-btn:hover .arrow { transform: translateX(3px); }
+
+  .policy-compare {
+    margin-top: 10px;
+    background: #fffbf0;
+    border: 1px dashed #d4a843;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #6a4a1a;
+  }
+  .policy-compare .compare-label {
+    font-weight: 700;
+    color: #8a5a00;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .depu-alert {
+    margin-top: 12px;
+    background: linear-gradient(135deg, #f0f7f3, #e6f2ea);
+    border: 1px dashed #065700;
+    border-radius: 10px;
+    padding: 12px 16px;
+  }
+  .depu-alert .alert-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #004844;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .depu-alert ul { list-style: none; padding: 0; }
+  .depu-alert li {
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #2a4a2a;
+    padding-left: 16px;
+    position: relative;
+    margin-bottom: 3px;
+  }
+  .depu-alert li::before {
+    content: "▸";
+    position: absolute;
+    left: 2px;
+    color: #065700;
+    font-size: 10px;
+  }
+  .depu-alert li strong { color: #004844; }
+
+  /* ===== 备注栏 ===== */
+  .notes-section {
+    margin: 0 24px 24px;
+    background: #f8faf8;
+    border: 2px dashed #b3d0bb;
+    border-radius: 14px;
+    padding: 18px 22px;
+  }
+  .notes-section .notes-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #3a5a3a;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .notes-section .notes-title .hint {
+    font-size: 11px;
+    font-weight: 400;
+    color: #8aa88a;
+  }
+  .notes-area {
+    width: 100%;
+    min-height: 120px;
+    border: none;
+    background: transparent;
+    font-size: 13.5px;
+    line-height: 1.8;
+    color: #2a3a2a;
+    resize: vertical;
+    font-family: inherit;
+    outline: none;
+  }
+  .notes-area::placeholder { color: #b0ccb0; }
+  .notes-area:focus {
+    background: #fff;
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
+
+  .footer {
+    background: linear-gradient(135deg, #003530, #004844);
+    color: rgba(255,255,255,0.75);
+    text-align: center;
+    padding: 16px 24px;
+    font-size: 11.5px;
+    line-height: 1.8;
+  }
+  .footer a { color: #0DB900; text-decoration: none; }
+
+  .toast {
+    position: fixed;
+    top: 20px; left: 50%;
+    transform: translateX(-50%);
+    background: #004844;
+    color: #fff;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-size: 13px;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+
+  .save-hint {
+    position: fixed;
+    bottom: 20px; right: 20px;
+    background: #004844;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 999;
+  }
+  .save-hint.show { opacity: 1; }
+
+  @media (max-width: 600px) {
+    .header { padding: 28px 18px 22px; min-height: 160px; }
+    .header::before { background-size: 200px auto; }
+    .header h1 { font-size: 21px; }
+    .calendar-section { padding: 8px 12px 10px; }
+    .calendar-section .day-cell { font-size: 11px; height: 22px; }
+    .summary-risk-module .summary-part,
+    .summary-risk-module .risk-part { padding-left: 14px; padding-right: 14px; }
+    .summary-risk-module .divider { margin-left: 14px; margin-right: 14px; }
+    .news-card { padding: 14px 16px; }
+    .summary-risk-module .risk-part ul { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<div class="poster">
+
+  <div class="header">
+    <div class="header-content">
+      <span class="header-tag">DAILY BRIEFING</span>
+      <h1>📰 校政热点简报</h1>
+      <div class="subtitle">聚焦民办学校 · 国际学校 · 教育政策动态</div>
+      <div class="date-bar" id="headerDateBar">
+        <span class="pill">📅 2026年9月18日 星期五</span>
+        <span class="pill">来源：教育部 / 剑桥国际考评部 / College Board / 权威媒体</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="calendar-section" id="calendarSection">
+    <div class="month-nav">
+      <span class="month-nav-btn" id="prevMonth">‹</span>
+      <span class="month-nav-label" id="monthNavLabel"></span>
+      <span class="month-nav-btn" id="nextMonth">›</span>
+    </div>
+    <div class="weekdays">
+      <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+    </div>
+    <div class="days-grid" id="daysGrid"></div>
+  </div>
+
+  <div class="summary-risk-module">
+    <div class="summary-part">
+      <strong>📌 今日要点：</strong>国际课程领域进入密集改革期。CAIE 2026年IGCSE大改革落地：25+科目考纲更新、英语文学首次开卷考、数字化机考试点启动、中国区6门核心科目继续独立命题、AI作答监管收紧；CAIE A-Level数学推出模块化新课程Mathematics B（M800/M900），2026年9月发布大纲、2027年9月启动教学、2027年11月首考，与现行9709并行。College Board发布2026-27学年AP更新：新增AP Business with Personal Finance和AP Cybersecurity两门Career Kickstart™课程，2027年5月起多语种及AP Statistics完全数字化，中国大陆首次开放社会考生报名。国内方面，教育部首个全国校园网络文明月（教思政厅函〔2026〕20号）9月举行；2026年"基础教育精品课"遴选（教基厅函〔2026〕22号）新增科技教育类，六类共10500个省级推荐名额。
+    </div>
+    <div class="divider"></div>
+    <div class="risk-part">
+      <div class="risk-title">🚨 民办国际学校风险提示</div>
+      <ul>
+        <li><strong>IGCSE备考转向：</strong>英语文学从"背诵引文"转向"文本分析"，数理减少套路题、增加情境应用，建议优先使用2025年中国区真题</li>
+        <li><strong>A-Level数学路径选择：</strong>2027年9月起M800/M900与9709并行，学校须提前决定教学路径并配套教材与师资</li>
+        <li><strong>AP数字化硬件：</strong>2027年5月起多语种和AP Statistics完全数字化，需提前准备有线耳机并熟悉Bluebook</li>
+        <li><strong>社会考生报名红线：</strong>AP在校生严禁走社会考生通道，同科目重复报名会被取消且不予退款</li>
+        <li><strong>网络文明月合规：</strong>9月内完成网络素养/安全/文明实践，公众号与招生宣传须注意用网合规</li>
+        <li><strong>精品课窗口期：</strong>9-10月为备赛关键期，重庆学科课程顶格300节，注意同节点限制与2024年起新教材版本</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="news-section">
+    <div class="section-title"><span class="icon">🔥</span> 政策与热点新闻</div>
+
+    <!-- ========== 新闻1 ========== -->
+    <div class="news-card">
+      <div class="card-header">
+        <div class="num">1</div>
+        <h3>CAIE 2026年IGCSE大改革落地——25+科目考纲更新、英语文学首次开卷考、中国区6科继续独立命题、AI作答监管收紧</h3>
+      </div>
+      <div class="meta">
+        <span>📅 2026年起实施 · 2026年夏季大考适用</span>
+        <span>🏷️ 国际教育制度 · IGCSE/CAIE</span>
+        <span>📄 <a class="meta-doc-link" href="https://www.cambridgeinternational.org/programmes-and-qualifications/cambridge-igcse/" target="_blank" rel="noopener noreferrer">CAIE官方IGCSE页面 ↗</a></span>
+      </div>
+      <div class="summary">
+        剑桥国际考试局（CAIE）在2026年对IGCSE进行近年来力度最大的系统性调整，覆盖超过25门科目。核心变化包括：①<strong>英语文学首次开卷考</strong>——考生可携带指定散文与戏剧文本入场，但30%纯记忆题型被取消，新增40%深度综合分析大题，重点考察批判性思维而非背诵；②<strong>科学科目情境化</strong>——物理、化学、生物压缩套路化考题，增加生活化、场景化应用题，强调知识迁移与逻辑推理；③<strong>中国区6门独立命题延续</strong>——数学、进阶数学、物理、化学、生物、经济继续实行中国考区独立命题，备考应优先使用2025年中国区真题；④<strong>数字化机考试点启动</strong>——2026年6月起在部分海外学校试点会计、经济、生物、化学、物理等科目的数字化机考，中国区暂不纳入，但目标是到2033年85%高风险资格证书提供数字化选项；⑤<strong>AI作答监管收紧</strong>——人文、英语、经济等科目转向批判性思维、个人反思和课堂应用类题目，CAIE明确表示将加强AI辅助作答检测。
+      </div>
+      <div class="source-links">
+        <a class="source-btn" href="https://www.ix-edu.com/n/202608/16453.html" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 犀牛国际教育</a>
+        <a class="source-btn" href="https://www.jingsailian.com/igcse/1646816.html" target="_blank" rel="noopener noreferrer">🔗 备考解读 <span class="arrow">→</span> 国际教育联盟</a>
+      </div>
+      <div class="policy-compare">
+        <div class="compare-label">📋 与以往政策区别</div>
+        本次改革是IGCSE从"记忆力竞赛"向"思维能力竞赛"的整体转向。区别于以往单科微调，2026年一次性覆盖25+科目，并首次引入<b>开卷考试</b>形式；同时首次将中国考区独立命题从临时安排变为常态化机制，AI监管从行业倡议升级为考试局明确行动。
+      </div>
+      <div class="depu-alert">
+        <div class="alert-label">🏫 与德普关联提示</div>
+        <ul>
+          <li><strong>教学大纲同步：</strong>德普开设30门IG+A-Level课程，需确认IGCSE英语文学、物理、化学、生物等科目已按2026新考纲调整教学重点，从"背"转向"分析"。</li>
+          <li><strong>备考资源更新：</strong>中国区独立命题的6门科目应优先使用2025年中国区真题，国际卷仅作辅助参考。</li>
+          <li><strong>学术诚信强化：</strong>AI监管收紧背景下，应在学生中明确AI辅助作答边界，强化独立分析与规范引用训练。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ========== 新闻2 ========== -->
+    <div class="news-card">
+      <div class="card-header">
+        <div class="num">2</div>
+        <h3>CAIE A-Level数学推出模块化新课程M800/M900——2026年9月发布大纲、2027年9月首教、2027年11月首考，与9709并行</h3>
+      </div>
+      <div class="meta">
+        <span>📅 2026-09发布大纲 · 2027-09首次教学 · 2027-11首次考试</span>
+        <span>🏷️ 国际教育制度 · A-Level/CAIE</span>
+        <span>📄 <a class="meta-doc-link" href="https://blog.cambridgeinternational.org/modular-maths-why-it-adds-up-for-cambridge-international-as-a-level" target="_blank" rel="noopener noreferrer">CAIE官方博客 ↗</a></span>
+      </div>
+      <div class="summary">
+        剑桥国际考试局（CAIE）正式发布全新模块化AS & A-Level Mathematics B课程（代码M800为AS Level、M900为A Level），首次将模块化评估引入A-Level数学。新课程将内容拆分为独立单元，学生可按模块进度学习与考试，支持单独重考薄弱模块，无需整个科目重来。关键时间节点：2026年9月发布完整大纲与考试细则，2027年2月配套教材上线，2027年9月开始首次教学，2027年11月首次模块化考试，2028年6月首次常规考试，2029年6月全面覆盖所有考生。CAIE强调，M800/M900与现行9709线性课程在学术标准、考核难度、核心知识点和大学认可度上完全一致，仅考试形式不同；同时透露正在评估将模块化推广至科学等其他STEM学科。
+      </div>
+      <div class="source-links">
+        <a class="source-btn" href="https://www.jingsailian.com/alevel/1635340.html" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 国际教育联盟</a>
+        <a class="source-btn" href="https://www.x-newedu.com/n/202604/59028.html" target="_blank" rel="noopener noreferrer">🔗 改革要点 <span class="arrow">→</span> 犀牛国际教育</a>
+      </div>
+      <div class="policy-compare">
+        <div class="compare-label">📋 与以往政策区别</div>
+        CAIE A-Level数学此前长期采用9709线性模式（两年课程结束后集中大考）。M800/M900是CAIE首次为AS & A-Level数学提供模块化选项，标志着CAIE向爱德思、AQA等已采用模块化的考试局看齐，进入<b>"线性+模块化"双轨并行</b>时代。
+      </div>
+      <div class="depu-alert">
+        <div class="alert-label">🏫 与德普关联提示</div>
+        <ul>
+          <li><strong>课程路径决策：</strong>德普A-Level数学 currently 采用9709大纲，需在2026-27学年决定是否从2027年9月起引入M800/M900，或继续保留9709，需结合学生特点与师资节奏评估。</li>
+          <li><strong>教材与培训准备：</strong>官方教材2027年2月上线，建议提前安排数学组教师参加CAIE关于模块化课程的培训，确保首年教学顺利。</li>
+          <li><strong>升学沟通：</strong>向家长和学生说明两种模式认可度一致，模块化更适合希望分散考试压力、逐步积累成绩的学生。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ========== 新闻3 ========== -->
+    <div class="news-card">
+      <div class="card-header">
+        <div class="num">3</div>
+        <h3>College Board发布2026-27学年AP更新：新增两门Career Kickstart课程，多语种与AP Statistics完全数字化，中国大陆首次开放社会考生报名</h3>
+      </div>
+      <div class="meta">
+        <span>📅 2026-09报名开启 · 2027年5月考试</span>
+        <span>🏷️ 国际教育制度 · AP/College Board</span>
+        <span>📄 <a class="meta-doc-link" href="https://apcentral.collegeboard.org/about-ap/ap-coordinators/important-updates" target="_blank" rel="noopener noreferrer">AP Coordinators Updates ↗</a></span>
+      </div>
+      <div class="summary">
+        College Board正式发布2026-27学年AP项目重要更新。①<strong>新增课程</strong>：推出AP Business with Personal Finance和AP Cybersecurity两门AP Career Kickstart™课程，2026-27学年首次开课，考试均为完全数字化；②<strong>数字化扩展</strong>：自2027年5月起，AP Chinese、French、German、Italian、Japanese、Spanish Language and Culture等世界语言与文化考试转为完全数字化（Bluebook）， speaking部分通过Bluebook录音，需使用有线耳机；AP Spanish Literature and Culture也转为完全数字化；AP Statistics从混合数字化转为完全数字化；AP Music Theory转为混合数字化；③<strong>中国大陆社会考生报名</strong>：2026年中国大陆Prometric考区首次开放社会考生报名通道，自学或就读未开设AP课程学校的高中生可通过My AP China报名，2026年9月15日系统开放，11月14日中午12点缴费截止，单科费用1475元人民币。在校生仍须通过学校AP管理员统一报名，严禁跨通道重复报考。
+      </div>
+      <div class="source-links">
+        <a class="source-btn" href="https://apcentral.collegeboard.org/about-ap/ap-coordinators/important-updates" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> AP Central官方</a>
+        <a class="source-btn" href="https://m.topsedu.com/apply/98116.html" target="_blank" rel="noopener noreferrer">🔗 大陆报名解读 <span class="arrow">→</span> 新东方前途出国</a>
+      </div>
+      <div class="policy-compare">
+        <div class="compare-label">📋 与以往政策区别</div>
+        此前中国大陆AP考点仅对AP授权学校在校生开放，社会考生只能赴中国香港、新加坡、韩国等地报考。2026年首次在大陆开放社会考生通道，是报考制度的重要放宽；同时AP数字化从部分科目扩展至<b>全部世界语言</b>和<b>AP Statistics</b>，硬件与考务准备要求明显提高。
+      </div>
+      <div class="depu-alert">
+        <div class="alert-label">🏫 与德普关联提示</div>
+        <ul>
+          <li><strong>AP课程拓展机会：</strong>德普已获College Board认证，可评估是否在2026-27学年增设AP Business with Personal Finance或AP Cybersecurity，丰富职业导向课程选择。</li>
+          <li><strong>数字化考务准备：</strong>2027年5月起多语种和AP Statistics完全数字化，需提前准备有线耳机、测试Bluebook环境，并培训监考人员使用Test Day Toolkit。</li>
+          <li><strong>社会考生通道使用边界：</strong>德普在校生必须通过学校AP管理员报名，不得使用社会考生通道；同时可向校外自学学生说明合规报名路径，避免误报。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ========== 新闻4 ========== -->
+    <div class="news-card">
+      <div class="card-header">
+        <div class="num">4</div>
+        <h3>教育部、中央网信办部署首个全国校园网络文明月——教思政厅函〔2026〕20号，9月举行，主题"涵育网络素养，共建清朗空间"</h3>
+      </div>
+      <div class="meta">
+        <span>📅 2026-09-16发布 · 2026年9月实施</span>
+        <span>🏷️ 国家政策 · 网络文明/思政教育</span>
+        <span>📄 <a class="meta-doc-link" href="https://www.moe.gov.cn/srcsite/A12/s7060/202609/t20260916_1450989.html" target="_blank" rel="noopener noreferrer">教思政厅函〔2026〕20号 ↗</a></span>
+      </div>
+      <div class="summary">
+        教育部办公厅、中央网信办秘书局9月16日联合印发《关于开展首个全国校园网络文明月活动的通知》（教思政厅函〔2026〕20号），决定于2026年9月开展首个全国校园网络文明月活动，主题为"涵育网络素养，共建清朗空间"。通知要求一体推进三项工作：①<strong>网络素养培育</strong>——将网络素养教育纳入教育教学整体安排，分模块推进网络媒介传播、网络文明伦理、网络信息甄别、网络风险防范、人工智能基础等教育，教育部将推出"网络文明大家谈"系列访谈、"网络文明大讲堂"，建设网络素养课程资源库；②<strong>网络安全宣传</strong>——围绕法治观念、个人信息保护、反诈防骗、国家安全、行为自律等重点内容开展宣传，教育部将会同公安部、中央广电总台组织新学期"反诈第一课"，开展"安全卫士"网络安全短视频征集；③<strong>网络文明实践</strong>——启动第九届全国大学生网络文化节暨高校网络教育优秀作品推选展示活动，培育"校园好网民"。活动与国家网络安全宣传周（9月14日至20日）时间重合，形成叠加效应。
+      </div>
+      <div class="source-links">
+        <a class="source-btn" href="https://www.moe.gov.cn/srcsite/A12/s7060/202609/t20260916_1450989.html" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 教育部官网</a>
+      </div>
+      <div class="policy-compare">
+        <div class="compare-label">📋 与以往政策区别</div>
+        这是教育部首次以"全国校园网络文明月"形式系统部署校园网络文明工作，从过去零散的网络安全宣传周活动升级为<b>常态化月度主题育人机制</b>，并将网络素养、AI基础、反诈防骗等纳入学校教育教学整体安排。
+      </div>
+      <div class="depu-alert">
+        <div class="alert-label">🏫 与德普关联提示</div>
+        <ul>
+          <li><strong>9月活动落地：</strong>德普可在9月底前组织一次网络文明主题班会或宣传活动，结合寄宿制学校特点，重点做好个人信息保护、反诈防骗、账号安全等内容。</li>
+          <li><strong>宣传合规自查：</strong>对官网、公众号、招生简章、校园标识开展用网合规自查，避免传播未经核实信息、滥用网络生造词或侵犯隐私。</li>
+          <li><strong>课程融合：</strong>国际学校尤需平衡信息技术应用与网络伦理教育，可将AI基础、信息甄别融入信息科技或德育课程。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ========== 新闻5 ========== -->
+    <div class="news-card">
+      <div class="card-header">
+        <div class="num">5</div>
+        <h3>2026年"基础教育精品课"遴选启动——教基厅函〔2026〕22号，五类扩至六类新增科技教育类，全国省级推荐名额10500节</h3>
+      </div>
+      <div class="meta">
+        <span>📅 2026-09-07印发 · 2026-09-16公布 · 11月9日前省级推荐</span>
+        <span>🏷️ 国家政策 · 基础教育/教师发展</span>
+        <span>📄 <a class="meta-doc-link" href="https://www.moe.gov.cn/" target="_blank" rel="noopener noreferrer">教育部官网 ↗</a></span>
+      </div>
+      <div class="summary">
+        教育部办公厅印发《关于开展2026年"基础教育精品课"遴选工作的通知》（教基厅函〔2026〕22号），继续组织开展基础教育精品课遴选工作。与2025年相比，精品课由学科课程、特殊教育、实验教学、人工智能教育、阅读课<strong>五类扩展为六类</strong>，<strong>新增科技教育类</strong>。科技教育类设置技术与工程实践、科学探究、科技与AI融合、科技与人文融合、生命与生态五个主题模块，强调项目式、探究式、跨学科教学。其他要点：①义务教育阶段课程目录节点须以2024年起投入使用的新教材为准；②学科课程、特殊教育、实验教学三类原则上同一目录节点只推荐1节，人工智能教育、阅读课、科技教育三类无此限制；③全国省级推荐名额共10500节，其中学科课程6904节、实验教学1811节、人工智能教育与科技教育各500节、阅读课400节、特殊教育385节；④重庆学科课程名额为顶格300节；⑤省级须在11月9日前通过国家中小学智慧教育平台完成推荐。
+      </div>
+      <div class="source-links">
+        <a class="source-btn" href="https://www.moe.gov.cn/" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 教育部官网</a>
+      </div>
+      <div class="policy-compare">
+        <div class="compare-label">📋 与以往政策区别</div>
+        2026年精品课最大变化是<b>新增科技教育类</b>，使AI教育与科技教育并列成为独立赛道，响应《教育部等七部门关于加强中小学科技教育的意见》。同时名额表首次随通知公开，推荐节奏提前，强调跨学科融合与实践作业。
+      </div>
+      <div class="depu-alert">
+        <div class="alert-label">🏫 与德普关联提示</div>
+        <ul>
+          <li><strong>赛道选择建议：</strong>德普作为十二年一贯制国际学校，可重点关注科技教育类（节点无限制、适合项目式教学）和实验教学类（理科实验条件较好），同时鼓励教师结合自身学科报阅读课。</li>
+          <li><strong>时间节点：</strong>9-10月为教师实际备赛窗口，学校应尽快组织校内初选、试讲和录制，避免拖到10月下旬。</li>
+          <li><strong>教材版本核对：</strong>义务教育段报送内容必须以2024年起新教材节点为准，需提前登录国家中小学智慧教育平台确认节点与版本。</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-title">
+      ✏️ 我的备注
+      <span class="hint">（直接在下方编写笔记，内容自动保存到浏览器）</span>
+    </div>
+    <textarea class="notes-area" id="notesArea" placeholder="在此记录你的观察、分析或待办事项...&#10;&#10;例如：&#10;• 核对德普IGCSE各科目是否已按2026新考纲调整教学重点&#10;• 评估A-Level数学2027年是否引入M800/M900模块化课程&#10;• 更新AP考务准备清单：有线耳机、Bluebook测试、Test Day Toolkit培训&#10;• 组织9月校园网络文明月主题班会/宣传活动&#10;• 启动2026年基础教育精品课校内初选，确定赛道与节点&#10;• 跟踪AP社会考生报名政策对校外咨询家庭的适用边界"></textarea>
+  </div>
+
+  <div class="footer">
+    本简报由自动化任务每日 8:40 自动生成 · 信息来源：教育部 / 中央网信办 / 剑桥国际考评部 / College Board / 权威媒体<br>
+    仅供信息参考，具体政策以官方原文为准
+  </div>
+
+</div>
+
+<div class="save-hint" id="saveHint">✅ 备注已保存</div>
+
+<script>
+// 内嵌简报日期清单 —— 生成时从 briefings_manifest.json 写入，避免 file:// 下 fetch 被拦截
+var EMBEDDED_DATES = ["2026-06-18","2026-06-19","2026-06-20","2026-06-21","2026-06-22","2026-06-23","2026-06-24","2026-06-25","2026-06-26","2026-06-27","2026-06-28","2026-06-29","2026-06-30","2026-07-01","2026-07-02","2026-07-03","2026-07-10","2026-07-11","2026-07-12","2026-07-17","2026-07-19","2026-07-20","2026-07-21","2026-07-23","2026-07-25","2026-07-28","2026-07-31","2026-08-03","2026-08-04","2026-08-05","2026-08-06","2026-08-15","2026-08-16","2026-08-18","2026-08-19","2026-08-21","2026-08-23","2026-08-24","2026-08-28","2026-08-30","2026-08-31","2026-09-02","2026-09-03","2026-09-15","2026-09-16","2026-09-17","2026-09-18"];
+var BRIEFING_DATE = "2026-09-18";
+
+// ===== 紧凑月历（含月份切换） =====
+(function() {
+  var availableDates = [];
+  var datesReady = false;
+
+  function getTodayStr() { return new Date().toISOString().slice(0,10); }
+  function getCurrentBriefingDate() {
+    if (typeof BRIEFING_DATE !== 'undefined') return BRIEFING_DATE;
+    var m = window.location.pathname.match(/校政热点简报_(\d{4}-\d{2}-\d{2})\.html/);
+    return m ? m[1] : getTodayStr();
+  }
+  function parseDate(str) {
+    var parts = str.split('-');
+    return new Date(+parts[0], +parts[1]-1, +parts[2]);
+  }
+  function formatDateCN(str) {
+    var d = parseDate(str);
+    var w = ['日','一','二','三','四','五','六'];
+    return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日 星期'+w[d.getDay()];
+  }
+  function showToast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(t._tid);
+    t._tid = setTimeout(function(){ t.classList.remove('show'); }, 2000);
+  }
+  function navigateToDate(dateStr) {
+    var today = getTodayStr();
+    if (dateStr > today) {
+      showToast('⚠ ' + dateStr + ' 尚未到来');
+      return;
+    }
+    window.location.href = '校政热点简报_' + dateStr + '.html';
+  }
+
+  var currentBriefingDate = getCurrentBriefingDate();
+  var bdParts = currentBriefingDate.split('-');
+  var baseYear = +bdParts[0], baseMonth = +bdParts[1]-1;
+  var viewYear = baseYear, viewMonth = baseMonth;
+
+  var todayStr = getTodayStr();
+  var todayParts = todayStr.split('-');
+  var todayYear = +todayParts[0], todayMonth = +todayParts[1]-1;
+
+  function getMinYearMonth() {
+    var minY = 9999, minM = 12;
+    for (var i = 0; i < availableDates.length; i++) {
+      var p = availableDates[i].split('-');
+      var y = +p[0], m = +p[1]-1;
+      if (y < minY || (y === minY && m < minM)) { minY = y; minM = m; }
+    }
+    return { year: minY, month: minM };
+  }
+
+  function monthLabel(y, m) {
+    return y + '年' + (m+1) + '月';
+  }
+
+  function updateNavButtons() {
+    var minYM = getMinYearMonth();
+    var prevBtn = document.getElementById('prevMonth');
+    var nextBtn = document.getElementById('nextMonth');
+    var label = document.getElementById('monthNavLabel');
+    label.textContent = monthLabel(viewYear, viewMonth);
+
+    if (viewYear === minYM.year && viewMonth === minYM.month) {
+      prevBtn.classList.add('disabled');
+    } else {
+      prevBtn.classList.remove('disabled');
+    }
+    if (viewYear === todayYear && viewMonth === todayMonth) {
+      nextBtn.classList.add('disabled');
+    } else {
+      nextBtn.classList.remove('disabled');
+    }
+  }
+
+  function renderCalendar(y, m) {
+    var grid = document.getElementById('daysGrid');
+    var firstDay = new Date(y, m, 1);
+    var lastDay = new Date(y, m+1, 0);
+    var totalDays = lastDay.getDate();
+    var startDow = firstDay.getDay();
+
+    var html = '';
+    for (var i = 0; i < startDow; i++) { html += '<div class="day-cell empty"></div>'; }
+    var dayStart = (y === 2026 && m === 5) ? 18 : 1;
+    if (dayStart > 1) {
+      var firstOfRange = new Date(y, m, dayStart);
+      var rangeDow = firstOfRange.getDay();
+      if (rangeDow !== startDow) {
+        var padCount = rangeDow - startDow;
+        for (var p = 0; p < padCount; p++) { html += '<div class="day-cell empty" style="visibility:hidden"></div>'; }
+      }
+    }
+    for (var d = dayStart; d <= totalDays; d++) {
+      var ds = y + '-' + String(m+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+      var isToday = ds === todayStr;
+      var isActive = (y === baseYear && m === baseMonth && ds === currentBriefingDate);
+      var hasBrf = availableDates.indexOf(ds) !== -1;
+      var cellDate = new Date(y, m, d);
+      var isFuture = cellDate > parseDate(todayStr);
+
+      var cls = ['day-cell'];
+      if (isToday) cls.push('today');
+      if (isActive && !isToday) cls.push('active-briefing');
+      if (hasBrf) cls.push('has-briefing');
+      if (isFuture) cls.push('future');
+
+      var styleActive = (isActive && !isToday) ? 'background:#e0f0e4;font-weight:700;color:#004844;border-color:#065700;' : '';
+      html += '<div class="' + cls.join(' ') + '" data-date="' + ds + '" style="' + styleActive + '">' + d + '</div>';
+    }
+    var totalCells = startDow + totalDays;
+    var remaining = (7 - (totalCells % 7)) % 7;
+    for (var i = 0; i < remaining; i++) { html += '<div class="day-cell empty"></div>'; }
+
+    grid.innerHTML = html;
+    var cells = grid.querySelectorAll('.day-cell:not(.empty)');
+    for (var i = 0; i < cells.length; i++) {
+      cells[i].addEventListener('click', function(){
+        var ds = this.dataset.date;
+        navigateToDate(ds);
+      });
+    }
+
+    updateNavButtons();
+  }
+
+  document.getElementById('prevMonth').addEventListener('click', function(){
+    if (this.classList.contains('disabled')) return;
+    viewMonth--;
+    if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+    renderCalendar(viewYear, viewMonth);
+  });
+  document.getElementById('nextMonth').addEventListener('click', function(){
+    if (this.classList.contains('disabled')) return;
+    viewMonth++;
+    if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+    renderCalendar(viewYear, viewMonth);
+  });
+
+  if (typeof EMBEDDED_DATES !== 'undefined' && EMBEDDED_DATES.length > 0) {
+    availableDates = EMBEDDED_DATES;
+    datesReady = true;
+    renderCalendar(viewYear, viewMonth);
+  }
+
+  fetch('briefings_manifest.json').then(function(r){ return r.json(); }).then(function(data){
+    if (data.dates && data.dates.length > 0) {
+      availableDates = data.dates;
+      datesReady = true;
+      renderCalendar(viewYear, viewMonth);
+    }
+  }).catch(function(){
+    if (!datesReady) {
+      availableDates = [getCurrentBriefingDate()];
+      datesReady = true;
+      renderCalendar(viewYear, viewMonth);
+    }
+  });
+
+  (function updateHeader(){
+    var current = getCurrentBriefingDate();
+    var bar = document.getElementById('headerDateBar');
+    if (bar) bar.querySelector('.pill:first-child').textContent = '📅 ' + formatDateCN(current);
+  })();
+})();
+
+// ===== 备注保存 =====
+(function() {
+  var notesArea = document.getElementById('notesArea');
+  var saveHint = document.getElementById('saveHint');
+  var today = new Date().toISOString().slice(0,10);
+  var storageKey = 'briefing_notes_' + today;
+  var saved = localStorage.getItem(storageKey);
+  if (saved) notesArea.value = saved;
+  var saveTimer;
+  notesArea.addEventListener('input', function() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function() {
+      localStorage.setItem(storageKey, notesArea.value);
+      saveHint.classList.add('show');
+      setTimeout(function(){ saveHint.classList.remove('show'); }, 1500);
+    }, 600);
+  });
+})();
+</script>
+
+</body>
+</html>
