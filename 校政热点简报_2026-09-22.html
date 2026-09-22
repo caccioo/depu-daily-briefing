@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>德普校政热点简报 · 2026年9月22日</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+  :root{ --depu-green:#004844; --depu-green-light:#065700; --depu-green-bright:#0DB900; --depu-yellow:#C8F04B; --depu-yellow-soft:#F0F5D0; --depu-cream:#F8F9F2; --depu-dark:#0A1F1C; --depu-gray:#6B7B78; --depu-border:#D4DDD8; }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ font-family:'Noto Sans SC', sans-serif; background:#F0F3F1; color:var(--depu-dark); line-height:1.7; -webkit-font-smoothing:antialiased; }
+  .container{ max-width:720px; margin:0 auto; padding:20px 16px 40px; }
+  .header{ position:relative; background:linear-gradient(135deg, #003530 0%, #004844 40%, #065700 100%); color:#fff; padding:36px 28px 32px; border-radius:16px 16px 0 0; overflow:hidden; }
+  .header::before{ content:''; position:absolute; top:-20px; right:-40px; width:220px; height:220px; background:url('depu_logo_white.png') no-repeat center; background-size:contain; opacity:0.12; transform:rotate(-8deg); }
+  .header-content{ position:relative; z-index:1; }
+  .header h1{ font-family:'Noto Serif SC', serif; font-size:28px; font-weight:700; letter-spacing:2px; margin-bottom:8px; }
+  .header .subtitle{ font-size:13px; opacity:0.85; font-weight:300; letter-spacing:1px; }
+  .header .pill{ display:inline-block; background:rgba(255,255,255,0.15); backdrop-filter:blur(8px); padding:6px 16px; border-radius:20px; font-size:12px; margin-top:14px; border:1px solid rgba(255,255,255,0.2); }
+  .calendar-section{ background:#fff; padding:20px 24px; border-bottom:1px solid var(--depu-border); }
+  .calendar-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+  .calendar-header h3{ font-size:15px; color:var(--depu-green); font-weight:600; }
+  .calendar-nav{ display:flex; gap:8px; }
+  .calendar-nav button{ width:28px; height:28px; border:1px solid var(--depu-border); background:#fff; border-radius:6px; cursor:pointer; font-size:14px; color:var(--depu-green); transition:all .2s; display:flex; align-items:center; justify-content:center; }
+  .calendar-nav button:hover:not(:disabled){ background:var(--depu-green); color:#fff; border-color:var(--depu-green); }
+  .calendar-nav button:disabled{ opacity:0.3; cursor:not-allowed; }
+  .calendar-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:4px; text-align:center; }
+  .calendar-grid .day-label{ font-size:11px; color:var(--depu-gray); font-weight:500; padding:6px 0; }
+  .calendar-grid .day{ aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-size:12px; border-radius:8px; cursor:pointer; transition:all .2s; position:relative; }
+  .calendar-grid .day:hover{ background:var(--depu-yellow-soft); }
+  .calendar-grid .day.other-month{ color:#ccc; }
+  .calendar-grid .day.has-briefing{ background:var(--depu-green); color:#fff; font-weight:600; }
+  .calendar-grid .day.has-briefing:hover{ background:var(--depu-green-light); }
+  .calendar-grid .day.today{ box-shadow:inset 0 0 0 2px var(--depu-yellow); }
+  .calendar-grid .day.today.has-briefing{ box-shadow:inset 0 0 0 2px var(--depu-yellow), 0 0 0 2px var(--depu-yellow); }
+  .calendar-grid .day .dot{ position:absolute; bottom:3px; width:4px; height:4px; background:var(--depu-yellow); border-radius:50%; }
+  .summary-risk{ display:grid; grid-template-columns:1fr 1fr; gap:16px; padding:20px 24px; background:var(--depu-cream); border-bottom:1px solid var(--depu-border); }
+  .summary-box, .risk-box{ background:#fff; padding:16px; border-radius:12px; border:1px solid var(--depu-border); }
+  .summary-box h4, .risk-box h4{ font-size:13px; color:var(--depu-green); margin-bottom:10px; display:flex; align-items:center; gap:6px; }
+  .summary-box ul, .risk-box ul{ list-style:none; font-size:12px; color:#555; }
+  .summary-box li, .risk-box li{ padding:3px 0; padding-left:14px; position:relative; }
+  .summary-box li::before{ content:'▸'; position:absolute; left:0; color:var(--depu-green-bright); }
+  .risk-box li::before{ content:'⚠'; position:absolute; left:0; color:#E8A838; }
+  .news-section{ background:#fff; padding:24px; }
+  .news-section h2{ font-family:'Noto Serif SC', serif; font-size:18px; color:var(--depu-green); margin-bottom:20px; padding-bottom:10px; border-bottom:2px solid var(--depu-green); display:inline-block; }
+  .news-card{ background:#fff; border:1px solid var(--depu-border); border-radius:12px; padding:20px; margin-bottom:16px; transition:all .2s; position:relative; overflow:hidden; }
+  .news-card::before{ content:''; position:absolute; left:0; top:0; bottom:0; width:4px; background:linear-gradient(180deg, var(--depu-green) 0%, var(--depu-green-bright) 100%); border-radius:12px 0 0 12px; }
+  .news-card:hover{ box-shadow:0 4px 20px rgba(0,72,68,0.08); transform:translateY(-1px); }
+  .news-card .num{ position:absolute; top:16px; right:16px; width:32px; height:32px; background:var(--depu-green); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; font-family:'Noto Serif SC', serif; }
+  .news-card h3{ font-size:15px; font-weight:600; color:var(--depu-dark); margin-bottom:10px; padding-right:40px; line-height:1.5; }
+  .news-card .meta{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; font-size:11px; }
+  .news-card .meta span{ display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:12px; background:var(--depu-cream); color:var(--depu-gray); }
+  .news-card .meta .tag-a{ background:#E8F5E9; color:#2E7D32; }
+  .news-card .meta .tag-b{ background:#E3F2FD; color:#1565C0; }
+  .news-card .meta .tag-c{ background:#FFF3E0; color:#E65100; }
+  .news-card .meta .tag-d{ background:#F3E5F5; color:#7B1FA2; }
+  .news-card .meta .meta-doc-link{ background:var(--depu-yellow-soft); color:var(--depu-green); border:1px dashed var(--depu-yellow); cursor:pointer; }
+  .news-card .meta .meta-doc-link:hover{ background:var(--depu-yellow); }
+  .news-card .summary{ font-size:13px; color:#444; line-height:1.8; margin-bottom:14px; }
+  .news-card .summary strong{ color:var(--depu-green); }
+  .source-links{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+  .source-btn{ display:inline-flex; align-items:center; gap:6px; padding:6px 14px; background:#fff; border:1px solid var(--depu-border); border-radius:8px; font-size:12px; color:var(--depu-green); text-decoration:none; transition:all .2s; }
+  .source-btn:hover{ background:var(--depu-green); color:#fff; border-color:var(--depu-green); }
+  .source-btn .arrow{ transition:transform .2s; }
+  .source-btn:hover .arrow{ transform:translateX(3px); }
+  .policy-compare{ background:var(--depu-yellow-soft); border:1px dashed var(--depu-yellow); border-radius:8px; padding:12px 14px; margin-bottom:10px; font-size:12px; color:#555; }
+  .policy-compare strong{ color:var(--depu-green); }
+  .depu-alert{ background:#E8F5E9; border:1px dashed #4CAF50; border-radius:8px; padding:12px 14px; font-size:12px; color:#2E7D32; }
+  .depu-alert strong{ color:var(--depu-green); }
+  .notes-section{ background:#fff; padding:24px; border-top:1px solid var(--depu-border); }
+  .notes-section h3{ font-size:14px; color:var(--depu-green); margin-bottom:10px; }
+  .notes-section textarea{ width:100%; min-height:100px; padding:12px; border:1px solid var(--depu-border); border-radius:8px; font-family:'Noto Sans SC', sans-serif; font-size:13px; resize:vertical; }
+  .notes-section .save-hint{ font-size:11px; color:var(--depu-gray); margin-top:6px; }
+  .footer{ text-align:center; padding:24px; font-size:11px; color:var(--depu-gray); background:var(--depu-cream); border-radius:0 0 16px 16px; }
+  .footer a{ color:var(--depu-green); text-decoration:none; }
+  @media(max-width:600px){ .summary-risk{ grid-template-columns:1fr; } .header h1{ font-size:22px; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Header -->
+<div class="header">
+  <div class="header-content">
+    <h1>德普校政热点简报</h1>
+    <div class="subtitle">DEPU DAILY POLICY BRIEFING</div>
+    <span class="pill">📅 2026年9月22日 星期二</span>
+  </div>
+</div>
+
+<!-- Calendar -->
+<div class="calendar-section">
+  <div class="calendar-header">
+    <h3 id="calMonthTitle">2026年9月</h3>
+    <div class="calendar-nav">
+      <button id="prevMonth" onclick="changeMonth(-1)">‹</button>
+      <button id="nextMonth" onclick="changeMonth(1)">›</button>
+    </div>
+  </div>
+  <div class="calendar-grid" id="calendarGrid"></div>
+</div>
+
+<!-- Summary & Risk -->
+<div class="summary-risk">
+  <div class="summary-box">
+    <h4>📋 今日要点</h4>
+    <ul>
+      <li>陕西发布营利性民办学校监管细则征求意见稿，筹设期禁招生、收费须公示30天</li>
+      <li>College Board会议披露：SAT国际考生5年暴涨71%，AP国际考生10年翻倍</li>
+      <li>IB三大改革深化：全面机考试点启动、6门变4门、科学新大纲首考</li>
+      <li>广州贝赛思7亿原址重建，头部国际学校"K型分化"加固护城河</li>
+      <li>石家庄显现国际学校破产拍卖3000万成交，行业洗牌信号明确</li>
+    </ul>
+  </div>
+  <div class="risk-box">
+    <h4>⚠️ 风险关注</h4>
+    <ul>
+      <li>营利性民办校监管趋严，收费公示与年检制度或影响运营成本结构</li>
+      <li>IB机考改革推进，学校需提前评估技术基础设施与教师培训投入</li>
+      <li>标化考试全面回归趋势下，AP/SAT竞争加剧，德普需强化备考支持体系</li>
+      <li>国际学校"K型分化"加速，尾部学校出清，品牌与认证壁垒价值凸显</li>
+    </ul>
+  </div>
+</div>
+
+<!-- News -->
+<div class="news-section">
+  <h2>今日校政热点</h2>
+
+  <!-- Card 1 -->
+  <div class="news-card">
+    <div class="num">1</div>
+    <h3>陕西省发布营利性民办学校监督管理实施细则征求意见稿</h3>
+    <div class="meta">
+      <span class="tag-a">📁 维度A · 民办政策</span>
+      <span>📅 2026-09-11</span>
+      <span>🏛 陕西省教育厅</span>
+      <span class="meta-doc-link" onclick="window.open('https://jyt.shaanxi.gov.cn/hd/dczj/zjDetail.html?id=62','_blank')">📄 征求意见稿 ↗</span>
+    </div>
+    <div class="summary">
+      陕西省教育厅9月11日公布《陕西省营利性民办学校监督管理实施细则（征求意见稿）》，面向社会公开征求意见。核心要点包括：<strong>营利性民办学校筹设期不得超过3年，筹设期间不得招生</strong>；收费实行市场调节价，但须提前30天向社会公示后执行；建立年度检查制度，年检不合格学校将被限期整改。该细则若正式施行，将成为西北地区首个省级营利性民办校专项监管文件。
+    </div>
+    <div class="source-links">
+      <a class="source-btn" href="https://jyt.shaanxi.gov.cn/hd/dczj/zjDetail.html?id=62" target="_blank">🔗 点击查阅原文 <span class="arrow">→</span> 陕西省教育厅</a>
+      <a class="source-btn" href="https://www.sanqin.com/2026-09/18/content_20121701.html" target="_blank">🔗 点击查阅原文 <span class="arrow">→</span> 三秦网报道</a>
+    </div>
+    <div class="policy-compare">
+      <strong>📊 政策对比：</strong>与重庆现行《重庆市民办教育促进条例》相比，陕西细则在"筹设期禁招生"和"收费公示30天"两项上更为严格。重庆目前仅要求收费项目及标准备案，未明确公示时限。德普作为非营利性民办学校，不受营利性细则直接约束，但需关注重庆后续是否跟进类似收紧。
+    </div>
+    <div class="depu-alert">
+      <strong>🏫 与德普关联：</strong>德普为非营利性民办学校，不受营利性收费市场化条款直接影响。但需关注两点：一是重庆是否会参照陕西收紧非营利性校收费备案要求；二是"筹设期禁招生"条款若扩展至非营利性校，将影响未来新校区或新学段的筹备节奏。建议行政部跟踪重庆市教委后续动态。
+    </div>
+  </div>
+
+  <!-- Card 2 -->
+  <div class="news-card">
+    <div class="num">2</div>
+    <h3>College Board新学年会议：SAT国际考生5年暴涨71%，AP国际考生10年翻倍</h3>
+    <div class="meta">
+      <span class="tag-b">📁 维度B · 出国留学</span>
+      <span class="tag-c">📁 维度C · 国际课程</span>
+      <span>📅 2026-09-09</span>
+      <span>🏛 College Board</span>
+    </div>
+    <div class="summary">
+      College Board于9月9日召开2026-2027新学年会议，发布多项官方数据：<strong>SAT国际考生从2022年的12.7万人增至2026年的21.7万人，5年涨幅71%</strong>，同比去年增长13%；<strong>AP国际考生从2016年的7.3万人增至2026年的14.9万人，10年增长105%</strong>，2026年共报考32.3万科次。会议同时确认：2028申请季起，藤校标化考试全面回归；AP Session 1/2时间调整、AP统计学全Bluebook机考、6门世界语言机考；新增Career Kickstart项目（AP商业与个人理财、网络安全2027年5月首考）。
+    </div>
+    <div class="source-links">
+      <a class="source-btn" href="https://ielts.xdf.cn/202609/15386948.html" target="_blank">🔗 点击查阅原文 <span class="arrow">→</span> 新东方雅思</a>
+      <a class="source-btn" href="https://www.jingsailian.com/news/1651131.html" target="_blank">🔗 点击查阅原文 <span class="arrow">→</span> 竞赛联盟</a>
+    </div>
+    <div class="policy-compare">
+      <strong>📊 数据透视：</strong>SAT/AP国际考生持续高速增长，反映全球留学需求韧性。但竞争同步加剧——2026年AP 32.3万科次中，5分率最高的科目（中文、日语、微积分BC）与德普开设课程高度重叠，意味着德普学生需在"高分扎堆"科目中建立差异化优势。
+    </div>
+    <div class="depu-alert">
+      <strong>🏫 与德普关联：</strong>德普作为College Board认证校，AP课程为升学核心优势。建议：① 关注AP机考改革进度，提前部署Bluebook模拟环境；② 针对2027年新增的AP商业与个人理财、网络安全课程，评估是否纳入选修体系；③ 标化全面回归趋势下，强化SAT备考支持体系，尤其关注社会考生报名通道变化。
+    </div>
+  </div>
+
+  <!-- Card 3 -->
+  <div class="news-card">
+    <div class="num">3</div>
+    <h3>IB三大改革深化：全面机考试点启动、6门变4门、科学新大纲首考</h3>
+    <div class="meta">
+      <span class="tag-c">📁 维度C · 国际课程</span>
+      <span>📅 2026-09月</span>
+      <span>🏛 IBO国际文凭组织</span>
+    </div>
+    <div class="summary">
+      2026年9月，IBO三大改革进入执行阶段：<strong>① 全面机考</strong>——2026年5月首批60校约3000人试点语言类机考，2026年11月起全校可选机考，2030年代初实现全面数字化；<strong>② 6门变4门</strong>——2026年11月起，DP必修课调整为3门HL+1门SL，原2门SL由300课时"变革领导力"（Leadership for Change）项目替代，占14分，总分保持45分不变；<strong>③ 科学新大纲</strong>——环境系统与社会（ESS）、全球政治、体育科学（SEHS）新大纲2026年5月首考。
+    </div>
+    <div class="source-links">
+      <a class="source-btn" href="https://ib.hanlin.com/news/2856.html" target="_blank">🔗 点击查阅原文 <span class="arrow">→</span> 翰林国际教育</a>
+      <a class="source-btn" href="https://www.ix-edu.com/n/202607/14967.html" target="_blank">🔗 点击查阅原文 <span class="arrow">→</span> 国际教育网</a>
+    </div>
+    <div class="policy-compare">
+      <strong>📊 改革对比：</strong>IB机考进度领先A-Level（CAIE计划2026年部分科目试点）和AP（Bluebook已覆盖部分科目）。"6变4"是IB 50年来最大结构性调整，与A-Level的3-4门主课趋同，可能削弱IB"全科培养"差异化定位，但"变革领导力"项目或成为新的竞争力来源。
+    </div>
+    <div class="depu-alert">
+      <strong>🏫 与德普关联：</strong>德普为IB候选校，正处于认证关键期。建议：① 机考基础设施提前规划，确保考场网络与设备达标；② "变革领导力"项目需要跨学科师资与项目制课程设计能力，人力资源部可提前储备；③ 科学新大纲（ESS/全球政治/SEHS）若纳入德普课程矩阵，需安排教师参加IBO官方培训。
+    </div>
+  </div>
+
+  <!-- Card 4 -->
+  <div class="news-card">
+    <div class="num">4</div>
+    <h3>广州贝赛思7亿原址重建，头部国际学校"K型分化"加固护城河</h3>
+    <div class="meta">
+      <span class="tag-d">📁 维度D · 行业趋势</span>
+      <span>📅 2026-09-10</span>
+      <span>🏛 贝赛思中国</span>
+    </div>
+    <div class="summary">
+      广州贝赛思国际学校于9月10日举行原址重建奠基仪式，<strong>总投入7亿元人民币</strong>，预计2028年5月竣工启用。重建后建筑面积将从3.8万㎡扩至5万㎡，学位规模同步提升。过渡期内，学校已整体迁至琶洲双语校区（投资13亿、1900学位），该校区于8月29日开学。贝赛思在中国已运营12个校区，2026届毕业生获藤校+Top10录取37枚，升学成绩稳居华南第一梯队。
+    </div>
+    <div class="source-links">
+      <a class="source-btn" href="https://new.qq.com/rain/a/20260918A09ZHM00" target="_blank">🔗 点击查阅原文 <span class="arrow">→</span> 腾讯新闻</a>
+    </div>
+    <div class="policy-compare">
+      <strong>📊 竞争对标：</strong>贝赛思"7亿重建+13亿新校区"双轮投入，单校资本密度远超行业均值。对比德普：德普现有校区硬件已属重庆一流，但在资本扩张节奏上需审慎评估——重庆国际教育市场规模与广深存在量级差异，盲目跟进重资产扩张风险较高。
+    </div>
+    <div class="depu-alert">
+      <strong>🏫 与德普关联：</strong>贝赛思的持续高投入印证头部国际学校"K型分化"逻辑——强者愈强，尾部加速出清。德普的竞争策略应聚焦：① 强化剑桥/IB/College Board三重认证壁垒；② 以1:4师生比和A-Level 30门课程广度构建差异化；③ 避免与贝赛思等头部在"资本军备竞赛"中正面竞争，转而深耕西南区域品牌心智。
+    </div>
+  </div>
+
+  <!-- Card 5 -->
+  <div class="news-card">
+    <div class="num">5</div>
+    <h3>石家庄显现国际学校破产拍卖3000万成交，行业洗牌信号明确</h3>
+    <div class="meta">
+      <span class="tag-d">📁 维度D · 行业趋势</span>
+      <span>📅 2026-09-07</span>
+      <span>🏛 阿里拍卖 / 石家庄市教育局</span>
+    </div>
+    <div class="summary">
+      石家庄显现国际学校资产于9月7日在阿里拍卖平台以<strong>3000万元底价成交</strong>。该校资产评估价曾达1.12亿元，自2024年4月起以1.12亿元起拍，历经21次流拍（起拍价逐步降至3500万元），最终于第22轮以3000万元成交。显现国际学校2014年建校，采用华德福教育理念，因未参加2019-2020年度年检，于2022年7月被石家庄市教育局撤销办学登记。此次拍卖标的包含校舍、土地及教学设备。
+    </div>
+    <div class="source-links">
+      <a class="source-btn" href="https://www.toutiao.com/article/7686693510545244724" target="_blank">🔗 点击查阅原文 <span class="arrow">→</span> 今日头条</a>
+    </div>
+    <div class="policy-compare">
+      <strong>📊 行业警示：</strong>显现学校从1.12亿评估价到3000万成交，资产缩水73%，且历经21次流拍，反映市场对"问题学校"资产的极度谨慎。与德普对比：德普2024年巴南区年检合格（巴南教委发〔2024〕72号），办学资质稳健，但需警惕"未参加年检→撤销登记"的连锁风险。
+    </div>
+    <div class="depu-alert">
+      <strong>🏫 与德普关联：</strong>显现学校案例为德普敲响三重警钟：① 年检合规是办学底线，行政部须确保每年按时完成区/市两级年检；② 华德福等小众教育理念学校抗风险能力较弱，德普坚持A-Level/IB主流课程路线的战略正确性得到验证；③ 资产端：若未来涉及校区调整，需提前评估资产流动性，避免"重资产、低流动"陷阱。
+    </div>
+  </div>
+
+</div>
+
+<!-- Notes -->
+<div class="notes-section">
+  <h3>📝 阅读笔记</h3>
+  <textarea id="notesArea" placeholder="在此记录今日简报的阅读心得、待办事项或决策备忘..."></textarea>
+  <div class="save-hint">💡 笔记自动保存至浏览器本地，刷新后仍可查看</div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>本简报由自动化任务每日 8:40 自动生成 · 信息来源：教育部 / 重庆市教委 / 巴南区教委 / 权威媒体</p>
+  <p style="margin-top:6px;">重庆德普外国语学校 · <a href="https://caccioo.github.io/depu-daily-briefing/" target="_blank">https://caccioo.github.io/depu-daily-briefing/</a></p>
+  <p style="margin-top:4px; opacity:0.7;">📅 2026-09-22 第97期</p>
+</div>
+
+</div>
+
+<script>
+// ===== Calendar =====
+var EMBEDDED_DATES = ["2026-06-18","2026-06-19","2026-06-20","2026-06-21","2026-06-22","2026-06-23","2026-06-24","2026-06-25","2026-06-26","2026-06-27","2026-06-28","2026-06-29","2026-06-30","2026-07-01","2026-07-02","2026-07-03","2026-07-10","2026-07-11","2026-07-12","2026-07-17","2026-07-19","2026-07-20","2026-07-21","2026-07-23","2026-07-25","2026-07-28","2026-07-31","2026-08-03","2026-08-04","2026-08-05","2026-08-06","2026-08-15","2026-08-16","2026-08-18","2026-08-19","2026-08-20","2026-08-21","2026-08-22","2026-08-23","2026-08-24","2026-08-25","2026-08-26","2026-08-27","2026-08-28","2026-08-29","2026-08-30","2026-08-31","2026-09-01","2026-09-02","2026-09-03","2026-09-04","2026-09-05","2026-09-06","2026-09-07","2026-09-08","2026-09-09","2026-09-10","2026-09-11","2026-09-12","2026-09-13","2026-09-14","2026-09-15","2026-09-16","2026-09-17","2026-09-18","2026-09-19","2026-09-20","2026-09-21","2026-09-22"];
+var BRIEFING_DATE = "2026-09-22";
+var calYear = 2026, calMonth = 8; // 0-based
+
+function renderCalendar(){
+  var grid = document.getElementById('calendarGrid');
+  var title = document.getElementById('calMonthTitle');
+  grid.innerHTML = '';
+  title.textContent = calYear + '年' + (calMonth+1) + '月';
+  var days = ['日','一','二','三','四','五','六'];
+  days.forEach(function(d){ var el = document.createElement('div'); el.className='day-label'; el.textContent=d; grid.appendChild(el); });
+  var first = new Date(calYear, calMonth, 1).getDay();
+  var total = new Date(calYear, calMonth+1, 0).getDate();
+  var prevTotal = new Date(calYear, calMonth, 0).getDate();
+  var dayStart = (calYear === 2026 && calMonth === 5) ? 18 : 1;
+  for(var i=first-1; i>=0; i--){ var el=document.createElement('div'); el.className='day other-month'; el.textContent=prevTotal-i; grid.appendChild(el); }
+  for(var d=1; d<=total; d++){
+    if(calYear===2026 && calMonth===5 && d < dayStart) continue;
+    var el=document.createElement('div');
+    var ds = calYear+'-'+String(calMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    el.className='day';
+    el.textContent=d;
+    if(EMBEDDED_DATES.indexOf(ds)!==-1){ el.classList.add('has-briefing'); el.onclick=function(date){return function(){navigateToDate(date);};}(ds); }
+    if(ds===BRIEFING_DATE){ el.classList.add('today'); }
+    grid.appendChild(el);
+  }
+  var rem = (first + total) % 7;
+  if(rem!==0) for(var i=1; i<=7-rem; i++){ var el=document.createElement('div'); el.className='day other-month'; el.textContent=i; grid.appendChild(el); }
+  document.getElementById('prevMonth').disabled = (calYear===2026 && calMonth===5);
+  document.getElementById('nextMonth').disabled = (calYear===2026 && calMonth===8);
+}
+function changeMonth(dir){ calMonth+=dir; if(calMonth>11){calMonth=0;calYear++;} if(calMonth<0){calMonth=11;calYear--;} renderCalendar(); }
+function navigateToDate(date){ var parts=date.split('-'); var y=parts[0], m=parts[1], d=parts[2]; var fn='校政热点简报_'+y+'-'+m+'-'+d+'.html'; window.location.href=fn; }
+renderCalendar();
+
+// ===== Notes =====
+(function(){
+  var area = document.getElementById('notesArea');
+  var key = 'briefing_notes_' + BRIEFING_DATE;
+  var saved = localStorage.getItem(key);
+  if(saved) area.value = saved;
+  area.addEventListener('input', function(){ localStorage.setItem(key, area.value); });
+})();
+</script>
+</body>
+</html>
