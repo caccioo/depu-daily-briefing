@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>德普校政热点简报 · 2026年9月23日</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+  :root{ --depu-green:#004844; --depu-green-light:#065700; --depu-green-bright:#0DB900; --depu-yellow:#C8F04B; --depu-yellow-soft:#F0F5D0; --depu-cream:#F8F9F2; --depu-dark:#0A1F1C; --depu-gray:#6B7B78; --depu-border:#D4DDD8; }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ font-family:'Noto Sans SC', sans-serif; background:#F0F3F1; color:var(--depu-dark); line-height:1.7; -webkit-font-smoothing:antialiased; }
+  .container{ max-width:720px; margin:0 auto; padding:20px 16px 40px; }
+  .header{ position:relative; background:linear-gradient(135deg, #003530 0%, #004844 40%, #065700 100%); color:#fff; padding:36px 28px 32px; border-radius:16px 16px 0 0; overflow:hidden; }
+  .header::before{ content:''; position:absolute; top:-20px; right:-40px; width:220px; height:220px; background:url('depu_logo_white.png') no-repeat center; background-size:contain; opacity:0.12; transform:rotate(-8deg); }
+  .header-content{ position:relative; z-index:1; }
+  .header h1{ font-family:'Noto Serif SC', serif; font-size:28px; font-weight:700; letter-spacing:2px; margin-bottom:8px; }
+  .header .subtitle{ font-size:13px; opacity:0.85; font-weight:300; letter-spacing:1px; }
+  .header .pill{ display:inline-block; background:rgba(255,255,255,0.15); backdrop-filter:blur(8px); padding:6px 16px; border-radius:20px; font-size:12px; margin-top:14px; border:1px solid rgba(255,255,255,0.2); }
+  .calendar-section{ background:#fff; padding:20px 24px; border-bottom:1px solid var(--depu-border); }
+  .calendar-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+  .calendar-header h3{ font-size:15px; color:var(--depu-green); font-weight:600; }
+  .calendar-nav{ display:flex; gap:8px; }
+  .calendar-nav button{ width:28px; height:28px; border:1px solid var(--depu-border); background:#fff; border-radius:6px; cursor:pointer; font-size:14px; color:var(--depu-green); transition:all .2s; display:flex; align-items:center; justify-content:center; }
+  .calendar-nav button:hover:not(:disabled){ background:var(--depu-green); color:#fff; border-color:var(--depu-green); }
+  .calendar-nav button:disabled{ opacity:0.3; cursor:not-allowed; }
+  .calendar-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:4px; text-align:center; }
+  .calendar-grid .day-label{ font-size:11px; color:var(--depu-gray); font-weight:500; padding:6px 0; }
+  .calendar-grid .day{ aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-size:12px; border-radius:8px; cursor:pointer; transition:all .2s; position:relative; }
+  .calendar-grid .day:hover{ background:var(--depu-yellow-soft); }
+  .calendar-grid .day.other-month{ color:#ccc; }
+  .calendar-grid .day.has-briefing{ background:var(--depu-green); color:#fff; font-weight:600; }
+  .calendar-grid .day.has-briefing:hover{ background:var(--depu-green-light); }
+  .calendar-grid .day.today{ box-shadow:inset 0 0 0 2px var(--depu-yellow); }
+  .calendar-grid .day.today.has-briefing{ box-shadow:inset 0 0 0 2px var(--depu-yellow), 0 0 0 2px var(--depu-yellow); }
+  .calendar-grid .day .dot{ position:absolute; bottom:3px; width:4px; height:4px; background:var(--depu-yellow); border-radius:50%; }
+  .summary-risk{ display:grid; grid-template-columns:1fr 1fr; gap:16px; padding:20px 24px; background:var(--depu-cream); border-bottom:1px solid var(--depu-border); }
+  .summary-box, .risk-box{ background:#fff; padding:16px; border-radius:12px; border:1px solid var(--depu-border); }
+  .summary-box h4, .risk-box h4{ font-size:13px; color:var(--depu-green); margin-bottom:10px; display:flex; align-items:center; gap:6px; }
+  .summary-box ul, .risk-box ul{ list-style:none; font-size:12px; color:#555; }
+  .summary-box li, .risk-box li{ padding:3px 0; padding-left:14px; position:relative; }
+  .summary-box li::before{ content:'▸'; position:absolute; left:0; color:var(--depu-green-bright); }
+  .risk-box li::before{ content:'⚠'; position:absolute; left:0; color:#E8A838; }
+  .news-section{ background:#fff; padding:24px; }
+  .news-section h2{ font-family:'Noto Serif SC', serif; font-size:18px; color:var(--depu-green); margin-bottom:20px; padding-bottom:10px; border-bottom:2px solid var(--depu-green); display:inline-block; }
+  .news-card{ background:#fff; border:1px solid var(--depu-border); border-radius:12px; padding:20px; margin-bottom:16px; transition:all .2s; position:relative; overflow:hidden; }
+  .news-card::before{ content:''; position:absolute; left:0; top:0; bottom:0; width:4px; background:linear-gradient(180deg, var(--depu-green) 0%, var(--depu-green-bright) 100%); border-radius:12px 0 0 12px; }
+  .news-card:hover{ box-shadow:0 4px 20px rgba(0,72,68,0.08); transform:translateY(-1px); }
+  .news-card .num{ position:absolute; top:16px; right:16px; width:32px; height:32px; background:var(--depu-green); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; font-family:'Noto Serif SC', serif; }
+  .news-card h3{ font-size:15px; font-weight:600; color:var(--depu-dark); margin-bottom:10px; padding-right:40px; line-height:1.5; }
+  .news-card .meta{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; font-size:11px; }
+  .news-card .meta span{ display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:12px; background:var(--depu-cream); color:var(--depu-gray); }
+  .news-card .meta .tag-a{ background:#E8F5E9; color:#2E7D32; }
+  .news-card .meta .tag-b{ background:#E3F2FD; color:#1565C0; }
+  .news-card .meta .tag-c{ background:#FFF3E0; color:#E65100; }
+  .news-card .meta .tag-d{ background:#F3E5F5; color:#7B1FA2; }
+  .news-card .meta .meta-doc-link{ background:var(--depu-yellow-soft); color:var(--depu-green); border:1px dashed var(--depu-yellow); cursor:pointer; }
+  .news-card .meta .meta-doc-link:hover{ background:var(--depu-yellow); }
+  .news-card .summary{ font-size:13px; color:#444; line-height:1.8; margin-bottom:14px; }
+  .news-card .summary strong{ color:var(--depu-green); }
+  .source-links{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+  .source-btn{ display:inline-flex; align-items:center; gap:6px; padding:6px 14px; background:#fff; border:1px solid var(--depu-border); border-radius:8px; font-size:12px; color:var(--depu-green); text-decoration:none; transition:all .2s; }
+  .source-btn:hover{ background:var(--depu-green); color:#fff; border-color:var(--depu-green); }
+  .source-btn .arrow{ transition:transform .2s; }
+  .source-btn:hover .arrow{ transform:translateX(3px); }
+  .policy-compare{ background:var(--depu-yellow-soft); border:1px dashed var(--depu-yellow); border-radius:8px; padding:12px 14px; margin-bottom:10px; font-size:12px; color:#555; }
+  .policy-compare strong{ color:var(--depu-green); }
+  .depu-alert{ background:#E8F5E9; border:1px dashed #4CAF50; border-radius:8px; padding:12px 14px; font-size:12px; color:#2E7D32; }
+  .depu-alert strong{ color:var(--depu-green); }
+  .notes-section{ background:#fff; padding:24px; border-top:1px solid var(--depu-border); }
+  .notes-section h3{ font-size:14px; color:var(--depu-green); margin-bottom:10px; }
+  .notes-section textarea{ width:100%; min-height:100px; padding:12px; border:1px solid var(--depu-border); border-radius:8px; font-family:'Noto Sans SC', sans-serif; font-size:13px; resize:vertical; }
+  .notes-section .save-hint{ font-size:11px; color:var(--depu-gray); margin-top:6px; }
+  .footer{ text-align:center; padding:24px; font-size:11px; color:var(--depu-gray); background:var(--depu-cream); border-radius:0 0 16px 16px; }
+  .footer a{ color:var(--depu-green); text-decoration:none; }
+  @media(max-width:600px){ .summary-risk{ grid-template-columns:1fr; } .header h1{ font-size:22px; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Header -->
+<div class="header">
+  <div class="header-content">
+    <h1>德普校政热点简报</h1>
+    <div class="subtitle">DEPU DAILY POLICY BRIEFING</div>
+    <span class="pill">📅 2026年9月23日 星期三</span>
+  </div>
+</div>
+
+<!-- Calendar -->
+<div class="calendar-section">
+  <div class="calendar-header">
+    <h3 id="calMonthTitle">2026年9月</h3>
+    <div class="calendar-nav">
+      <button id="prevMonth" onclick="changeMonth(-1)">‹</button>
+      <button id="nextMonth" onclick="changeMonth(1)">›</button>
+    </div>
+  </div>
+  <div class="calendar-grid" id="calendarGrid"></div>
+</div>
+
+<!-- Summary & Risk -->
+<div class="summary-risk">
+  <div class="summary-box">
+    <h4>📋 今日要点</h4>
+    <ul>
+      <li>中办、国办印发《关于分类推进高校改革的意见》，首次系统部署高校分类发展，明确"顺应学龄人口变化趋势"</li>
+      <li>US News 2027全美大学排名发布：MIT登顶终结普林斯顿15年霸榜，新增"按专业毕业生收入"指标</li>
+      <li>加拿大学签三大新规9月1日落地：资金门槛上调、前SDS续签严查、录取通知书集中核验</li>
+      <li>重庆树人小学与诺林巴蜀外籍人员子女学校签约结对，公办名校×国际学校"双向对话"模式落地</li>
+      <li>国际化学校行业十余年来首次负增长（928所/在校生-2.8万），北上广9所新校却集中开学</li>
+    </ul>
+  </div>
+  <div class="risk-box">
+    <h4>⚠️ 风险关注</h4>
+    <ul>
+      <li>高校学科专业动态调整加速，国际课程选科与升学规划需前瞻对接专业趋势</li>
+      <li>美英加主要目的地资金门槛与审核同步收紧，留学资金证明须按最新标准预留</li>
+      <li>学签材料真实性核查升级至"零容错"，成绩单/推荐信等官方文书出具流程须严控</li>
+      <li>行业首次负增长+超四成非头部校招生不足，存量竞争压力向区域市场传导</li>
+      <li>深圳等地停批新民办义务教育学校，资质完整与年检合规仍是办学存续底线</li>
+    </ul>
+  </div>
+</div>
+
+<!-- News -->
+<div class="news-section">
+  <h2>今日校政热点</h2>
+
+  <!-- Card 1 -->
+  <div class="news-card">
+    <div class="num">1</div>
+    <h3>中办、国办印发《关于分类推进高校改革的意见》——首次系统部署高校分类发展，明确"顺应学龄人口变化趋势"</h3>
+    <div class="meta">
+      <span class="tag-a">📁 维度A · 国家政策</span>
+      <span>📅 2026-09-20</span>
+      <span>🏛 中共中央办公厅 / 国务院办公厅</span>
+      <span class="meta-doc-link" onclick="window.open('https://www.toutiao.com/article/7687597881662734891/','_blank')">📄 《意见》报道 ↗</span>
+    </div>
+    <div class="summary">
+      9月20日，教育部消息：中共中央办公厅、国务院办公厅近日印发《关于分类推进高校改革的意见》，对分类推进高校改革作出系统部署。核心内容：<strong>科学构建高校分类发展体系</strong>——区分综合性、特色化基本方向，根据隶属关系建立多元适配的分类模式；统筹中央部门所属高校与地方高校协同发展、统筹高等教育资源布局与人才培养结构、统筹用好国际国内资源；<strong>激发分类发展动能</strong>——实施优质特色应用型本科院校和学科专业建设工程；<strong>健全分类发展机制</strong>——构建多赛道、多主体的高校分类评价体系，完善以国家战略需求为牵引的学科专业设置调整机制。《意见》并首次明确提出"顺应高等教育普及化阶段发展特征和<strong>学龄人口变化趋势</strong>"。
+    </div>
+    <div class="source-links">
+      <a class="source-btn" href="https://www.toutiao.com/article/7687597881662734891/" target="_blank">🔗 点击查阅原文 <span class="arrow">→</span> 中国青年报</a>
+    </div>
+    <div class="policy-compare">
+      <strong>📊 政策对比：</strong>此前高校分类管理的要求多散见于规划纲要和年度工作要点，本次是<b>首次以中办、国办名义联合印发高校分类改革专项文件</b>，将"分类发展"上升为高等教育领域的系统性改革框架。与以往文件相比，两处表述值得重点关注：一是"建立高校分类管理机制"意味着不同类型高校将适用差异化的治理与评价方式；二是"学龄人口变化趋势"首次写入中央级高校改革文件，人口结构对高等教育资源布局的影响被正式纳入顶层设计。
+    </div>
+    <div class="depu-alert">
+      <strong>🏫 与德普关联：</strong>① 高校学科专业"动态调整、供需适配"机制确立，未来5-10年大学专业结构与就业格局将持续重构，德普A-Level/IB升学指导团队的选科建议需前瞻对接国内外学科趋势；② "学龄人口变化趋势"进入中央文件，印证生源变化对全学段的传导压力——德普的差异化竞争力（全资质认证、1:4师生比、30门IG+A-Level课程广度）是应对生源竞争的核心壁垒；③ 高校分类评价"多赛道"格局下，家长"转轨与否"的择校决策逻辑将更复杂，招生宣传可借此强化"国际化升学赛道"的独特价值定位。
+    </div>
+  </div>
+
+  <!-- Card 2 -->
+  <div class="news-card">
+    <div class="num">2</div>
+    <h3>US News 2027全美大学排名发布：MIT登顶终结普林斯顿15年霸榜，新增"按专业毕业生收入"指标</h3>
+    <div class="meta">
+      <span class="tag-b">📁 维度B · 出国留学</span>
+      <span>📅 2026-09-22</span>
+      <span>🏛 U.S. News &amp; World Report</span>
+    </div>
+    <div class="summary">
+      美东时间9月21日晚，U.S. News发布2027年全美最佳大学排名：<strong>MIT首次登顶，终结普林斯顿大学连续15年的榜首地位</strong>（普林斯顿、哈佛分列第二、第三，耶鲁第四，加州理工连升6位与斯坦福并列第五）。今年是官方预告"排名变动最大的一年"，方法论出现关键调整：<strong>新增"Earnings by Major"（按专业比较的毕业后收入）指标</strong>，取代因联邦数据缺失而移除的"毕业生负债"指标。受此影响，理工强校集体上升（CMU从第20升至第14），就业表现扎实的中型私立大学上行，多所公立大U下滑。排名基于最多17项指标，覆盖400所全国性大学。
+    </div>
+    <div class="source-links">
+      <a class="source-btn" href="https://news.qq.com/rain/a/20260922A062H800" target="_blank">🔗 点击查阅原文 <span class="arrow">→</span> 腾讯新闻·谷雨星球</a>
+      <a class="source-btn" href="https://www.boston.com/news/education/2026/09/22/the-best-colleges-in-the-country-in-2027-according-to-u-s-news" target="_blank">🔗 点击查阅原文 <span class="arrow">→</span> Boston.com</a>
+    </div>
+    <div class="policy-compare">
+      <strong>📊 数据透视：</strong>与6月发布的US News世界大学排名（偏重学术科研）不同，全美榜衡量本科教育价值。今年评价标准的转向信号清晰：<b>"好大学"的定义正从名气光环转向"毕业后过得怎么样"</b>——专业收入数据取代负债数据，就业回报成为排名权重中的显性变量。MIT登顶、加州理工/CMU跃升均印证理工与就业导向的加分逻辑。
+    </div>
+    <div class="depu-alert">
+      <strong>🏫 与德普关联：</strong>① 美本方向家庭的选校逻辑正在改变，升学指导的选校清单与话术需同步更新——单一年度排名波动不应成为择校依据，应引导家庭结合专业实力与就业数据综合判断；② "按专业收入"指标会放大家长对专业回报的关注，建议升学指导活动增加"专业选择×就业数据"解读模块；③ 排名大洗牌期间，及时向家长传递理性选校观点，是体现德普升学指导专业度的良好窗口。
+    </div>
+  </div>
+
+  <!-- Card 3 -->
+  <div class="news-card">
+    <div class="num">3</div>
+    <h3>加拿大学签三大新规9月1日落地：资金门槛上调、前SDS学生续签严查、录取通知书集中核验</h3>
+    <div class="meta">
+      <span class="tag-b">📁 维度B · 出国留学</span>
+      <span>📅 2026-09-01 生效</span>
+      <span>🏛 加拿大移民部（IRCC）</span>
+    </div>
+    <div class="summary">
+      据加拿大移民部（IRCC）披露，2026年9月1日起三项学签新规同步生效：<strong>① 资金门槛上调</strong>——单人生活费最低要求升至23,448加元/年（上一年为22,895加元），2人家庭29,192加元、3人家庭35,888加元，每多一位随行家属增加6,318加元；且不再只看账户余额，移民官将全面核查资金来源（建议准备6个月银行流水），学制超过1年的课程还须说明后续学业资金方案；<strong>② 续签风险筛查</strong>——启用风险分类模型处理学签续签，对曾凭已于2024年11月终止的SDS快速通道获批学签的学生实施更严格核查。审计长办公室2026年报告显示，800份确认涉及欺诈文件或虚假陈述的学签中，541份（68%）初始经SDS获批；<strong>③ 录取通知书核验</strong>——LoA与院校（DLI）系统交叉比对全面执行，录取专业、开课时间、学费信息与学校系统不匹配将被直接拒签。
+    </div>
+    <div class="source-links">
+      <a class="source-btn" href="https://www.canbridge.com/news/view-9722.html" target="_blank">🔗 点击查阅原文 <span class="arrow">→</span> 加桥出国</a>
+      <a class="source-btn" href="http://www.e0734.com/content/2026/0915/799_668103.html" target="_blank">🔗 点击查阅原文 <span class="arrow">→</span> 中国衡阳新闻网</a>
+    </div>
+    <div class="policy-compare">
+      <strong>📊 趋势对比：</strong>继英国学生签证生活费存款标准11月30日起上调（伦敦£1,570/月，见9月17日简报）后，加拿大资金门槛亦跟进上调——<b>北美与英系主要目的地已形成"资金证明水涨船高+材料真实性严审"的同步收紧格局</b>。加拿大本次收紧由2026年联邦审计报告驱动，与美、英基于签证系统的收紧动因不同，但方向一致。
+    </div>
+    <div class="depu-alert">
+      <strong>🏫 与德普关联：</strong>① 加拿大为德普学生常见留学目的地之一，升学指导需提醒相关家庭按新标准预留资金证明，并提前规范大额资金流转记录；② 全球主要目的地材料核查全面升级，德普在成绩单、在读证明、推荐信等官方文书出具环节必须坚持"零容错"——任何字面修改痕迹都可能连累学生拒签；③ 建议在11月前向家长推送"留学资金规划提示"，覆盖英国（11月30日新标准）与加拿大双重节点。
+    </div>
+  </div>
+
+  <!-- Card 4 -->
+  <div class="news-card">
+    <div class="num">4</div>
+    <h3>重庆树人小学与诺林巴蜀外籍人员子女学校签约结对——公办名校×国际学校"双向对话"模式落地重庆</h3>
+    <div class="meta">
+      <span class="tag-d">📁 维度D · 行业趋势</span>
+      <span>📅 2026-09-18 签约</span>
+      <span>🏛 沙坪坝区树人小学 / 诺林巴蜀学校</span>
+    </div>
+    <div class="summary">
+      9月18日，重庆市诺林巴蜀外籍人员子女学校与沙坪坝区树人小学正式签署友好合作框架协议，确立友好学校伙伴关系。合作方向包括：两校管理团队互通办学管理经验；教师开展课堂观摩与教学研讨，围绕<strong>项目制学习（PBL）协同备课教研</strong>；组织师生互访研学、主题实践及文体交流。树人小学为1938年建校的本土基础教育名校；诺林巴蜀2015年经重庆市教委批准设立，持有<strong>NEASC、Cognia双重国际认证</strong>，实行全英文小班教学。这是重庆本地公办基础教育与外籍人员子女学校平等互鉴、协同发展的标志性尝试。
+    </div>
+    <div class="source-links">
+      <a class="source-btn" href="https://www.cqnews.net/web/content_1551492272370712576.html" target="_blank">🔗 点击查阅原文 <span class="arrow">→</span> 华龙网（第1眼TV）</a>
+    </div>
+    <div class="policy-compare">
+      <strong>📊 政策呼应：</strong>9月16日简报曾报道，教育部2026年秋季开学视频调度会<b>首次明确"推进公办民办结对共建"</b>。树人×诺林巴蜀签约正是该导向在重庆的首批落地样本——且结对双方为"公办名校+外籍人员子女学校"，说明共建实践已从公办民办扩展至更广的"本土×国际化"办学类型。沙坪坝区将其定位为"区域教育开放融合的实践样本"，示范效应值得跟踪。
+    </div>
+    <div class="depu-alert">
+      <strong>🏫 与德普关联：</strong>① "公办校+国际校"结对模式若向全市推开，德普可主动谋划与巴南区公办名校的对口合作（PBL联合教研、师生互访、体育交流等都是低门槛切入点），提升在区域教育生态中的能见度与美誉度；② 德普是剑桥PDQ教师职业发展中心，具备承接教师国际化培训的独特能力——此类结对合作正是输出教师培训价值的场景；③ 建议行政部跟踪沙坪坝样本的后续成效与巴南区教委的反应，如出现政策窗口可第一时间对接。
+    </div>
+  </div>
+
+  <!-- Card 5 -->
+  <div class="news-card">
+    <div class="num">5</div>
+    <h3>国际化学校行业十余年首次负增长（928所/在校生-2.8万），北上广9所新校却集中开学</h3>
+    <div class="meta">
+      <span class="tag-d">📁 维度D · 行业趋势</span>
+      <span>📅 2026-09</span>
+      <span>🏛 新学说《2025中国国际学校发展报告》</span>
+    </div>
+    <div class="summary">
+      据新学说《2025中国国际学校发展报告》：2025年获认证国际化学校<strong>928所，较2024年减少44所</strong>；在校生规模从49.6万降至<strong>46.8万，一年减少2.8万人，为十余年来首次负增长</strong>；新建校数量跌至8所，首次进入个位数；<strong>超四成非头部学校招生不足</strong>。与此同时，2026年9月北京、上海、广州三地<strong>9所全新国际化学校集中开学</strong>（贝赛思在北京、广州各落地一校区、各投13亿；哈罗落子广州黄埔，为亚洲第15校），头部品牌逆势扩张。而深圳今年"零新增"——不再审批新的民办义务教育学校，连片教育用地优先保障公办学位扩容。
+    </div>
+    <div class="source-links">
+      <a class="source-btn" href="https://m.guoji.114study.com/news/27703" target="_blank">🔗 点击查阅原文 <span class="arrow">→</span> 远播国际教育</a>
+    </div>
+    <div class="policy-compare">
+      <strong>📊 数据透视：</strong>"总量收缩+头部扩张"并存，与9月22日简报的两条新闻互为印证——贝赛思"7亿重建+13亿新校区"代表头部加码，石家庄显现学校破产拍卖代表尾部出清。行业整体进入<b>质量竞争阶段</b>：认证资质、课程体系与升学成果成为生存门槛；而政策端（深圳停批新民办义务教育学校）显示增量空间已被行政性封顶。
+    </div>
+    <div class="depu-alert">
+      <strong>🏫 与德普关联：</strong>① 在校生总量负增长意味着区域生源池变浅，招生策略需从"增量竞争"转向"存量竞争"——强化转学生接收通道与家长口碑裂变机制；② 在"超四成非头部校招生不足"的背景下，德普的逆势筹码清晰：胡润百学全国第30（较上年跃升10位）+剑桥/IB/College Board/Edexcel全资质配置，建议在2026-2027招生季将此作为核心叙事；③ 持续关注北上广头部品牌（贝赛思、哈罗系）是否向西南市场渗透，提前布局差异化防御。
+    </div>
+  </div>
+
+</div>
+
+<!-- Notes -->
+<div class="notes-section">
+  <h3>📝 阅读笔记</h3>
+  <textarea id="notesArea" placeholder="在此记录今日简报的阅读心得、待办事项或决策备忘..."></textarea>
+  <div class="save-hint">💡 笔记自动保存至浏览器本地，刷新后仍可查看</div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>本简报由自动化任务每日 8:40 自动生成 · 信息来源：教育部 / 重庆市教委 / 巴南区教委 / 权威媒体</p>
+  <p style="margin-top:6px;">重庆德普外国语学校 · <a href="https://caccioo.github.io/depu-daily-briefing/" target="_blank">https://caccioo.github.io/depu-daily-briefing/</a></p>
+  <p style="margin-top:4px; opacity:0.7;">📅 2026-09-23 第50期</p>
+</div>
+
+</div>
+
+<script>
+// ===== Calendar =====
+var EMBEDDED_DATES = ["2026-06-18","2026-06-19","2026-06-20","2026-06-21","2026-06-22","2026-06-23","2026-06-24","2026-06-25","2026-06-26","2026-06-27","2026-06-28","2026-06-29","2026-06-30","2026-07-01","2026-07-02","2026-07-03","2026-07-10","2026-07-11","2026-07-12","2026-07-17","2026-07-19","2026-07-20","2026-07-21","2026-07-23","2026-07-25","2026-07-28","2026-07-31","2026-08-03","2026-08-04","2026-08-05","2026-08-06","2026-08-15","2026-08-16","2026-08-18","2026-08-19","2026-08-21","2026-08-23","2026-08-24","2026-08-28","2026-08-30","2026-08-31","2026-09-02","2026-09-03","2026-09-15","2026-09-16","2026-09-17","2026-09-18","2026-09-20","2026-09-22","2026-09-23"];
+var BRIEFING_DATE = "2026-09-23";
+var calYear = 2026, calMonth = 8; // 0-based
+
+function renderCalendar(){
+  var grid = document.getElementById('calendarGrid');
+  var title = document.getElementById('calMonthTitle');
+  grid.innerHTML = '';
+  title.textContent = calYear + '年' + (calMonth+1) + '月';
+  var days = ['日','一','二','三','四','五','六'];
+  days.forEach(function(d){ var el = document.createElement('div'); el.className='day-label'; el.textContent=d; grid.appendChild(el); });
+  var first = new Date(calYear, calMonth, 1).getDay();
+  var total = new Date(calYear, calMonth+1, 0).getDate();
+  var prevTotal = new Date(calYear, calMonth, 0).getDate();
+  var dayStart = (calYear === 2026 && calMonth === 5) ? 18 : 1;
+  for(var i=first-1; i>=0; i--){ var el=document.createElement('div'); el.className='day other-month'; el.textContent=prevTotal-i; grid.appendChild(el); }
+  for(var d=1; d<=total; d++){
+    if(calYear===2026 && calMonth===5 && d < dayStart) continue;
+    var el=document.createElement('div');
+    var ds = calYear+'-'+String(calMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    el.className='day';
+    el.textContent=d;
+    if(EMBEDDED_DATES.indexOf(ds)!==-1){ el.classList.add('has-briefing'); el.onclick=function(date){return function(){navigateToDate(date);};}(ds); }
+    if(ds===BRIEFING_DATE){ el.classList.add('today'); }
+    grid.appendChild(el);
+  }
+  var rem = (first + total) % 7;
+  if(rem!==0) for(var i=1; i<=7-rem; i++){ var el=document.createElement('div'); el.className='day other-month'; el.textContent=i; grid.appendChild(el); }
+  document.getElementById('prevMonth').disabled = (calYear===2026 && calMonth===5);
+  document.getElementById('nextMonth').disabled = (calYear===2026 && calMonth===8);
+}
+function changeMonth(dir){ calMonth+=dir; if(calMonth>11){calMonth=0;calYear++;} if(calMonth<0){calMonth=11;calYear--;} renderCalendar(); }
+function navigateToDate(date){ var parts=date.split('-'); var y=parts[0], m=parts[1], d=parts[2]; var fn='校政热点简报_'+y+'-'+m+'-'+d+'.html'; window.location.href=fn; }
+renderCalendar();
+
+// ===== Notes =====
+(function(){
+  var area = document.getElementById('notesArea');
+  var key = 'briefing_notes_' + BRIEFING_DATE;
+  var saved = localStorage.getItem(key);
+  if(saved) area.value = saved;
+  area.addEventListener('input', function(){ localStorage.setItem(key, area.value); });
+})();
+</script>
+</body>
+</html>
