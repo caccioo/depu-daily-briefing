@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>校政热点简报 · 2026-10-29</title>
+<style>
+  :root {
+    --dp-green-dark: #004844;
+    --dp-green-mid: #065700;
+    --dp-green-bright: #0DB900;
+    --dp-green-light: #e8f5ee;
+    --dp-green-bg: #f0f7f3;
+    --risk-red: #c0392b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+    background: linear-gradient(160deg, #f0f7f3 0%, #e8f5ee 30%, #f5fff5 60%, #f9faf7 100%);
+    min-height: 100vh;
+    padding: 24px 12px;
+    color: #1a2a1a;
+  }
+
+  .poster {
+    max-width: 820px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 8px 40px rgba(0,72,68,0.10);
+    overflow: hidden;
+  }
+
+  /* ===== 顶部海报头（白色镂空校徽完整背景） ===== */
+  .header {
+    background: linear-gradient(135deg, #003530 0%, #004844 40%, #065700 100%);
+    color: #fff;
+    padding: 40px 36px 32px;
+    position: relative;
+    overflow: hidden;
+    min-height: 200px;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url('depu_logo_white.png') no-repeat center center;
+    background-size: 280px auto;
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .header .header-content {
+    position: relative;
+    z-index: 1;
+  }
+  .header-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.16);
+    backdrop-filter: blur(4px);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .header .subtitle {
+    font-size: 14px;
+    opacity: 0.85;
+  }
+  .header .date-bar {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+  }
+  .header .date-bar .pill {
+    background: rgba(255,255,255,0.14);
+    padding: 4px 14px;
+    border-radius: 16px;
+  }
+
+  /* ===== 紧凑月历 ===== */
+  .calendar-section {
+    background: linear-gradient(180deg, #fff 0%, #f8faf8 100%);
+    border-bottom: 1px solid #e0ece3;
+    padding: 10px 16px 12px;
+  }
+  .calendar-section .weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 10px;
+    color: #8a9a8a;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .calendar-section .weekdays span:first-child,
+  .calendar-section .weekdays span:last-child { color: #c0392b; }
+  .calendar-section .days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+  }
+  .calendar-section .day-cell {
+    aspect-ratio: 1.3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    font-size: 12px;
+    color: #3a4a3a;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+    border: 1px solid transparent;
+    font-weight: 500;
+    height: 26px;
+  }
+  .calendar-section .day-cell:hover {
+    background: #e8f5ee;
+    border-color: #b0d0b8;
+  }
+  .calendar-section .day-cell.empty { 
+    cursor: default; 
+    background: transparent; 
+    border-color: transparent; 
+    height: 26px;
+  }
+  .calendar-section .day-cell.empty:hover { background: transparent; border-color: transparent; }
+  .calendar-section .day-cell.today {
+    background: linear-gradient(135deg, #004844, #065700);
+    color: #fff;
+    font-weight: 700;
+    border-color: #004844;
+  }
+  .calendar-section .day-cell.today:hover { opacity: 0.9; }
+  .calendar-section .day-cell.has-briefing::after {
+    content: "";
+    position: absolute;
+    bottom: 2px;
+    width: 3px; height: 3px;
+    background: #0DB900;
+    border-radius: 50%;
+  }
+  .calendar-section .day-cell.today.has-briefing::after { background: #fff; }
+  .calendar-section .day-cell.future {
+    color: #c0cec0;
+    cursor: default;
+  }
+  .calendar-section .day-cell.future:hover { background: transparent; border-color: transparent; }
+
+  /* ===== 今日要点 + 风险提示 统一模块 ===== */
+  .summary-risk-module {
+    margin: 0;
+    background: linear-gradient(135deg, #f0f9f3 0%, #e8f5ee 100%);
+    border-left: 5px solid #065700;
+    overflow: hidden;
+  }
+  .summary-risk-module .summary-part {
+    padding: 14px 24px 10px;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: #1d3d1d;
+  }
+  .summary-risk-module .summary-part strong { color: #004844; }
+  .summary-risk-module .divider {
+    height: 1px;
+    margin: 0 24px;
+    background: linear-gradient(90deg, transparent, #92bfa0, transparent);
+  }
+  .summary-risk-module .risk-part {
+    padding: 12px 24px 14px;
+  }
+  .summary-risk-module .risk-part .risk-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #c0392b;
+    margin-bottom: 8px;
+  }
+  .summary-risk-module .risk-part ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px 16px;
+  }
+  .summary-risk-module .risk-part li {
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #7b2d2d;
+    padding-left: 18px;
+    position: relative;
+  }
+  .summary-risk-module .risk-part li::before {
+    content: "⚠";
+    position: absolute;
+    left: 0;
+    font-size: 11px;
+  }
+
+  /* ===== 新闻卡片 ===== */
+  .news-section { padding: 8px 24px 8px; }
+  .section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #004844;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title .icon { font-size: 20px; }
+
+  .news-card {
+    border: 1px solid #d9e6dc;
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 14px;
+    transition: box-shadow 0.2s, transform 0.2s;
+    background: #fff;
+  }
+  .news-card:hover {
+    box-shadow: 0 4px 20px rgba(0,72,68,0.12);
+    transform: translateY(-1px);
+  }
+  .news-card .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .news-card .num {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, #004844, #065700);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .news-card h3 {
+    font-size: 15.5px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #1a2a1a;
+  }
+  .news-card .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 18px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: #6a8a6a;
+  }
+  .news-card .meta span { display: inline-flex; align-items: center; gap: 4px; }
+
+  /* —— 官方文件可点击链接（元数据区）—— */
+  .meta-doc-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    color: #8a6a00;
+    text-decoration: none;
+    font-size: 12px;
+    padding: 2px 0;
+    border-bottom: 1px dashed #c4b04a;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .meta-doc-link:hover {
+    color: #604a00;
+    border-bottom-color: #8a6a00;
+  }
+
+  .news-card .summary {
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: #3a4a3a;
+    margin-bottom: 10px;
+  }
+
+  /* —— 原文出处链接（主按钮）—— */
+  .news-card .source-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 2px;
+  }
+  .source-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #e8f5ee;
+    color: #004844;
+    text-decoration: none;
+    padding: 7px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s;
+    border: 1.5px solid #a0d0b0;
+  }
+  .source-btn:hover {
+    background: #d0eada;
+    border-color: #065700;
+    color: #003530;
+    transform: translateX(2px);
+  }
+  .source-btn .arrow {
+    display: inline-block;
+    transition: transform 0.2s;
+  }
+  .source-btn:hover .arrow { transform: translateX(3px); }
+
+  /* 政策对比要点 */
+  .policy-compare {
+    margin-top: 10px;
+    background: #fffbf0;
+    border: 1px dashed #d4a843;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #6a4a1a;
+  }
+  .policy-compare .compare-label {
+    font-weight: 700;
+    color: #8a5a00;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* ===== 德普关联提示 ===== */
+  .depu-alert {
+    margin-top: 12px;
+    background: linear-gradient(135deg, #f0f7f3, #e6f2ea);
+    border: 1px dashed #065700;
+    border-radius: 10px;
+    padding: 12px 16px;
+  }
+  .depu-alert .alert-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #004844;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .depu-alert ul { list-style: none; padding: 0; }
+  .depu-alert li {
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #2a4a2a;
+    padding-left: 16px;
+    position: relative;
+    margin-bottom: 3px;
+  }
+  .depu-alert li::before {
+    content: "▸";
+    position: absolute;
+    left: 2px;
+    color: #065700;
+    font-size: 10px;
+  }
+  .depu-alert li strong { color: #004844; }
+
+  /* ===== 备注栏 ===== */
+  .notes-section {
+    margin: 0 24px 24px;
+    background: #f8faf8;
+    border: 2px dashed #b3d0bb;
+    border-radius: 14px;
+    padding: 18px 22px;
+  }
+  .notes-section .notes-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #3a5a3a;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .notes-section .notes-title .hint {
+    font-size: 11px;
+    font-weight: 400;
+    color: #8aa88a;
+  }
+  .notes-area {
+    width: 100%;
+    min-height: 120px;
+    border: none;
+    background: transparent;
+    font-size: 13.5px;
+    line-height: 1.8;
+    color: #2a3a2a;
+    resize: vertical;
+    font-family: inherit;
+    outline: none;
+  }
+  .notes-area::placeholder { color: #b0ccb0; }
+  .notes-area:focus {
+    background: #fff;
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
+
+  /* ===== 底部 ===== */
+  .footer {
+    background: linear-gradient(135deg, #003530, #004844);
+    color: rgba(255,255,255,0.75);
+    text-align: center;
+    padding: 16px 24px;
+    font-size: 11.5px;
+    line-height: 1.8;
+  }
+  .footer a { color: #0DB900; text-decoration: none; }
+
+  /* ===== Toast ===== */
+  .toast {
+    position: fixed;
+    top: 20px; left: 50%;
+    transform: translateX(-50%);
+    background: #004844;
+    color: #fff;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-size: 13px;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+
+  .save-hint {
+    position: fixed;
+    bottom: 20px; right: 20px;
+    background: #004844;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 999;
+  }
+  .save-hint.show { opacity: 1; }
+
+  /* ===== 响应式 ===== */
+  
+  /* Month Nav */
+  .month-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .month-nav-btn {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #e8f5ee;
+    border: 1px solid #b0d0b8;
+    color: #004844;
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s;
+    line-height: 1;
+  }
+  .month-nav-btn:hover { background: #d0eada; border-color: #065700; }
+  .month-nav-btn.disabled { opacity: 0.35; cursor: default; pointer-events: none; }
+  .month-nav-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #004844;
+    min-width: 90px;
+    text-align: center;
+  }
+
+  @media (max-width: 600px) {
+    .calendar-section { padding: 8px 12px 10px; }
+    .calendar-section .day-cell { font-size: 11px; height: 22px; }
+  }
+
+  @media (max-width: 600px) {
+    .header { padding: 28px 18px 22px; min-height: 160px; }
+    .header::before { background-size: 200px auto; }
+    .header h1 { font-size: 21px; }
+    .calendar-section { padding: 8px 12px 10px; }
+    .calendar-section .day-cell { font-size: 11px; height: 22px; }
+    .summary-risk-module .summary-part,
+    .summary-risk-module .risk-part { padding-left: 14px; padding-right: 14px; }
+    .summary-risk-module .divider { margin-left: 14px; margin-right: 14px; }
+    .news-card { padding: 14px 16px; }
+    .summary-risk-module .risk-part ul { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<div class="poster">
+
+  <div class="header">
+    <div class="header-content">
+      <span class="header-tag">DAILY BRIEFING</span>
+      <h1>📰 校政热点简报</h1>
+      <div class="subtitle">聚焦民办学校 · 国际学校 · 教育政策动态</div>
+      <div class="date-bar" id="headerDateBar">
+        <span class="pill">📅 2026年10月29日 星期四</span>
+        <span class="pill">来源：云南省教育厅 / 新西兰移民局 / 牛津AQA考试局 / 国际教育网 / 新浪教育</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="calendar-section" id="calendarSection">
+    <div class="month-nav">
+      <span class="month-nav-btn" id="prevMonth">‹</span>
+      <span class="month-nav-label" id="monthNavLabel"></span>
+      <span class="month-nav-btn" id="nextMonth">›</span>
+    </div>
+    <div class="weekdays">
+      <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+    </div>
+    <div class="days-grid" id="daysGrid"></div>
+  </div>
+
+    <div class="summary-risk-module">
+    <div class="summary-part">
+      <strong>📌 今日要点：</strong>地方民办监管侧，云南省教育厅就修订《民办学校年度检查办法》及《指标体系》公开征求意见（10月27日—11月5日），民办中小学、幼儿园年检实地检查比例原则上达100%，一级指标扩至8个并将“师生权益保障”“涉外工作”列入重大关注情形，年检监管从“有没有”走向“全指标、全实地”；出国留学侧，新西兰移民局学生签证四项新规10月27日生效，研究型硕士“无限打工权”取消、英语审查从“学校把关”升级为“签证官独立审查”；国际课程侧，牛津AQA公布2026—2029考季改革路线图，逐步推行一年三考并提高校内评估权重，“一次大考定成绩”的旧逻辑进一步瓦解；行业侧，香港2026/27学年185所学校上调学费、教材涨幅创近年新高，沪上国际学校则呈现“总量稳定、赛道多元、高本贯通”新格局。
+    </div>
+    <div class="divider"></div>
+    <div class="risk-part">
+      <div class="risk-title">🚨 民办国际学校风险提示</div>
+      <ul>
+        <li><strong>年检指标全面加码：</strong>云南版8个一级指标中“党的领导+思想政治”占23分，民办学校对照自评若缺党建台账、思政课程记录，年检定等风险直接上升</li>
+        <li><strong>涉外工作进入年检视野：</strong>“涉外工作”列为重大关注情形，国际课程合作、外教资质、境外教材使用等环节的合规留痕须提前自查</li>
+        <li><strong>签证语言审查前移：</strong>新西兰式“签证官独立审查英语”若被更多国家跟进，语言内测/豁免通道学生可能卡在签证环节，升学指导须提示备好标准化语言成绩</li>
+        <li><strong>预估分风险上升：</strong>牛津AQA提高校内评估权重并允许院校复核“预估分与实考差距”，校内模考质量与平时成绩记录的真实性、规范性要求提高</li>
+        <li><strong>成本传导压力：</strong>香港学费、教材全面上涨印证国际教育成本抬升，民办国际学校调价须同步给出可感知的价值对价（师资、设施、升学服务）</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="news-section">
+    <div class="section-title"><span class="icon">🔥</span> 政策与热点新闻</div>
+
+
+    <!-- ========== 新闻1 ========== -->
+    <div class="news-card">
+      <div class="card-header">
+        <div class="num">1</div>
+        <h3>云南省教育厅修订民办学校年检办法与指标体系并公开征求意见——民办中小学年检实地检查比例原则上达100%</h3>
+      </div>
+      <div class="meta">
+        <span>📅 2026-10-27 发布 · 征求意见至11-05</span>
+        <span>🏷️ 地方政策 · 云南省教育厅（修订征求意见稿）</span>
+        <span>📄 <a class="meta-doc-link" href="https://jyt.yn.gov.cn/zfxxgk/fdzdgknr/gsgg/202610/t20261027_4368828.html" target="_blank" rel="noopener noreferrer">《云南省民办学校年度检查办法（试行）（修订征求意见稿）》公告 ↗</a></span>
+      </div>
+      <div class="summary">
+        10月27日，云南省教育厅发布公告，就《云南省民办学校年度检查办法（试行）（修订征求意见稿）》和《云南省民办学校年度检查指标体系（试行）（修订征求意见稿）》向社会公开征求意见，时间为10月27日至11月5日。此次修订旨在<b>对标教育部新修订的民办高等学校、民办中小学年度检查指标体系</b>，落实国家关于民办教育监管的新要求。修订后的“办法”仍为5章13条，检查内容由6个方面调整为8个方面，即<b>党的领导、思想政治工作、办学条件、依法治校、办学行为、财务资产管理、师生权益保障、安全稳定</b>；民办高等学校每年实地检查比例不低于30%，<b>民办中小学、幼儿园每年实地检查比例原则上应达到100%</b>；“严重违背党的教育方针、偏离社会主义办学方向、发生涉意识形态事件”增列为直接定等的首要情形，“师生权益保障”“涉校纠纷”“涉外工作”等明确列入重大关注情形。修订后的“指标体系”一级指标由6个调整为8个（总分100分：党的领导15分、思想政治8分、办学条件9分、依法治校15分、办学行为17分、财务资产管理14分、师生权益保障10分、安全稳定12分），二级指标由26个调整为33个。
+      </div>
+      <div class="source-links">
+        <a class="source-btn" href="https://jyt.yn.gov.cn/zfxxgk/fdzdgknr/gsgg/202610/t20261027_4368828.html" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 云南省教育厅公告及征求意见稿全文</a>
+      </div>
+      <div class="policy-compare">
+        <div class="compare-label">📋 与此前已推“北京年检挂钩招生资格”的对比</div>
+        与10月23日已推送的<b>北京市教委民办高校年检结论与招生资格挂钩</b>相比，云南版的特点在于：①<b>层级下沉</b>——覆盖民办中小学、幼儿园并要求100%实地检查，监管颗粒度直达基础教育和学前阶段；②<b>指标结构化</b>——“思想政治”“安全稳定”从内部治理中单列，党建与意识形态指标合计占比近四分之一；③<b>一票定等</b>——方向性、意识形态性问题不论得分高低直接定基本合格或不合格。两省做法共同指向：年检正从“程序性年检”转向“实质性监管”，并与招生资格、整改退出形成闭环。
+      </div>
+      <div class="depu-alert">
+        <div class="alert-label">🏫 与德普关联提示</div>
+        <ul>
+          <li><strong>年检对标自查：</strong>德普作为巴南区十二年一贯制民办学校，可参照“8个一级指标+96个观测点”框架开展年度自查，重点补齐党建、思想政治、师生权益保障的台账留痕（巴南区2024年检合格不应成为松懈理由）。</li>
+          <li><strong>涉外工作留痕：</strong>“涉外工作”列入重大关注情形，德普的剑桥考试中心、PDQ中心、IB候选校及国际课程合作项目的资质文件、外教资格、教材审核记录应系统归档备查。</li>
+          <li><strong>趋势研判：</strong>省级年检指标体系向教育部新标准看齐是趋势，重庆后续修订可提前跟踪，提前达标比被动整改成本低得多。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ========== 新闻2 ========== -->
+    <div class="news-card">
+      <div class="card-header">
+        <div class="num">2</div>
+        <h3>新西兰学生签证四项新规10月27日生效——研究型硕士“无限打工权”取消，英语审查升级为签证官独立核查</h3>
+      </div>
+      <div class="meta">
+        <span>📅 2026-10-27 生效 · 10-29 报道</span>
+        <span>🏷️ 出国留学 · 新西兰移民局</span>
+        <span>📄 <a class="meta-doc-link" href="https://www.chineseherald.co.nz/news/education/student-visa-settings-changes/" target="_blank" rel="noopener noreferrer">新西兰中文先驱网·新规详解 ↗</a></span>
+      </div>
+      <div class="summary">
+        新西兰移民局学生签证四项新规自<b>2026年10月27日</b>起生效，适用于当天及之后递交的新申请，三条收紧、一条放宽。①<b>打工时长</b>：研究型硕士此前与博士生一样在读期间打工不限时长，新规统一为学期内每周最多25小时、假期可全职（博士不受影响）；②<b>英语审查</b>：英语能力明确写入移民指令，签证官可独立要求申请人补充受认可的英语考试成绩——此前英语主要由学校在录取环节把关，通过语言课衔接、内测或豁免途径入学的申请人受影响最大；③<b>“提前暂停”权限</b>：教育机构违规问题仍在调查中时，移民局即可暂停相关学生签证申请审理（背景为10月21日奥克兰ICL研究生商学院被学历认证局发出合规通知）；④<b>唯一放宽</b>：按课程结束日到期的学生签证，到期后宽限由1个月延长至2个月（适用3月31日统一到期日安排的学生不变）。
+      </div>
+      <div class="source-links">
+        <a class="source-btn" href="https://www.chineseherald.co.nz/news/education/student-visa-settings-changes/" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 新西兰中文先驱网报道全文</a>
+      </div>
+      <div class="policy-compare">
+        <div class="compare-label">📋 与此前已推各国学签收紧措施的对比</div>
+        新西兰此轮与<b>澳大利亚（10/15已推：签证收紧+吸引力下滑，IDP调查首选项降至不足1/4）</b>、<b>加拿大（9/23已推：生活费门槛上调至23,448加元）</b>方向一致但力度分化：新西兰保留了98%的中国首签获批率与12个工作日的处理速度，本次仅精准收紧“研究型硕士打工权+语言审查+机构合规联动”，整体仍属“欢迎读书、严控合规”路线；而“签证官独立审查英语”是首个把语言关从院校前移到签证环节的明确成文规则，具有标杆意义。
+      </div>
+      <div class="depu-alert">
+        <div class="alert-label">🏫 与德普关联提示</div>
+        <ul>
+          <li><strong>语言成绩硬通货化：</strong>“学校录取≠签证官认可”的逻辑可能被多国效仿，德普升学指导应引导方向为新西兰等国的学生尽早考取雅思/托福等标准化成绩，不建议依赖语言内测豁免路径。</li>
+          <li><strong>留学方案多元化：</strong>澳新加美英签证政策同频收紧，升学规划宜在高三上学期前完成“多国混申+语言成绩兜底”的方案设计，避免单一目的地政策风险。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ========== 新闻3 ========== -->
+    <div class="news-card">
+      <div class="card-header">
+        <div class="num">3</div>
+        <h3>牛津AQA公布2026—2029考季改革路线图——逐步推行一年三考，校内评估权重提升直接影响预估分</h3>
+      </div>
+      <div class="meta">
+        <span>📅 2026-10-26 报道</span>
+        <span>🏷️ 国际课程 · 牛津AQA考试局</span>
+        <span>📄 <a class="meta-doc-link" href="https://www.x-new.cn/zixun/guojixueke/ALEVEL/2026-10-26/109202.html" target="_blank" rel="noopener noreferrer">三大考试局2026新规解读（含牛津AQA路线图） ↗</a></span>
+      </div>
+      <div class="summary">
+        继CAIE“改命题”、爱德思“改评分”之后，牛津AQA公布了2026至2029年的<b>分步调整计划：逐步推行一年三考（11月、5—6月、10月）</b>，夏季成绩提前1—2周公布，EPQ新增11月提交窗口；同时<b>校内模考与日常作业的权重提升，直接影响预估分</b>——若预估分与正式大考成绩差距过大，接收院校可能启动复核。考季节奏方面，2026年秋季考季仅开设IGCSE（10月13日—11月14日），A-Level考生需等到2027年1月或夏季考季。至此，三大考试局的改革版图清晰：CAIE改出题思路（中国区6科独立命题、英语文学开卷）、爱德思改评分规则（理科过程分权重提升、七科专用答题本）、牛津AQA改考试节奏（一年三考+校内评估加权），共同指向“从考记忆转向考理解、推导与表达”。
+      </div>
+      <div class="source-links">
+        <a class="source-btn" href="https://www.x-new.cn/zixun/guojixueke/ALEVEL/2026-10-26/109202.html" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> A-Level三大考试局2026新规汇总</a>
+      </div>
+      <div class="policy-compare">
+        <div class="compare-label">📋 与此前已推考试局动态的对比</div>
+        本期聚焦<b>牛津AQA 2026—2029路线图</b>，为此前未推送的新内容：与9月18日已推“CAIE 2026 IGCSE大改革（中国区独立命题+英语文学开卷）”、10月14日已推“爱德思理科过程分权重提高+专用答题本”分属不同考试局、不同改革维度，不构成重复；与10月10日已推“10月秋季大考时间节点”（仅涉考期安排）角度亦不同，本次是考试节奏的制度性重构。
+      </div>
+      <div class="depu-alert">
+        <div class="alert-label">🏫 与德普关联提示</div>
+        <ul>
+          <li><strong>Edexcel为主须盯紧：</strong>德普为CAIE与Edexcel双考点，但若学生选报牛津AQA科目或EPQ，须提前规划一年三考的报考组合与EPQ 11月提交窗口。</li>
+          <li><strong>校内评估即成绩：</strong>“平时成绩影响预估分、预估分可被院校复核”倒逼日常教学测评的规范性——德普可强化校内模考的命题审校与成绩留档，将其纳入教学质量监控体系。</li>
+          <li><strong>家长沟通更新：</strong>升学宣讲材料中“一年两考、一次定终身”的旧表述应及时更新为三考试局各自的最新考季规则，避免信息差引发投诉。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ========== 新闻4 ========== -->
+    <div class="news-card">
+      <div class="card-header">
+        <div class="num">4</div>
+        <h3>香港2026/27学年185所学校上调学费——教材涨幅创近年新高，国际学校建校费与债券门槛持续抬升</h3>
+      </div>
+      <div class="meta">
+        <span>📅 2026-10 报道</span>
+        <span>🏷️ 行业趋势 · 国际教育网（香港学费盘点）</span>
+        <span>📄 <a class="meta-doc-link" href="https://www.ieduchina.com/hongkong/zt/202610/143863.html" target="_blank" rel="noopener noreferrer">香港185所学校涨学费全景分析 ↗</a></span>
+      </div>
+      <div class="summary">
+        2026/27学年，香港<b>185所学校上调学费</b>。英基学校协会旗下学校平均加幅4.1%，理由直白：加大校园投资、升级科技设施、吸引和留住优质教师。除学费外，隐形费用全面上涨：<b>教材平均上涨3.6%创近年新高</b>（中学中一全套普遍4600—6000多港元）；校服、校车、课外活动费同步上调，杂费一年轻松突破1万港元；国际学校<b>建校费普遍1.2万—6万港元/年且不可抵扣学费</b>（哈罗香港6万，加拿大国际、弘立、启历等集中约4万），部分学校提供购买债券/提名权免除建校费的路径，但债券门槛高达数十万至上千万港元。文章归纳涨价的底层逻辑：教师成本攀升、数字教育投入增加（香港教育局20亿港元优质教育基金支持中小学数字教育）、资助收缩三股力量叠加，“学费年年涨”将成为长期趋势。
+      </div>
+      <div class="source-links">
+        <a class="source-btn" href="https://www.ieduchina.com/hongkong/zt/202610/143863.html" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 国际教育网·香港学费专题</a>
+      </div>
+      <div class="policy-compare">
+        <div class="compare-label">📋 与此前已推香港教育动态的对比</div>
+        与9月30日已推“香港2026施政报告：北部都会区国际学校用地+48所直资扩容”、10月12日已推“香港国际教育扩容虹吸”相比，本期聚焦的是<b>价格端与家庭实际负担</b>——扩容是供给侧，涨价是成本侧，两者共同构成“港式国际教育量价齐升”的完整图景，也与10月28日已推“港大2027国际生门槛上涨”（需求端分数通胀）形成供给侧扩容、成本侧涨价、需求端提分的三角印证。
+      </div>
+      <div class="depu-alert">
+        <div class="alert-label">🏫 与德普关联提示</div>
+        <ul>
+          <li><strong>性价比叙事窗口：</strong>香港国际教育全线涨价背景下，德普“国际化课程体系+内地生活成本”的性价比组合对渝川滇黔家庭更具说服力，可纳入招生话术。</li>
+          <li><strong>费用透明化对冲：</strong>涨价潮中家长对“隐形费用”敏感度上升，德普收费公示应做到清单化、无隐藏项，把“费用透明”做成信任资产。</li>
+          <li><strong>师资成本预警：</strong>香港以高薪虹吸国际课程师资，德普的剑桥PDQ中心教师发展体系可作为“留人靠成长”的对冲机制进一步放大。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ========== 新闻5 ========== -->
+    <div class="news-card">
+      <div class="card-header">
+        <div class="num">5</div>
+        <h3>沪上国际学校新格局：总量稳定、赛道多元、高本贯通——平和新增OSSD、德威两校区合并、中小型校招生缺口达两三成</h3>
+      </div>
+      <div class="meta">
+        <span>📅 2026-10-27 报道（10-24展会观察）</span>
+        <span>🏷️ 行业趋势 · 竞争情报 · 新浪教育</span>
+        <span>📄 <a class="meta-doc-link" href="https://edu.sina.com.cn/ischool/2026-10-27/doc-iniwrzhq2076030.shtml" target="_blank" rel="noopener noreferrer">新浪教育·上海国际教育择校展观察 ↗</a></span>
+      </div>
+      <div class="summary">
+        10月24日新浪微博国际学校择校展上海站举行，10月27日新浪教育刊文总结2026年上海国际学校招生与课程供给的<b>“总量稳定、结构本地化、赛道多元化、升学路径延长”新格局</b>。招生端：头部学校竞争加剧、报录比持续走高，春季招生启动时间逐年提前；课程端：供给结构由IB/A-Level/AP单一赛道转向多元，各校纷纷加开OSSD、DSE、日本方向课程，<b>上海平和双语新增OSSD课程</b>，引入“双轨制”的学校日益增多，德威浦东与浦西高中合并为“一校两区”；出口端：一批学校与高校合作的高本贯通项目密集落地，培养链条从高中延伸至本科。与此同时，中小型国际学校招生缺口达20%—30%，部分资质不全、资金链偏紧的机构已现停办或合并信号，而深国交、贝赛思等头部校“一位难求”，行业K型分化加剧。
+      </div>
+      <div class="source-links">
+        <a class="source-btn" href="https://edu.sina.com.cn/ischool/2026-10-27/doc-iniwrzhq2076030.shtml" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 新浪教育·择校展深度报道</a>
+      </div>
+      <div class="policy-compare">
+        <div class="compare-label">📋 与此前已推行业数据的对比</div>
+        与9月23日已推“国际化学校行业928所负增长”（全国总量数据）、10月16日已推“京领转型报告”相比，本期是<b>头部城市微观格局</b>：全国负增长与上海“总量稳定”并不矛盾——存量博弈下生源向头部与多元赛道双向集中；“平和新增OSSD”与10月22日已推“武汉经外四轨课程”同属“单一体系→多赛道”转型信号，是竞争情报的重要趋势锚点。
+      </div>
+      <div class="depu-alert">
+        <div class="alert-label">🏫 与德普关联提示</div>
+        <ul>
+          <li><strong>多赛道备选评估：</strong>平和、经外等头部校先后加开OSSD/DSE/日本方向，德普可评估在现有30门IG+A-Level基础上增设DSE或日本方向的可行性，以课程宽度对冲单一赛道波动。</li>
+          <li><strong>高本贯通启示：</strong>“高中—本科贯通项目”正在成为出口端新卖点，德普可深化与海外合作院校的直通升学协议，把升学服务做成可承诺、可核验的产品。</li>
+          <li><strong>K型分化定位：</strong>行业洗牌下“小而美”学校风险最高，德普2400+学生规模与十二年一贯制结构是稳定性资产，对外叙事应强调“规模+贯通+认证”三重确定性。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="notes-section">
+    <div class="notes-title">
+      ✏️ 我的备注
+      <span class="hint">（直接在下方编写笔记，内容自动保存到浏览器）</span>
+    </div>
+    <textarea class="notes-area" id="notesArea" placeholder="在此记录你的观察、分析或待办事项...&#10;&#10;例如：&#10;• 对照云南年检8项一级指标开展党建与涉外工作台账自查&#10;• 更新升学宣讲材料中三大考试局考季规则表述&#10;• 梳理DSE/日本方向课程增设的可行性要点&#10;• 排查收费公示清单，确保无隐藏费用项"></textarea>
+  </div>
+
+  <div class="footer">
+    本简报由自动化任务每日 09:00 自动生成 · 信息来源：教育部 / 重庆市教委 / 巴南区教委 / 权威媒体<br>
+    仅供信息参考，具体政策以官方原文为准
+  </div>
+
+</div>
+
+<div class="save-hint" id="saveHint">✅ 备注已保存</div>
+
+<script>
+// 内嵌简报日期清单 —— 生成时从 briefings_manifest.json 写入，避免 file:// 下 fetch 被拦截
+var EMBEDDED_DATES = ["2026-06-18", "2026-06-19", "2026-06-20", "2026-06-21", "2026-06-22", "2026-06-23", "2026-06-24", "2026-06-25", "2026-06-26", "2026-06-27", "2026-06-28", "2026-06-29", "2026-06-30", "2026-07-01", "2026-07-02", "2026-07-03", "2026-07-10", "2026-07-11", "2026-07-12", "2026-07-17", "2026-07-19", "2026-07-20", "2026-07-21", "2026-07-23", "2026-07-25", "2026-07-28", "2026-07-31", "2026-08-03", "2026-08-04", "2026-08-05", "2026-08-06", "2026-08-15", "2026-08-16", "2026-08-18", "2026-08-19", "2026-08-21", "2026-08-23", "2026-08-24", "2026-08-28", "2026-08-30", "2026-08-31", "2026-09-02", "2026-09-03", "2026-09-15", "2026-09-16", "2026-09-17", "2026-09-18", "2026-09-20", "2026-09-22", "2026-09-23", "2026-09-24", "2026-09-28", "2026-09-29", "2026-09-30", "2026-10-08", "2026-10-09", "2026-10-10", "2026-10-12", "2026-10-13", "2026-10-14", "2026-10-15", "2026-10-16", "2026-10-17", "2026-10-18", "2026-10-19", "2026-10-20", "2026-10-23", "2026-10-28", "2026-10-29"];
+var BRIEFING_DATE = "2026-10-29";
+
+// ===== 紧凑月历（含月份切换） =====
+(function() {
+  var availableDates = [];
+  var datesReady = false;
+
+  function getTodayStr() { return new Date().toISOString().slice(0,10); }
+  function getCurrentBriefingDate() {
+    if (typeof BRIEFING_DATE !== 'undefined') return BRIEFING_DATE;
+    var m = window.location.pathname.match(/校政热点简报_(\d{4}-\d{2}-\d{2})\.html/);
+    return m ? m[1] : getTodayStr();
+  }
+  function parseDate(str) {
+    var parts = str.split('-');
+    return new Date(+parts[0], +parts[1]-1, +parts[2]);
+  }
+  function formatDateCN(str) {
+    var d = parseDate(str);
+    var w = ['日','一','二','三','四','五','六'];
+    return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日 星期'+w[d.getDay()];
+  }
+  function showToast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(t._tid);
+    t._tid = setTimeout(function(){ t.classList.remove('show'); }, 2000);
+  }
+  function navigateToDate(dateStr) {
+    var today = getTodayStr();
+    if (dateStr > today) {
+      showToast('⚠ ' + dateStr + ' 尚未到来');
+      return;
+    }
+    window.location.href = '校政热点简报_' + dateStr + '.html';
+  }
+
+  /* 月份切换状态 */
+  var currentBriefingDate = getCurrentBriefingDate();
+  var bdParts = currentBriefingDate.split('-');
+  var baseYear = +bdParts[0], baseMonth = +bdParts[1]-1;
+  var viewYear = baseYear, viewMonth = baseMonth;
+
+  var todayStr = getTodayStr();
+  var todayParts = todayStr.split('-');
+  var todayYear = +todayParts[0], todayMonth = +todayParts[1]-1;
+
+  function getMinYearMonth() {
+    var minY = 9999, minM = 12;
+    for (var i = 0; i < availableDates.length; i++) {
+      var p = availableDates[i].split('-');
+      var y = +p[0], m = +p[1]-1;
+      if (y < minY || (y === minY && m < minM)) { minY = y; minM = m; }
+    }
+    return { year: minY, month: minM };
+  }
+
+  function monthLabel(y, m) {
+    return y + '年' + (m+1) + '月';
+  }
+
+  function updateNavButtons() {
+    var minYM = getMinYearMonth();
+    var prevBtn = document.getElementById('prevMonth');
+    var nextBtn = document.getElementById('nextMonth');
+    var label = document.getElementById('monthNavLabel');
+    label.textContent = monthLabel(viewYear, viewMonth);
+
+    if (viewYear === minYM.year && viewMonth === minYM.month) {
+      prevBtn.classList.add('disabled');
+    } else {
+      prevBtn.classList.remove('disabled');
+    }
+    if (viewYear === todayYear && viewMonth === todayMonth) {
+      nextBtn.classList.add('disabled');
+    } else {
+      nextBtn.classList.remove('disabled');
+    }
+  }
+
+  function renderCalendar(y, m) {
+    var grid = document.getElementById('daysGrid');
+    var firstDay = new Date(y, m, 1);
+    var lastDay = new Date(y, m+1, 0);
+    var totalDays = lastDay.getDate();
+    var startDow = firstDay.getDay();
+
+    var html = '';
+    for (var i = 0; i < startDow; i++) { html += '<div class="day-cell empty"></div>'; }
+    // 简报起始日：2026年6月18日，6月份仅显示18日起的日期
+    var dayStart = (y === 2026 && m === 5) ? 18 : 1;
+    // 如果起始日>1，补齐前置空白占位
+    if (dayStart > 1) {
+      var firstOfRange = new Date(y, m, dayStart);
+      var rangeDow = firstOfRange.getDay();
+      if (rangeDow !== startDow) {
+        var padCount = rangeDow - startDow;
+        for (var p = 0; p < padCount; p++) { html += '<div class="day-cell empty" style="visibility:hidden"></div>'; }
+      }
+    }
+    for (var d = dayStart; d <= totalDays; d++) {
+      var ds = y + '-' + String(m+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+      var isToday = ds === todayStr;
+      var isActive = (y === baseYear && m === baseMonth && ds === currentBriefingDate);
+      var hasBrf = availableDates.indexOf(ds) !== -1;
+      var cellDate = new Date(y, m, d);
+      var isFuture = cellDate > parseDate(todayStr);
+
+      var cls = ['day-cell'];
+      if (isToday) cls.push('today');
+      if (isActive && !isToday) cls.push('active-briefing');
+      if (hasBrf) cls.push('has-briefing');
+      if (isFuture) cls.push('future');
+
+      var styleActive = (isActive && !isToday) ? 'background:#e0f0e4;font-weight:700;color:#004844;border-color:#065700;' : '';
+      html += '<div class="' + cls.join(' ') + '" data-date="' + ds + '" style="' + styleActive + '">' + d + '</div>';
+    }
+    var totalCells = startDow + totalDays;
+    var remaining = (7 - (totalCells % 7)) % 7;
+    for (var i = 0; i < remaining; i++) { html += '<div class="day-cell empty"></div>'; }
+
+    grid.innerHTML = html;
+    var cells = grid.querySelectorAll('.day-cell:not(.empty)');
+    for (var i = 0; i < cells.length; i++) {
+      cells[i].addEventListener('click', function(){
+        var ds = this.dataset.date;
+        navigateToDate(ds);
+      });
+    }
+
+    updateNavButtons();
+  }
+
+  document.getElementById('prevMonth').addEventListener('click', function(){
+    if (this.classList.contains('disabled')) return;
+    viewMonth--;
+    if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+    renderCalendar(viewYear, viewMonth);
+  });
+  document.getElementById('nextMonth').addEventListener('click', function(){
+    if (this.classList.contains('disabled')) return;
+    viewMonth++;
+    if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+    renderCalendar(viewYear, viewMonth);
+  });
+
+  if (typeof EMBEDDED_DATES !== 'undefined' && EMBEDDED_DATES.length > 0) {
+    availableDates = EMBEDDED_DATES;
+    datesReady = true;
+    renderCalendar(viewYear, viewMonth);
+  }
+
+  fetch('briefings_manifest.json').then(function(r){ return r.json(); }).then(function(data){
+    if (data.dates && data.dates.length > 0) {
+      availableDates = data.dates;
+      datesReady = true;
+      renderCalendar(viewYear, viewMonth);
+    }
+  }).catch(function(){
+    if (!datesReady) {
+      availableDates = [getCurrentBriefingDate()];
+      datesReady = true;
+      renderCalendar(viewYear, viewMonth);
+    }
+  });
+
+  (function updateHeader(){
+    var current = getCurrentBriefingDate();
+    var bar = document.getElementById('headerDateBar');
+    if (bar) bar.querySelector('.pill:first-child').textContent = '📅 ' + formatDateCN(current);
+  })();
+})();;
+
+// ===== 备注保存 =====
+(function() {
+  var notesArea = document.getElementById('notesArea');
+  var saveHint = document.getElementById('saveHint');
+  var today = new Date().toISOString().slice(0,10);
+  var storageKey = 'briefing_notes_' + today;
+  var saved = localStorage.getItem(storageKey);
+  if (saved) notesArea.value = saved;
+  var saveTimer;
+  notesArea.addEventListener('input', function() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function() {
+      localStorage.setItem(storageKey, notesArea.value);
+      saveHint.classList.add('show');
+      setTimeout(function(){ saveHint.classList.remove('show'); }, 1500);
+    }, 600);
+  });
+})();
+</script>
+
+</body>
+</html>
