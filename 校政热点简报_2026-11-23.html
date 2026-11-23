@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>校政热点简报 · 2026-11-23</title>
+<style>
+  :root {
+    --dp-green-dark: #004844;
+    --dp-green-mid: #065700;
+    --dp-green-bright: #0DB900;
+    --dp-green-light: #e8f5ee;
+    --dp-green-bg: #f0f7f3;
+    --risk-red: #c0392b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+    background: linear-gradient(160deg, #f0f7f3 0%, #e8f5ee 30%, #f5fff5 60%, #f9faf7 100%);
+    min-height: 100vh;
+    padding: 24px 12px;
+    color: #1a2a1a;
+  }
+
+  .poster {
+    max-width: 820px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 8px 40px rgba(0,72,68,0.10);
+    overflow: hidden;
+  }
+
+  /* ===== 顶部海报头（白色镂空校徽完整背景） ===== */
+  .header {
+    background: linear-gradient(135deg, #003530 0%, #004844 40%, #065700 100%);
+    color: #fff;
+    padding: 40px 36px 32px;
+    position: relative;
+    overflow: hidden;
+    min-height: 200px;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url('depu_logo_white.png') no-repeat center center;
+    background-size: 280px auto;
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .header .header-content {
+    position: relative;
+    z-index: 1;
+  }
+  .header-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.16);
+    backdrop-filter: blur(4px);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .header .subtitle {
+    font-size: 14px;
+    opacity: 0.85;
+  }
+  .header .date-bar {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+  }
+  .header .date-bar .pill {
+    background: rgba(255,255,255,0.14);
+    padding: 4px 14px;
+    border-radius: 16px;
+  }
+
+  /* ===== 紧凑月历 ===== */
+  .calendar-section {
+    background: linear-gradient(180deg, #fff 0%, #f8faf8 100%);
+    border-bottom: 1px solid #e0ece3;
+    padding: 10px 16px 12px;
+  }
+  .calendar-section .weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 10px;
+    color: #8a9a8a;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .calendar-section .weekdays span:first-child,
+  .calendar-section .weekdays span:last-child { color: #c0392b; }
+  .calendar-section .days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+  }
+  .calendar-section .day-cell {
+    aspect-ratio: 1.3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    font-size: 12px;
+    color: #3a4a3a;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+    border: 1px solid transparent;
+    font-weight: 500;
+    height: 26px;
+  }
+  .calendar-section .day-cell:hover {
+    background: #e8f5ee;
+    border-color: #b0d0b8;
+  }
+  .calendar-section .day-cell.empty { 
+    cursor: default; 
+    background: transparent; 
+    border-color: transparent; 
+    height: 26px;
+  }
+  .calendar-section .day-cell.empty:hover { background: transparent; border-color: transparent; }
+  .calendar-section .day-cell.today {
+    background: linear-gradient(135deg, #004844, #065700);
+    color: #fff;
+    font-weight: 700;
+    border-color: #004844;
+  }
+  .calendar-section .day-cell.today:hover { opacity: 0.9; }
+  .calendar-section .day-cell.has-briefing::after {
+    content: "";
+    position: absolute;
+    bottom: 2px;
+    width: 3px; height: 3px;
+    background: #0DB900;
+    border-radius: 50%;
+  }
+  .calendar-section .day-cell.today.has-briefing::after { background: #fff; }
+  .calendar-section .day-cell.future {
+    color: #c0cec0;
+    cursor: default;
+  }
+  .calendar-section .day-cell.future:hover { background: transparent; border-color: transparent; }
+
+  /* ===== 今日要点 + 风险提示 统一模块 ===== */
+  .summary-risk-module {
+    margin: 0;
+    background: linear-gradient(135deg, #f0f9f3 0%, #e8f5ee 100%);
+    border-left: 5px solid #065700;
+    overflow: hidden;
+  }
+  .summary-risk-module .summary-part {
+    padding: 14px 24px 10px;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: #1d3d1d;
+  }
+  .summary-risk-module .summary-part strong { color: #004844; }
+  .summary-risk-module .divider {
+    height: 1px;
+    margin: 0 24px;
+    background: linear-gradient(90deg, transparent, #92bfa0, transparent);
+  }
+  .summary-risk-module .risk-part {
+    padding: 12px 24px 14px;
+  }
+  .summary-risk-module .risk-part .risk-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #c0392b;
+    margin-bottom: 8px;
+  }
+  .summary-risk-module .risk-part ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px 16px;
+  }
+  .summary-risk-module .risk-part li {
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #7b2d2d;
+    padding-left: 18px;
+    position: relative;
+  }
+  .summary-risk-module .risk-part li::before {
+    content: "⚠";
+    position: absolute;
+    left: 0;
+    font-size: 11px;
+  }
+
+  /* ===== 新闻卡片 ===== */
+  .news-section { padding: 8px 24px 8px; }
+  .section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #004844;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title .icon { font-size: 20px; }
+
+  .news-card {
+    border: 1px solid #d9e6dc;
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 14px;
+    transition: box-shadow 0.2s, transform 0.2s;
+    background: #fff;
+  }
+  .news-card:hover {
+    box-shadow: 0 4px 20px rgba(0,72,68,0.12);
+    transform: translateY(-1px);
+  }
+  .news-card .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .news-card .num {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, #004844, #065700);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .news-card h3 {
+    font-size: 15.5px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #1a2a1a;
+  }
+  .news-card .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 18px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: #6a8a6a;
+  }
+  .news-card .meta span { display: inline-flex; align-items: center; gap: 4px; }
+
+  /* —— 官方文件可点击链接（元数据区）—— */
+  .meta-doc-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    color: #8a6a00;
+    text-decoration: none;
+    font-size: 12px;
+    padding: 2px 0;
+    border-bottom: 1px dashed #c4b04a;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .meta-doc-link:hover {
+    color: #604a00;
+    border-bottom-color: #8a6a00;
+  }
+
+  .news-card .summary {
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: #3a4a3a;
+    margin-bottom: 10px;
+  }
+
+  /* —— 原文出处链接（主按钮）—— */
+  .news-card .source-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 2px;
+  }
+  .source-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #e8f5ee;
+    color: #004844;
+    text-decoration: none;
+    padding: 7px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s;
+    border: 1.5px solid #a0d0b0;
+  }
+  .source-btn:hover {
+    background: #d0eada;
+    border-color: #065700;
+    color: #003530;
+    transform: translateX(2px);
+  }
+  .source-btn .arrow {
+    display: inline-block;
+    transition: transform 0.2s;
+  }
+  .source-btn:hover .arrow { transform: translateX(3px); }
+
+  /* 政策对比要点 */
+  .policy-compare {
+    margin-top: 10px;
+    background: #fffbf0;
+    border: 1px dashed #d4a843;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #6a4a1a;
+  }
+  .policy-compare .compare-label {
+    font-weight: 700;
+    color: #8a5a00;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* ===== 德普关联提示 ===== */
+  .depu-alert {
+    margin-top: 12px;
+    background: linear-gradient(135deg, #f0f7f3, #e6f2ea);
+    border: 1px dashed #065700;
+    border-radius: 10px;
+    padding: 12px 16px;
+  }
+  .depu-alert .alert-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #004844;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .depu-alert ul { list-style: none; padding: 0; }
+  .depu-alert li {
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #2a4a2a;
+    padding-left: 16px;
+    position: relative;
+    margin-bottom: 3px;
+  }
+  .depu-alert li::before {
+    content: "▸";
+    position: absolute;
+    left: 2px;
+    color: #065700;
+    font-size: 10px;
+  }
+  .depu-alert li strong { color: #004844; }
+
+  /* ===== 备注栏 ===== */
+  .notes-section {
+    margin: 0 24px 24px;
+    background: #f8faf8;
+    border: 2px dashed #b3d0bb;
+    border-radius: 14px;
+    padding: 18px 22px;
+  }
+  .notes-section .notes-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #3a5a3a;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .notes-section .notes-title .hint {
+    font-size: 11px;
+    font-weight: 400;
+    color: #8aa88a;
+  }
+  .notes-area {
+    width: 100%;
+    min-height: 120px;
+    border: none;
+    background: transparent;
+    font-size: 13.5px;
+    line-height: 1.8;
+    color: #2a3a2a;
+    resize: vertical;
+    font-family: inherit;
+    outline: none;
+  }
+  .notes-area::placeholder { color: #b0ccb0; }
+  .notes-area:focus {
+    background: #fff;
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
+
+  /* ===== 底部 ===== */
+  .footer {
+    background: linear-gradient(135deg, #003530, #004844);
+    color: rgba(255,255,255,0.75);
+    text-align: center;
+    padding: 16px 24px;
+    font-size: 11.5px;
+    line-height: 1.8;
+  }
+  .footer a { color: #0DB900; text-decoration: none; }
+
+  /* ===== Toast ===== */
+  .toast {
+    position: fixed;
+    top: 20px; left: 50%;
+    transform: translateX(-50%);
+    background: #004844;
+    color: #fff;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-size: 13px;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+
+  .save-hint {
+    position: fixed;
+    bottom: 20px; right: 20px;
+    background: #004844;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 999;
+  }
+  .save-hint.show { opacity: 1; }
+
+  /* ===== 响应式 ===== */
+  
+  /* Month Nav */
+  .month-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .month-nav-btn {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #e8f5ee;
+    border: 1px solid #b0d0b8;
+    color: #004844;
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s;
+    line-height: 1;
+  }
+  .month-nav-btn:hover { background: #d0eada; border-color: #065700; }
+  .month-nav-btn.disabled { opacity: 0.35; cursor: default; pointer-events: none; }
+  .month-nav-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #004844;
+    min-width: 90px;
+    text-align: center;
+  }
+
+  @media (max-width: 600px) {
+    .calendar-section { padding: 8px 12px 10px; }
+    .calendar-section .day-cell { font-size: 11px; height: 22px; }
+  }
+
+  @media (max-width: 600px) {
+    .header { padding: 28px 18px 22px; min-height: 160px; }
+    .header::before { background-size: 200px auto; }
+    .header h1 { font-size: 21px; }
+    .calendar-section { padding: 8px 12px 10px; }
+    .calendar-section .day-cell { font-size: 11px; height: 22px; }
+    .summary-risk-module .summary-part,
+    .summary-risk-module .risk-part { padding-left: 14px; padding-right: 14px; }
+    .summary-risk-module .divider { margin-left: 14px; margin-right: 14px; }
+    .news-card { padding: 14px 16px; }
+    .summary-risk-module .risk-part ul { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<div class="poster">
+
+  <div class="header">
+    <div class="header-content">
+      <span class="header-tag">DAILY BRIEFING</span>
+      <h1>📰 校政热点简报</h1>
+      <div class="subtitle">聚焦民办学校 · 国际学校 · 教育政策动态</div>
+      <div class="date-bar" id="headerDateBar">
+        <span class="pill">📅 2026年11月23日 星期一</span>
+        <span class="pill">来源：国家卫健委官网 / Common App / 剑桥英语官方支持中心 / 趣择校 / 麦可思研究（网易转载）</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="calendar-section" id="calendarSection">
+    <div class="month-nav">
+      <span class="month-nav-btn" id="prevMonth">‹</span>
+      <span class="month-nav-label" id="monthNavLabel"></span>
+      <span class="month-nav-btn" id="nextMonth">›</span>
+    </div>
+    <div class="weekdays">
+      <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+    </div>
+    <div class="days-grid" id="daysGrid"></div>
+  </div>
+
+      <div class="summary-risk-module">
+    <div class="summary-part">
+      <strong>📌 今日要点：</strong>政策端，<b>国家卫健委、教育部等四部门联合印发通知（国卫办妇幼发〔2026〕19号），在全国中小学校、幼儿园全面推行健康副校（园）长制度</b>，专业医疗力量嵌入校园治理；留学端，<b>Common App 11月17日公布27Fall早申首轮数据</b>：国际申请者+9%止跌回暖、ED申请量暴涨17%，但中国申请者微降1%；课程端，<b>剑桥英语考试体系2026年多项变革落地</b>：成绩单加印考试当天照片、纸质版A2 Key（KET）12月3日最后一场后停办；行业端，<b>广深六校2027牛剑面邀出炉</b>（剑桥面试12月7-18日、放榜明年1月27日），北大教育财政研究所研讨会给出<b>2050年民办教育规模预测：中位情景仅为2024年的46.9%</b>。
+    </div>
+    <div class="divider"></div>
+    <div class="risk-part">
+      <div class="risk-title">🚨 民办国际学校风险提示</div>
+      <ul>
+        <li><strong>健康副校长履职台账：</strong>每学期到校现场指导不少于4次、健康宣讲不少于2次系硬性要求，学校须提前对接属地卫健部门确认选派安排，并建立履职记录留痕备查</li>
+        <li><strong>ED绑定规则须家长签知：</strong>ED申请量+17%意味着早申竞争白热化，ED具约束力（录取必须入读并撤回其他申请），签约前须完成家庭知情确认与费用承受力评估</li>
+        <li><strong>剑桥英语报考形式切换：</strong>纸质版A2 Key仅存12月3日最后一场，此后低龄考生须转数字考位或A2 Key for Schools，校内测评与家长报考指引需同步更新</li>
+        <li><strong>“面邀≠录取”宣传红线：</strong>牛剑面邀只是面试邀请，剑桥正式录取决定2027年1月27日才发出，喜报宣传严禁将面邀表述为录取</li>
+        <li><strong>民办行业长期生源收缩：</strong>2050年中位预测民办在校生仅为2024年的46.9%，中长期规划须按人口曲线做三档情景预案，避免按峰值配置师资与资本开支</li>
+      </ul>
+    </div>
+  </div>
+
+    <!-- ========== 新闻1 ========== -->
+    <div class="news-card">
+      <div class="card-header">
+        <div class="num">1</div>
+        <h3>四部门发文全面推行中小学校幼儿园“健康副校（园）长”制度：专业人员进校园，体重视力心理骨骼口腔“五健”齐抓</h3>
+      </div>
+      <div class="meta">
+        <span>📅 印发 2026-11 · 卫健委官网公开 · 人民日报海外版 11-20 报道</span>
+        <span>🏷️ 国家政策 · 学校健康治理</span>
+        <span>📄 <a class="meta-doc-link" href="https://www.nhc.gov.cn/fys/c100078/202611/123cab5c7b4d4d19a90781004c0de139.shtml" target="_blank" rel="noopener noreferrer">国卫办妇幼发〔2026〕19号《关于做好中小学校、幼儿园健康副校（园）长聘任与管理工作的通知》↗</a></span>
+      </div>
+      <div class="summary">
+        国家卫生健康委办公厅、教育部办公厅、国家中医药局综合司、国家疾控局综合司近日联合印发<b>《关于做好中小学校、幼儿园健康副校（园）长聘任与管理工作的通知》（国卫办妇幼发〔2026〕19号）</b>，推动儿童青少年健康管理服务关口前移。健康副校（园）长由卫生健康行政部门（含中医药、疾控主管部门）与教育行政部门组织指导、<b>由医疗卫生机构等派出、经学校聘任</b>，在学校兼任副校（园）长职务，不占编制、不坐班。履职要求明确：<b>每学期到校现场指导不少于4次、开展健康科普宣讲不少于2次</b>、参加1次学校健康工作专题会议、参与校园健康管理决策；实行“<b>1+N</b>”协作模式，联动儿科、公共卫生、营养、心理、中医等多方资源；落实儿童青少年“<b>五健</b>”促进行动——体重健康、视力健康、心理健康、骨骼健康、口腔健康。
+      </div>
+      <div class="source-links">
+        <a class="source-btn" href="https://www.nhc.gov.cn/fys/c100078/202611/123cab5c7b4d4d19a90781004c0de139.shtml" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 国家卫生健康委官网</a>
+      </div>
+      <div class="policy-compare">
+        <div class="compare-label">📋 与此前已推“高度近视防控通知 / 心理健康十条措施”的对比</div>
+        与10月20日已推送的<b>三部门高度近视防控通知（视力单环节技术指标）</b>、10月23日已推送的<b>教育部心理健康十条措施（心理单领域）</b>相比：①<b>层级跃升</b>——此前是单项健康领域的业务要求，本期是覆盖体重/视力/心理/骨骼/口腔五大维度的<b>人事制度安排</b>，把专业医疗力量直接嵌入学校治理结构；②<b>“副校长序列”持续扩容</b>——继法治副校长、科学副校长之后，“健康副校长”补位第四类，学校对外聘任协作体系进一步制度化；③<b>考核可量化</b>——“每学期4次指导+2次宣讲+1次专题会议”为刚性指标，健康工作从“有没有”进入“来没来、干了什么”的留痕检查阶段。
+      </div>
+      <div class="depu-alert">
+        <div class="alert-label">🏫 与德普关联提示</div>
+        <ul>
+          <li><strong>主动对接选派安排：</strong>建议校办尽快与巴南区卫健、教育部门沟通本校健康副校长选派与聘任时间表，民办学校在同一文件覆盖范围内，避免被动等待。</li>
+          <li><strong>建立履职台账：</strong>对照“4次指导+2次宣讲+1次专题会议”逐项留痕，纳入学校健康工作档案，与三类活动归档同标准管理。</li>
+          <li><strong>“五健”并入学情健康档案：</strong>体重、视力、心理、骨骼、口腔五类监测数据可整合进学生一人一档，与心理教师配置、教室照明国标改造形成健康管理的完整证据链。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ========== 新闻2 ========== -->
+    <div class="news-card">
+      <div class="card-header">
+        <div class="num">2</div>
+        <h3>Common App公布27Fall早申首轮数据：国际申请者+9%止跌回暖、ED申请量暴涨17%，但中国申请者微降1%</h3>
+      </div>
+      <div class="meta">
+        <span>📅 2026-11-17 发布（统计截至 11-01）</span>
+        <span>🏷️ 出国留学 · 美本申请</span>
+        <span>📄 <a class="meta-doc-link" href="https://m.topsedu.com/about/news/100309.html" target="_blank" rel="noopener noreferrer">Common App 2026-2027申请季早申数据（965所CA会员高校口径）↗</a></span>
+      </div>
+      <div class="summary">
+        当地时间11月17日，Common App公布2026-2027申请季早申数据（覆盖<b>965所</b>连续5年CA会员高校、统计截至11月1日）：申请者<b>992,093人（+1%）</b>、申请总量<b>5,301,045份（+6%）</b>、人均申请<b>5.34所（+5%）</b>；创建新账户人数1,980,780个（-2%），系2022-23申请季以来首次下滑。国际申请者<b>78,986人（+9.1%）</b>，去年同期为-9%，止跌回暖；亚洲仍为第一大生源地区（+9%）。<b>中国申请者12,879人（-1%）</b>基本持平，印度10,075人（+17%）突破万人、巴基斯坦+41%。分轮次看：<b>ED申请量+17%</b>领跑，EA+8%、RD仅+3%；标化提交人数-2%、不提交者+5%，但硬性要求标化的院校占比升至约5%。增量高度集中：<b>录取率低于25%的高选拔院校申请量+14%，其中国际生申请暴涨35%</b>；私立院校申请+13%、公立仅+3%。
+      </div>
+      <div class="source-links">
+        <a class="source-btn" href="https://m.topsedu.com/about/news/100309.html" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 托普仕留学（引Common App官方数据）</a>
+      </div>
+      <div class="policy-compare">
+        <div class="compare-label">📋 与此前已推“Open Doors 2026 / 美高校入学下滑 / GMAC数据”的对比</div>
+        与11月20日已推送的<b>IIE《Open Doors 2026》（在美存量口径）</b>、11月22日已推送的<b>美国高校今秋入学急剧下滑（入学端）</b>、11月6日已推送的<b>GMAC商科申请数据（研究生商科）</b>相比：①<b>端口前移</b>——本期是<b>申请端首轮数据</b>，比入学结果早约两个季度，是意向先行指标；Open Doors与入学下滑反映的是“结果”，本期反映的是“下一届怎么选”；②<b>“回暖但分层”</b>——国际生整体+9%，但35%的增量涌向录取率<25%的顶尖校，中等院校并未受益，竞争烈度不降反升；③<b>中美印生源换位</b>——中国-1%平稳、印度+17%，叠加芝大ED0中国学生47枚的录取端数据，美本生源结构正在重塑。
+      </div>
+      <div class="depu-alert">
+        <div class="alert-label">🏫 与德普关联提示</div>
+        <ul>
+          <li><strong>选校清单按“人均5.34所”校准：</strong>升学指导可参考广撒网+头部集中的趋势，为本校申请者合理配置ED/EA/RD组合，避免常规轮“裸奔”。</li>
+          <li><strong>标化早考早定：</strong>虽然多数院校可选，但顶尖校赛道标化仍是硬通货，10-11年级应完成首考，为早申预留提分窗口。</li>
+          <li><strong>ED知情确认前置：</strong>ED绑定（录取必须入读、撤回其他申请）涉及家庭重大决策，建议升学指导在递交前完成书面知情确认流程。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ========== 新闻3 ========== -->
+    <div class="news-card">
+      <div class="card-header">
+        <div class="num">3</div>
+        <h3>剑桥英语考试2026年多项变革：成绩单加印考试当天照片，纸质版A2 Key（KET）年底正式停办转数字考试</h3>
+      </div>
+      <div class="meta">
+        <span>📅 剑桥大学英语考评部官方公告（最后一场纸考 2026-12-03）</span>
+        <span>🏷️ 国际课程 · 语言测评</span>
+        <span>📄 <a class="meta-doc-link" href="https://support.cambridgeenglish.org/hc/zh-cn/articles/19607260953746" target="_blank" rel="noopener noreferrer">剑桥英语官方支持中心：2026年纸质版A2 Key考试的撤销 ↗</a></span>
+      </div>
+      <div class="summary">
+        剑桥大学英语考评部确认2026年两项重要调整：其一，<b>自2026年4月6日起，考生成绩单将显示考试当天拍摄的照片</b>——B2 First（FCE）、C1 Advanced（CAE）、C2 Proficiency（CPE）三个级别为强制性要求，B2 First for Schools及其他级别非强制（考试当天拍摄了即显示），目的是让认可剑桥英语成绩的大学、移民机构和用人单位能够确认成绩归属、减少身份冒用；<b>照片仅出现在成绩单，不出现在证书上</b>。其二，<b>纸质版A2 Key（KET标准版）考试将于2026年底停办</b>，最后一场定于<b>12月3日</b>举行，此后仅保留数字考试形式；官方解释为超过一半标准版考生低于16岁、考生已大量转向A2 Key for Schools（校园版）与数字考试。<b>A2 Key for Schools将继续同时提供纸笔与数字两种形式，证书与标准版完全同等认可，且不标注“for Schools”字样</b>，备考方式无需重大调整。
+      </div>
+      <div class="source-links">
+        <a class="source-btn" href="https://support.cambridgeenglish.org/hc/zh-cn/articles/19607260953746" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 剑桥英语官方支持中心</a>
+      </div>
+      <div class="policy-compare">
+        <div class="compare-label">📋 与此前已推“CAIE机考分区 / IB机考扩容 / AP数字化”的对比</div>
+        与此前已推送的<b>CAIE考试数字化路线</b>、<b>IB机考扩容（2027年5月“个体与社会”学科组入试点）</b>、<b>AP机考试点</b>相比：①<b>对象不同</b>——CAIE/IB/AP是高中学术课程考试局，剑桥英语（KET/PET/FCE等）是<b>低龄英语语言测评体系</b>，直接服务义务教育阶段的英语能力证明与升学履历；②<b>同一条数字化主线</b>——纸笔让位数字考试与三大课程体系全面共振，“考试数字化”已是整个国际测评赛道的确定性趋势；③<b>身份核验升级</b>——成绩单加印照片、证书与成绩单信息分离，显示国际考试对防伪与成绩归属确认的要求在提高。
+      </div>
+      <div class="depu-alert">
+        <div class="alert-label">🏫 与德普关联提示</div>
+        <ul>
+          <li><strong>校内剑桥英语测评指引更新：</strong>德普为剑桥全球考试中心，校内如组织KET/PET等剑桥英语测评，报考通知须同步说明纸版A2 Key停办、数字考位与for Schools选项。</li>
+          <li><strong>家长沟通口径：</strong>明确告知A2 Key for Schools与标准版证书<b>同等认可且不标注字样</b>，低龄考生优先选择校园版，避免家长误以为“含金量不同”。</li>
+          <li><strong>考试当天拍照提醒：</strong>成绩单照片要求意味着缺考或补拍受限，考前通知应加入“当天到场拍照”提示，成绩单为核验载体需妥善保管。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ========== 新闻4 ========== -->
+    <div class="news-card">
+      <div class="card-header">
+        <div class="num">4</div>
+        <h3>广深六校2027牛剑面邀进展：新哲文院、曼彻斯通龙华各3封，剑桥面试12月7-18日、录取决定明年1月27日发出</h3>
+      </div>
+      <div class="meta">
+        <span>📅 2026-11-19 盘点</span>
+        <span>🏷️ 行业趋势 · 竞争情报</span>
+        <span>📄 <a class="meta-doc-link" href="http://www.quzexiao.com/articles/gba-oxbridge-interview-invitations-2027" target="_blank" rel="noopener noreferrer">《2027年入学牛剑面试邀请与广深六校进展》（趣择校）↗</a></span>
+      </div>
+      <div class="summary">
+        截至11月19日，广州、深圳六校陆续披露2027年入学牛津、剑桥面邀进展：<b>广州优联国际学校</b>获剑桥心理与行为科学1封；<b>广州市斐特思学校</b>获牛津音乐1封；<b>新哲文院</b>获剑桥考古学、心理与行为科学、人类、社会与政治科学共3封；<b>深圳曼彻斯通城堡学校龙华校区</b>获剑桥教育学、心理与行为科学共3封；<b>深圳市新福景双语学校</b>获剑桥环境、法律与经济学1封；天辰国际书院剑桥国王学院面邀待校方确认。官方时间线明确：<b>剑桥2027年入学主要面试时段为2026年12月7日至18日</b>（少数排其他日期），参加主要面试轮次的申请者<b>2027年1月27日收到录取决定</b>。该盘点同时提示：面邀、录取、实际入读是三个不同阶段，喜报中的“Offer”须区分是面试邀请还是有条件录取。
+      </div>
+      <div class="source-links">
+        <a class="source-btn" href="http://www.quzexiao.com/articles/gba-oxbridge-interview-invitations-2027" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 趣择校</a>
+      </div>
+      <div class="policy-compare">
+        <div class="compare-label">📋 与此前已推“上海牛剑面邀首波”的对比</div>
+        与11月22日已推送的<b>上海2027牛剑面邀首波（上海五校约10-11封剑桥面邀）</b>相比：①<b>区域不同</b>——本期为<b>粤港澳大湾区（广深）</b>首批面邀观察，牛剑面邀已从京沪扩展至大湾区双语/外籍学校集群，属不同区域样本而非同一事件；②<b>新增权威时间线</b>——剑桥面试12月7-18日、放榜2027年1月27日为官方节奏，可直接用于升学排期；③<b>专业结构持续多元</b>——音乐、考古学、教育学、环境法律经济等非传统理科专业面邀出现，与上海首波“跨理工社科人文”的结论互相印证。
+      </div>
+      <div class="depu-alert">
+        <div class="alert-label">🏫 与德普关联提示</div>
+        <ul>
+          <li><strong>升学排期锚定官方节点：</strong>12月7-18日面试窗口、1月27日放榜，本校牛剑方向学生的面试模拟与材料补交应倒排至12月第一周前完成。</li>
+          <li><strong>宣传口径守住红线：</strong>引用他校或本校数据时明确区分“面邀/有条件录取/正式录取”三阶段与统计口径，避免升学承诺失实。</li>
+          <li><strong>选课组合支撑兴趣赛道：</strong>牛剑对音乐、考古、教育学等专业发面邀，提示A-Level选课指导不应窄化为数理化组合，人文艺术赛道同样有通道。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ========== 新闻5 ========== -->
+    <div class="news-card">
+      <div class="card-header">
+        <div class="num">5</div>
+        <h3>北大教育财政研讨会：民办教育2050年在校生规模或仅为2024年的三至七成，民办高教约剩十年转型窗口期</h3>
+      </div>
+      <div class="meta">
+        <span>📅 研讨会 2026-11-10 · 麦可思研究 11-21 转载</span>
+        <span>🏷️ 行业趋势 · 长期预测</span>
+        <span>📄 <a class="meta-doc-link" href="https://www.163.com/dy/article/LC61P47Q05218435.html" target="_blank" rel="noopener noreferrer">《“民办高教行业还有约十年发展转型窗口期”》（北大中国教育财政科学研究所 × 西安欧亚学院研讨会）↗</a></span>
+      </div>
+      <div class="summary">
+        11月10日，北京大学中国教育财政科学研究所与西安欧亚学院教育创新研究院举办“<b>生源变化与模式再造：民办高等教育的发展挑战与财务韧性</b>”专题研讨会。西安欧亚学院副校长李正提出：人口与生源变化是<b>结构性、不可逆</b>的趋势，民办高等教育行业还有<b>约十年发展转型窗口期</b>；财务韧性的要义在于为不确定性做准备，该校采取分层分级预算治理、财务人员以BP形式派驻二级院系、设置保守/稳健/激进<b>三档财务模型</b>、依托产教融合提高非学费收入占比。苏州大学教育学院教授王一涛发布《面向2050的民办教育规模预测与功能定位》：按高、中、低三方案，<b>2050年我国民办教育在校生规模分别相当于2024年的71.8%、46.9%和30.5%</b>；国际经验方面，德国私立高教在校生从2010年9.5万人增至2025年38.7万人，2014-2025年主要发达国家私立高教占比普遍上升。报告建议重新认识民办教育重要性，在合适时机重提“鼓励和支持”，减少对学费、招生等环节的不当干预。
+      </div>
+      <div class="source-links">
+        <a class="source-btn" href="https://www.163.com/dy/article/LC61P47Q05218435.html" target="_blank" rel="noopener noreferrer">🔗 点击查阅原文 <span class="arrow">→</span> 麦可思研究（网易转载）</a>
+      </div>
+      <div class="policy-compare">
+        <div class="compare-label">📋 与此前已推“发改委三峰错位 / 关停潮数据”的对比</div>
+        与11月11日已推送的<b>国家发改委“学龄人口三峰错位”（总人口端配置方案）</b>、10月22日已推送的<b>学龄人口关停潮（存量出清结果）</b>相比：①<b>首次出现民办教育专属的2050规模预测</b>——71.8%/46.9%/30.5%三档数字把人口曲线直接翻译成民办行业的长期经营情景，与宏观在校生口径分属不同变量（民办占比随政策与定位浮动）；②<b>给出方法论而非仅数据</b>——“十年窗口期+三档财务模型+非学费收入占比”构成学校财务韧性的可操作框架；③<b>国际对照提供反面参考</b>——德国私立高教逆势增长说明少子化不必然等于民办萎缩，教育多样性生态与功能定位是关键变量。
+      </div>
+      <div class="depu-alert">
+        <div class="alert-label">🏫 与德普关联提示</div>
+        <ul>
+          <li><strong>中长期规划按三档情景编制：</strong>学校“十五五”规划可参考高/中/低三方案，对招生规模、师资编制、资本开支分别设定触发条件，避免按峰值配置。</li>
+          <li><strong>非学费收入是韧性方向：</strong>研学、营地、社区课程、考试中心服务（剑桥/IELTS等考点运营）等非学费收入占比提升，与本校已有资质天然契合。</li>
+          <li><strong>稳定性叙事更值钱：</strong>生源收缩期，本校“年检合格（巴南教委发〔2024〕72号）+举办主体稳定+2400人在校规模+1:4师生比”组合是对家长沟通的核心资产，可在招生与家长会材料中体系化呈现。</li>
+        </ul>
+      </div>
+    </div>
+<div class="notes-section">
+    <div class="notes-title">
+      ✏️ 我的备注
+      <span class="hint">（直接在下方编写笔记，内容自动保存到浏览器）</span>
+    </div>
+    <textarea class="notes-area" id="notesArea" placeholder="在此记录你的观察、分析或待办事项...&#10;&#10;例如：&#10;• 健康副校长19号文：对接巴南区卫健部门选派时间表 + 4次指导/2次宣讲履职台账模板&#10;• Common App 27Fall：ED知情确认书定稿 + 选校清单按人均5.34所校准&#10;• 剑桥英语：KET/PET报考指引更新（数字考位/for Schools）+ 考试当天拍照提示&#10;• 牛剑排期：12月7-18日面试窗口前完成模拟面试 + 1月27日放榜预案&#10;• 2050民办规模预测：三档情景表（招生/师资/资本开支）纳入十五五规划初稿&#10;• 非学费收入盘点：研学/营地/考点服务收入占比测算"></textarea>
+  </div>
+
+  <div class="footer">
+    本简报由自动化任务每日 09:00 自动生成 · 信息来源：教育部 / 重庆市教委 / 巴南区教委 / 权威媒体<br>
+    仅供信息参考，具体政策以官方原文为准
+  </div>
+
+</div>
+
+<div class="save-hint" id="saveHint">✅ 备注已保存</div>
+
+<script>
+// 内嵌简报日期清单 —— 生成时从 briefings_manifest.json 写入，避免 file:// 下 fetch 被拦截
+var EMBEDDED_DATES = ["2026-06-18","2026-06-19","2026-06-20","2026-06-21","2026-06-22","2026-06-23","2026-06-24","2026-06-25","2026-06-26","2026-06-27","2026-06-28","2026-06-29","2026-06-30","2026-07-01","2026-07-02","2026-07-03","2026-07-10","2026-07-11","2026-07-12","2026-07-17","2026-07-19","2026-07-20","2026-07-21","2026-07-23","2026-07-25","2026-07-28","2026-07-31","2026-08-03","2026-08-04","2026-08-05","2026-08-06","2026-08-15","2026-08-16","2026-08-18","2026-08-19","2026-08-21","2026-08-23","2026-08-24","2026-08-28","2026-08-30","2026-08-31","2026-09-02","2026-09-03","2026-09-15","2026-09-16","2026-09-17","2026-09-18","2026-09-20","2026-09-22","2026-09-23","2026-09-24","2026-09-28","2026-09-29","2026-09-30","2026-10-08","2026-10-09","2026-10-10","2026-10-12","2026-10-13","2026-10-14","2026-10-15","2026-10-16","2026-10-17","2026-10-18","2026-10-19","2026-10-20","2026-10-22","2026-10-23","2026-10-26","2026-10-27","2026-10-28","2026-10-29","2026-10-30","2026-11-01","2026-11-02","2026-11-03","2026-11-04","2026-11-05","2026-11-06","2026-11-07","2026-11-09","2026-11-10","2026-11-11","2026-11-12","2026-11-13","2026-11-19","2026-11-20","2026-11-21","2026-11-22","2026-11-23"];
+var BRIEFING_DATE = "2026-11-23";
+
+// ===== 紧凑月历（含月份切换） =====
+(function() {
+  var availableDates = [];
+  var datesReady = false;
+
+  function getTodayStr() { return new Date().toISOString().slice(0,10); }
+  function getCurrentBriefingDate() {
+    if (typeof BRIEFING_DATE !== 'undefined') return BRIEFING_DATE;
+    var m = window.location.pathname.match(/校政热点简报_(\d{4}-\d{2}-\d{2})\.html/);
+    return m ? m[1] : getTodayStr();
+  }
+  function parseDate(str) {
+    var parts = str.split('-');
+    return new Date(+parts[0], +parts[1]-1, +parts[2]);
+  }
+  function formatDateCN(str) {
+    var d = parseDate(str);
+    var w = ['日','一','二','三','四','五','六'];
+    return d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日 星期'+w[d.getDay()];
+  }
+  function showToast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(t._tid);
+    t._tid = setTimeout(function(){ t.classList.remove('show'); }, 2000);
+  }
+  function navigateToDate(dateStr) {
+    var today = getTodayStr();
+    if (dateStr > today) {
+      showToast('⚠ ' + dateStr + ' 尚未到来');
+      return;
+    }
+    window.location.href = '校政热点简报_' + dateStr + '.html';
+  }
+
+  /* 月份切换状态 */
+  var currentBriefingDate = getCurrentBriefingDate();
+  var bdParts = currentBriefingDate.split('-');
+  var baseYear = +bdParts[0], baseMonth = +bdParts[1]-1;
+  var viewYear = baseYear, viewMonth = baseMonth;
+
+  var todayStr = getTodayStr();
+  var todayParts = todayStr.split('-');
+  var todayYear = +todayParts[0], todayMonth = +todayParts[1]-1;
+
+  function getMinYearMonth() {
+    var minY = 9999, minM = 12;
+    for (var i = 0; i < availableDates.length; i++) {
+      var p = availableDates[i].split('-');
+      var y = +p[0], m = +p[1]-1;
+      if (y < minY || (y === minY && m < minM)) { minY = y; minM = m; }
+    }
+    return { year: minY, month: minM };
+  }
+
+  function monthLabel(y, m) {
+    return y + '年' + (m+1) + '月';
+  }
+
+  function updateNavButtons() {
+    var minYM = getMinYearMonth();
+    var prevBtn = document.getElementById('prevMonth');
+    var nextBtn = document.getElementById('nextMonth');
+    var label = document.getElementById('monthNavLabel');
+    label.textContent = monthLabel(viewYear, viewMonth);
+
+    if (viewYear === minYM.year && viewMonth === minYM.month) {
+      prevBtn.classList.add('disabled');
+    } else {
+      prevBtn.classList.remove('disabled');
+    }
+    if (viewYear === todayYear && viewMonth === todayMonth) {
+      nextBtn.classList.add('disabled');
+    } else {
+      nextBtn.classList.remove('disabled');
+    }
+  }
+
+  function renderCalendar(y, m) {
+    var grid = document.getElementById('daysGrid');
+    var firstDay = new Date(y, m, 1);
+    var lastDay = new Date(y, m+1, 0);
+    var totalDays = lastDay.getDate();
+    var startDow = firstDay.getDay();
+
+    var html = '';
+    for (var i = 0; i < startDow; i++) { html += '<div class="day-cell empty"></div>'; }
+    // 简报起始日：2026年6月18日，6月份仅显示18日起的日期
+    var dayStart = (y === 2026 && m === 5) ? 18 : 1;
+    // 如果起始日>1，补齐前置空白占位
+    if (dayStart > 1) {
+      var firstOfRange = new Date(y, m, dayStart);
+      var rangeDow = firstOfRange.getDay();
+      if (rangeDow !== startDow) {
+        var padCount = rangeDow - startDow;
+        for (var p = 0; p < padCount; p++) { html += '<div class="day-cell empty" style="visibility:hidden"></div>'; }
+      }
+    }
+    for (var d = dayStart; d <= totalDays; d++) {
+      var ds = y + '-' + String(m+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+      var isToday = ds === todayStr;
+      var isActive = (y === baseYear && m === baseMonth && ds === currentBriefingDate);
+      var hasBrf = availableDates.indexOf(ds) !== -1;
+      var cellDate = new Date(y, m, d);
+      var isFuture = cellDate > parseDate(todayStr);
+
+      var cls = ['day-cell'];
+      if (isToday) cls.push('today');
+      if (isActive && !isToday) cls.push('active-briefing');
+      if (hasBrf) cls.push('has-briefing');
+      if (isFuture) cls.push('future');
+
+      var styleActive = (isActive && !isToday) ? 'background:#e0f0e4;font-weight:700;color:#004844;border-color:#065700;' : '';
+      html += '<div class="' + cls.join(' ') + '" data-date="' + ds + '" style="' + styleActive + '">' + d + '</div>';
+    }
+    var totalCells = startDow + totalDays;
+    var remaining = (7 - (totalCells % 7)) % 7;
+    for (var i = 0; i < remaining; i++) { html += '<div class="day-cell empty"></div>'; }
+
+    grid.innerHTML = html;
+    var cells = grid.querySelectorAll('.day-cell:not(.empty)');
+    for (var i = 0; i < cells.length; i++) {
+      cells[i].addEventListener('click', function(){
+        var ds = this.dataset.date;
+        navigateToDate(ds);
+      });
+    }
+
+    updateNavButtons();
+  }
+
+  document.getElementById('prevMonth').addEventListener('click', function(){
+    if (this.classList.contains('disabled')) return;
+    viewMonth--;
+    if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+    renderCalendar(viewYear, viewMonth);
+  });
+  document.getElementById('nextMonth').addEventListener('click', function(){
+    if (this.classList.contains('disabled')) return;
+    viewMonth++;
+    if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+    renderCalendar(viewYear, viewMonth);
+  });
+
+  if (typeof EMBEDDED_DATES !== 'undefined' && EMBEDDED_DATES.length > 0) {
+    availableDates = EMBEDDED_DATES;
+    datesReady = true;
+    renderCalendar(viewYear, viewMonth);
+  }
+
+  fetch('briefings_manifest.json').then(function(r){ return r.json(); }).then(function(data){
+    if (data.dates && data.dates.length > 0) {
+      availableDates = data.dates;
+      datesReady = true;
+      renderCalendar(viewYear, viewMonth);
+    }
+  }).catch(function(){
+    if (!datesReady) {
+      availableDates = [getCurrentBriefingDate()];
+      datesReady = true;
+      renderCalendar(viewYear, viewMonth);
+    }
+  });
+
+  (function updateHeader(){
+    var current = getCurrentBriefingDate();
+    var bar = document.getElementById('headerDateBar');
+    if (bar) bar.querySelector('.pill:first-child').textContent = '📅 ' + formatDateCN(current);
+  })();
+})();
+
+// ===== 备注保存 =====
+(function() {
+  var notesArea = document.getElementById('notesArea');
+  var saveHint = document.getElementById('saveHint');
+  var today = new Date().toISOString().slice(0,10);
+  var storageKey = 'briefing_notes_' + today;
+  var saved = localStorage.getItem(storageKey);
+  if (saved) notesArea.value = saved;
+  var saveTimer;
+  notesArea.addEventListener('input', function() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function() {
+      localStorage.setItem(storageKey, notesArea.value);
+      saveHint.classList.add('show');
+      setTimeout(function(){ saveHint.classList.remove('show'); }, 1500);
+    }, 600);
+  });
+})();
+</script>
+
+</body>
+</html>
